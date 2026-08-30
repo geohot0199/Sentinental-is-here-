@@ -1,7 +1,10 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Wordmark from "@/components/Wordmark";
-import { Btn, Reveal, Tilt } from "@/components/interactive";
+import { Btn, Reveal, Tilt, KineticWords } from "@/components/interactive";
+import HeroGraphic from "@/components/motion/HeroGraphic";
+import Marquee from "@/components/motion/Marquee";
 
 export const metadata = {
   title: "SENTINEL — Autonomous Supply-Chain CVE Strike Team",
@@ -78,53 +81,57 @@ export default function LandingPage() {
 
         {/* ================================================== HERO */}
         <section className="hero">
-          <div className="hero-glow" aria-hidden="true" />
+          <HeroGraphic />
           <div className="hero-copy">
-            <Reveal>
-              <span className="kicker">TrueForge agent harness · MCP tools · Daytona sandbox</span>
-            </Reveal>
-            <Reveal delay={90}>
-              <h1 className="hero-wordmark display">
-                <span className="sr-only">SENTINEL</span>
-                <Wordmark hidden />
-              </h1>
-            </Reveal>
-            <Reveal delay={170}>
-              <p className="hero-sub display">
-                An autonomous supply-chain CVE strike team, with room to breathe.
-              </p>
-            </Reveal>
-            <Reveal delay={240}>
-              <p className="hero-lede muted">
-                It reads your dependency tree, triages every advisory against the versions you actually
-                ship, works out how risky each fix is, prepares the patch — and then{" "}
-                <strong className="hl">stops and asks a human</strong> before it opens the pull request.
-              </p>
-            </Reveal>
-            <Reveal delay={320}>
-              <div className="row hero-cta">
-                <Link href="/app" className="plain">
-                  <Btn variant="primary" className="btn-md">⬢ Launch the console</Btn>
-                </Link>
-                <Link href="/docs" className="plain">
-                  <Btn className="btn-md">Read the docs</Btn>
-                </Link>
-                <a href="https://github.com/geohot0199/sentinental" target="_blank" rel="noreferrer" className="plain">
-                  <Btn variant="ghost" className="btn-md">GitHub ↗</Btn>
-                </a>
-              </div>
-            </Reveal>
-            <Reveal delay={400}>
-              <div className="row chip-row hero-chips">
-                <span className="chip chip-glow">8-stage pipeline</span>
-                <span className="chip">7 MCP tools</span>
-                <span className="chip">approval-gated writes</span>
-                <span className="chip">OSV live data</span>
-                <span className="chip">17 WebMCP tools</span>
-              </div>
-            </Reveal>
+            <span className="kicker kicker-in">TrueForge agent harness · MCP tools · Daytona sandbox</span>
+            <h1 className="hero-wordmark display">
+              <span className="sr-only">SENTINEL</span>
+              <Wordmark hidden />
+            </h1>
+            <p className="hero-sub display">
+              <KineticWords text="An autonomous supply-chain CVE strike team, with room to breathe." delay={420} />
+            </p>
+            <p className="hero-lede muted lede-in">
+              It reads your dependency tree, triages every advisory against the versions you actually
+              ship, works out how risky each fix is, prepares the patch — and then{" "}
+              <strong className="hl">stops and asks a human</strong> before it opens the pull request.
+            </p>
+            <div className="row hero-cta cta-in">
+              <Link href="/app" className="plain">
+                <Btn variant="primary" className="btn-md">Launch the console</Btn>
+              </Link>
+              <Link href="/docs" className="plain">
+                <Btn className="btn-md">Read the docs</Btn>
+              </Link>
+              <a href="https://github.com/geohot0199/sentinental" target="_blank" rel="noreferrer" className="plain">
+                <Btn variant="ghost" className="btn-md">GitHub ↗</Btn>
+              </a>
+            </div>
+            <div className="row chip-row hero-chips">
+              {[
+                ["8-stage pipeline", true],
+                ["7 MCP tools", false],
+                ["approval-gated writes", false],
+                ["OSV live data", false],
+                ["17 WebMCP tools", false],
+              ].map(([label, glow], index) => (
+                <span
+                  key={String(label)}
+                  className={`chip ${glow ? "chip-glow" : ""}`}
+                  style={{ "--i": index } as CSSProperties}
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
+            <div className="scroll-cue" aria-hidden="true">
+              <span>scroll</span>
+              <i />
+            </div>
           </div>
         </section>
+
+        <Marquee />
 
         {/* ============================================ CONSOLE DEMO */}
         <section className="sec">
@@ -147,8 +154,8 @@ export default function LandingPage() {
                     ["06 Patch", "ranges preserved"],
                     ["07 Verify", "93/93 in sandbox"],
                     ["08 Propose", "waiting for a human"],
-                  ].map(([stage, detail]) => (
-                    <div className="term-line" key={stage}>
+                  ].map(([stage, detail], index) => (
+                    <div className="term-line" key={stage} style={{ animationDelay: `${index * 90}ms` }}>
                       <span className="who">{stage}</span>
                       <span className="term-narration">{detail}</span>
                     </div>

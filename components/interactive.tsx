@@ -28,21 +28,22 @@ type BtnProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 export function Btn({ variant = "default", children, className = "", onClick, ...rest }: BtnProps) {
   const ref = useRef<HTMLButtonElement>(null);
 
+  const handleMove = useCallback((event: React.PointerEvent<HTMLButtonElement>) => {
+    const node = ref.current;
+    if (node === null) return;
+    const rect = node.getBoundingClientRect();
+    const x = event.clientX - rect.left - rect.width / 2;
+    const y = event.clientY - rect.top - rect.height / 2;
+    node.style.transform = `translate(${(x * 0.22).toFixed(1)}px, ${(y * 0.32).toFixed(1)}px)`;
+  }, []);
+
+  const handleLeave = useCallback(() => {
+    const node = ref.current;
+    if (node !== null) node.style.transform = "translate(0, 0)";
+  }, []);
+
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      const node = ref.current;
-      if (node !== null) {
-        const rect = node.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height) * 1.15;
-        const ink = document.createElement("span");
-        ink.className = "ripple-ink";
-        ink.style.width = `${size}px`;
-        ink.style.height = `${size}px`;
-        ink.style.left = `${event.clientX - rect.left - size / 2}px`;
-        ink.style.top = `${event.clientY - rect.top - size / 2}px`;
-        node.appendChild(ink);
-        window.setTimeout(() => ink.remove(), 700);
-      }
       onClick?.(event);
     },
     [onClick],
@@ -50,11 +51,44 @@ export function Btn({ variant = "default", children, className = "", onClick, ..
 
   const variantClass = variant === "primary" ? "btn-primary" : variant === "ghost" ? "btn-ghost" : "";
   return (
-    <button ref={ref} className={`btn ${variantClass} ${className}`.trim()} onClick={handleClick} {...rest}>
+    <button
+      ref={ref}
+      className={`btn ${variantClass} ${className}`.trim()}
+      onClick={handleClick}
+      onPointerMove={handleMove}
+      onPointerLeave={handleLeave}
+      {...rest}
+    >
       <span style={{ position: "relative", zIndex: 1, display: "inline-flex", alignItems: "center", gap: 9 }}>
         {children}
       </span>
     </button>
+  );
+}
+
+/* ----------------------------------------------------------- Kinetic type */
+
+export function KineticWords({
+  text,
+  className = "",
+  delay = 0,
+}: {
+  text: string;
+  className?: string;
+  delay?: number;
+}) {
+  return (
+    <span className={`kinetic ${className}`}>
+      {text.split(" ").map((word, index) => (
+        <span
+          className="kinetic-word"
+          key={`${word}-${index}`}
+          style={{ "--i": index, "--d": `${delay}ms` } as CSSProperties}
+        >
+          <span>{word}</span>
+        </span>
+      ))}
+    </span>
   );
 }
 
