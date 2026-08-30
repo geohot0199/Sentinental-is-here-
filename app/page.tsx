@@ -91,7 +91,7 @@ export default function LandingPage() {
             </Reveal>
             <Reveal delay={170}>
               <p className="hero-sub display">
-                An autonomous supply-chain CVE strike team.
+                An autonomous supply-chain CVE strike team, with room to breathe.
               </p>
             </Reveal>
             <Reveal delay={240}>
