@@ -211,7 +211,7 @@ function ProteinCanvas({ atoms, mutationSite }: { atoms: Atom[]; mutationSite: n
   return (
     <canvas
       ref={canvasRef}
-      style={{ width: "100%", height: 300, display: "block", touchAction: "none", cursor: "grab", background: "radial-gradient(circle at 50% 45%, rgba(255,255,255,0.05), transparent 70%), #050506", borderRadius: 12, border: "1px solid var(--line)" }}
+      style={{ width: "100%", height: 300, display: "block", touchAction: "none", cursor: "grab", background: "radial-gradient(circle at 50% 45%, rgba(255,255,255,0.05), transparent 70%), #050506", borderRadius: 0, border: "1px solid var(--line)" }}
       aria-label="3D protein structure — drag to rotate"
     />
   );

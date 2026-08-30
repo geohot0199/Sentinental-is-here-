@@ -84,7 +84,7 @@ export default function ConsolePage() {
         <Nav />
         <main className="container" style={{ paddingTop: "calc(var(--nav-h) + 80px)", paddingBottom: 80 }}>
           <div className="skeleton" style={{ height: 22, width: 220, marginBottom: 18 }} />
-          <div className="skeleton" style={{ height: 320, borderRadius: 16 }} />
+          <div className="skeleton" style={{ height: 320, borderRadius: 0 }} />
         </main>
       </>
     );

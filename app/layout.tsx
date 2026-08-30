@@ -5,14 +5,14 @@ import "./globals.css";
 // Self-hosted variable fonts (fontsource woff2, bundled with the app) — the
 // build never depends on a third-party font CDN.
 const display = localFont({
-  src: "./fonts/space-grotesk-latin-wght-normal.woff2",
-  variable: "--font-space-grotesk",
+  src: "./fonts/orbitron-latin-wght-normal.woff2",
+  variable: "--font-orbitron",
   display: "swap",
-  weight: "300 700",
+  weight: "400 900",
 });
 const body = localFont({
-  src: "./fonts/inter-latin-wght-normal.woff2",
-  variable: "--font-inter",
+  src: "./fonts/saira-latin-wght-normal.woff2",
+  variable: "--font-saira",
   display: "swap",
   weight: "100 900",
 });
