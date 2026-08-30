@@ -28,9 +28,9 @@ export default function Nav() {
         top: 0, left: 0, right: 0,
         zIndex: 100,
         transition: "background 0.4s, border-color 0.4s",
-        borderBottom: `1px solid ${scrolled ? "rgba(255,255,255,0.12)" : "transparent"}`,
-        background: scrolled ? "rgba(3,3,4,0.82)" : "transparent",
-        backdropFilter: scrolled ? "blur(16px)" : "none",
+        borderBottom: `1px solid ${scrolled ? "var(--line)" : "transparent"}`,
+        background: scrolled ? "rgba(243, 241, 233, 0.78)" : "transparent",
+        backdropFilter: scrolled ? "blur(18px)" : "none",
       }}
     >
       <nav className="container nav-row">
@@ -48,7 +48,7 @@ export default function Nav() {
             ))}
           </div>
           <Link href="/app" style={{ textDecoration: "none" }} className="nav-cta">
-            <Btn variant="primary" style={{ padding: "9px 18px", fontSize: 13 }}>
+            <Btn variant="primary">
               Launch Console
             </Btn>
           </Link>

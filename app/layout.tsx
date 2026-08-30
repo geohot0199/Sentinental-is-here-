@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import MotionRoot from "@/components/motion/MotionRoot";
 
 // Self-hosted variable fonts (fontsource woff2, bundled with the app) — the
 // build never depends on a third-party font CDN.
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#030304",
+  themeColor: "#f3f1e9",
   width: "device-width",
   initialScale: 1,
 };
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body>
         <div className="backdrop" aria-hidden />
+        <MotionRoot />
         {children}
       </body>
     </html>
