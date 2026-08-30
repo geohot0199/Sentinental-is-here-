@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Btn } from "./interactive";
+import Wordmark from "./Wordmark";
 
 const LINKS = [
   { href: "/", label: "Home" },
@@ -32,28 +33,13 @@ export default function Nav() {
         backdropFilter: scrolled ? "blur(16px)" : "none",
       }}
     >
-      <nav className="container" style={{ height: "var(--nav-h)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
-        <Link href="/" style={{ textDecoration: "none", color: "#fff", display: "flex", alignItems: "center", gap: 11 }}>
-          <span
-            className="mono"
-            style={{
-              display: "grid",
-              placeItems: "center",
-              width: 30, height: 30,
-              borderRadius: 9,
-              background: "linear-gradient(135deg,#fff,#9a9aa6)",
-              color: "#000",
-              fontWeight: 800,
-              fontSize: 14,
-              boxShadow: "0 0 22px rgba(255,255,255,0.35)",
-            }}
-          >
-            S
-          </span>
-          <span className="display" style={{ fontSize: 17, letterSpacing: "0.08em" }}>SENTINEL</span>
+      <nav className="container nav-row">
+        <Link href="/" className="nav-brand" aria-label="SENTINEL — home">
+          <span className="nav-mark">S</span>
+          <Wordmark small hidden />
         </Link>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+        <div className="nav-right">
           <div className="row nav-links" style={{ gap: 20 }}>
             {LINKS.map((link) => (
               <Link key={link.href} href={link.href} className="link" style={{ fontSize: 13.5, color: "var(--ink-dim)", fontWeight: 500 }}>

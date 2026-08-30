@@ -232,8 +232,8 @@ body {
 
 .panel {
   position: relative;
-  border-radius: var(--radius);
-  border: 1px solid var(--line);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   background:
     linear-gradient(160deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.012) 34%, rgba(255,255,255,0.03) 100%);
   box-shadow:
@@ -588,6 +588,367 @@ body {
   transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* ============================================================================
+   WORDMARK — every letter of the brand in its own framed box
+   ========================================================================== */
+
+.wordmark {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: clamp(5px, 0.7vw, 9px);
+}
+
+.wordmark .letter {
+  --letter-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.18) inset,
+    0 -0.14em 0.24em rgba(0, 0, 0, 0.55) inset,
+    0 0.18em 0.36em -0.12em rgba(0, 0, 0, 0.95);
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0.9em;
+  height: 1.12em;
+  padding: 0 0.05em;
+  border: 1px solid rgba(255, 255, 255, 0.30);
+  border-radius: 0.16em;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.02) 55%, rgba(255, 255, 255, 0.07) 100%);
+  box-shadow: var(--letter-shadow);
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  animation: letterIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+
+/* top shine line on each frame */
+.wordmark .letter::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 16%; right: 16%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+}
+
+/* the glyph — chrome gradient clipped to the letter */
+.wordmark .letter i {
+  font-style: normal;
+  font-family: inherit;
+  font-weight: inherit;
+  letter-spacing: 0;
+  line-height: 1;
+  font-size: 0.78em;
+  background: var(--silver);
+  background-size: 220% 220%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: chromeFlow 7s ease-in-out infinite;
+}
+
+.wordmark .letter:hover {
+  border-color: rgba(255, 255, 255, 0.65);
+  transform: translateY(-0.04em);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 -0.14em 0.24em rgba(0, 0, 0, 0.55) inset,
+    0 0.24em 0.5em -0.1em rgba(255, 255, 255, 0.22);
+}
+
+.wordmark-sm { gap: 4px; }
+.wordmark-sm .letter {
+  min-width: 1.06em;
+  height: 1.3em;
+  border-radius: 0.4em;
+  padding: 0 0.03em;
+}
+
+@keyframes letterIn {
+  from { opacity: 0; transform: translateY(0.2em) scale(0.88); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ============================================================================
+   NAV — brand mark + boxed wordmark
+   ========================================================================== */
+
+.nav-row {
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  color: #fff;
+}
+.nav-brand .wordmark-sm { font-size: 15px; }
+
+.nav-mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #fff, #9a9aa6);
+  color: #000;
+  font-weight: 800;
+  font-size: 14px;
+  box-shadow: 0 0 22px rgba(255, 255, 255, 0.35);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ============================================================================
+   LANDING — hero
+   ========================================================================== */
+
+.page-main { padding-top: var(--nav-h); }
+
+.hero {
+  position: relative;
+  padding: clamp(96px, 13vw, 150px) clamp(16px, 4vw, 24px) 48px;
+}
+
+.hero-glow {
+  position: absolute;
+  top: -14%;
+  left: -10%;
+  width: min(58vw, 720px);
+  height: clamp(360px, 46vw, 520px);
+  background: radial-gradient(ellipse 55% 55% at 50% 42%, rgba(255, 255, 255, 0.11), transparent 70%);
+  pointer-events: none;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-wordmark {
+  font-size: clamp(40px, 7vw, 84px);
+  margin: 20px 0 0;
+}
+
+.hero-sub {
+  font-size: clamp(19px, 2.6vw, 27px);
+  color: var(--ink);
+  margin: 18px 0 0;
+  max-width: 640px;
+}
+
+.hero-lede {
+  font-size: 16.5px;
+  line-height: 1.75;
+  margin: 16px 0 0;
+  max-width: 620px;
+}
+
+.hero-cta { margin: 32px 0 0; }
+.hero-chips { margin: 34px 0 0; }
+
+/* ============================================================================
+   LANDING — sections
+   ========================================================================== */
+
+.sec {
+  padding: clamp(64px, 9vw, 104px) clamp(16px, 4vw, 24px) clamp(28px, 4vw, 44px);
+}
+.sec-cta { padding-bottom: 96px; }
+
+.sec-head { max-width: 860px; }
+.sec-head .kicker { display: inline-block; }
+.sec-title { font-size: clamp(30px, 4.2vw, 46px); margin: 16px 0 0; }
+.sec-lede { font-size: 15.5px; line-height: 1.8; margin: 18px 0 0; max-width: 760px; }
+
+.hl { color: #fff; font-weight: 600; }
+
+.h-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.chip-row { gap: 10px; }
+.plain { text-decoration: none; }
+
+/* panel padding helpers */
+.pad-sm { padding: 20px; }
+.pad-md { padding: 26px; }
+.pad-lg { padding: 30px; }
+.panel-scroll { overflow-x: auto; }
+
+/* ============================================================================
+   LANDING — fake window toolbar + terminal
+   ========================================================================== */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.toolbar .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 99px;
+  border: 1px solid var(--line-strong);
+  flex-shrink: 0;
+}
+.toolbar .dot.active {
+  background: #fff;
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+.toolbar .title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-left: 8px;
+}
+
+.term-flush {
+  border: none;
+  border-radius: 0;
+  background: #040405;
+}
+
+/* ============================================================================
+   LANDING — tables
+   ========================================================================== */
+
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.tbl th {
+  text-align: left;
+  padding: 13px 16px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  border-bottom: 1px solid var(--line-strong);
+  white-space: nowrap;
+}
+.tbl td {
+  padding: 13px 16px;
+  border-top: 1px solid var(--line);
+  vertical-align: top;
+}
+.tbl td.nowrap { white-space: nowrap; }
+.tbl tbody tr { transition: background 0.2s; }
+.tbl tbody tr:hover { background: rgba(255, 255, 255, 0.035); }
+
+/* ============================================================================
+   LANDING — diagrams
+   ========================================================================== */
+
+.diagram {
+  margin: 0;
+  font-size: clamp(10.5px, 1.1vw, 12.5px);
+  line-height: 1.75;
+  color: var(--ink-dim);
+}
+
+/* ============================================================================
+   LANDING — FAQ
+   ========================================================================== */
+
+.faq-item {
+  padding: 0 24px;
+  margin-bottom: 12px;
+}
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  transition: color 0.25s;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+";
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--ink-dim);
+  flex-shrink: 0;
+  transition: transform 0.3s, color 0.3s;
+}
+.faq-item summary:hover::after { color: #fff; }
+.faq-item[open] summary { border-bottom: 1px solid var(--line); }
+.faq-item[open] summary::after { transform: rotate(45deg); color: #fff; }
+.faq-answer { margin: 0 0 22px; line-height: 1.8; }
+
+/* ============================================================================
+   LANDING — CTA + footer
+   ========================================================================== */
+
+.cta-panel {
+  padding: clamp(48px, 7vw, 76px) 30px;
+  text-align: center;
+  position: relative;
+}
+.cta-glow {
+  position: absolute;
+  inset: -40% -20% auto;
+  height: 150%;
+  background: radial-gradient(ellipse 50% 40% at 50% 30%, rgba(255, 255, 255, 0.10), transparent 70%);
+  pointer-events: none;
+}
+.cta-title { font-size: clamp(34px, 5.4vw, 58px); margin: 18px 0 0; }
+.cta-lede { max-width: 560px; margin: 18px auto 0; line-height: 1.8; }
+.cta-row { justify-content: center; margin: 32px 0 0; position: relative; }
+
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 34px 0;
+}
+.footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.footer-links { display: flex; gap: 18px; }
+
+/* button sizes */
+.btn-lg { padding: 15px 30px; font-size: 15.5px; }
+.btn-md { padding: 14px 26px; font-size: 15px; }
+
+/* accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+:where(a, button, summary, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
 /* layout helpers */
 .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
 .row { display: flex; gap: 14px; flex-wrap: wrap; }
@@ -603,6 +964,9 @@ body {
   .container { padding: 0 16px; }
   .nav-links { display: none !important; }
   .nav-cta .btn { padding: 8px 14px !important; font-size: 12px !important; }
+  .footer .container { justify-content: center; text-align: center; }
+  .footer-links { justify-content: center; flex-wrap: wrap; }
+  .hero-wordmark { margin-top: 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

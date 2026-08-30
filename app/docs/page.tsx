@@ -49,7 +49,7 @@ export default function DocsPage() {
 
         {/* --------------------------------------------------- web vs repo */}
         <Reveal>
-          <div className="panel brackets" style={{ padding: 28, marginTop: 40 }}>
+          <div className="panel brackets pad-lg" style={{ marginTop: 40 }}>
             <h2 className="display" style={{ fontSize: 22, margin: "0 0 14px" }}>What runs where</h2>
             <div className="grid-2">
               <div>
@@ -85,7 +85,7 @@ export default function DocsPage() {
         <div className="grid-2" style={{ marginTop: 20 }}>
           <Reveal delay={60}>
             <Tilt strength={5}>
-              <div className="panel brackets" style={{ padding: 24, height: "100%" }}>
+              <div className="panel brackets pad-md" style={{ height: "100%" }}>
                 <span className="chip">A · packaged CLI</span>
                 <div className="code-block" style={{ marginTop: 14 }}>
                   <pre>{`npm install --global \\
@@ -99,7 +99,7 @@ sentinel --help`}</pre>
           </Reveal>
           <Reveal delay={120}>
             <Tilt strength={5}>
-              <div className="panel brackets" style={{ padding: 24, height: "100%" }}>
+              <div className="panel brackets pad-md" style={{ height: "100%" }}>
                 <span className="chip">B · from source</span>
                 <div className="code-block" style={{ marginTop: 14 }}>
                   <pre>{`npx @truefoundry/trueforge@latest   # the harness
@@ -114,7 +114,7 @@ npm run web                        # console on :3000`}</pre>
           </Reveal>
         </div>
         <Reveal delay={160}>
-          <div className="panel" style={{ padding: 24, marginTop: 18 }}>
+          <div className="panel pad-md" style={{ marginTop: 18 }}>
             <span className="chip">C · no API key demo</span>
             <p className="muted small" style={{ margin: "12px 0 0", lineHeight: 1.8 }}>
               A scripted model endpoint ships with the repo, so you can see the whole path — real advisory data,
@@ -134,23 +134,23 @@ npm run web                        # console on :3000`}</pre>
           </p>
         </Reveal>
         <Reveal delay={80}>
-          <div className="panel" style={{ marginTop: 18, padding: 8, overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+          <div className="panel panel-scroll" style={{ marginTop: 18, padding: 8 }}>
+            <table className="tbl">
               <thead>
-                <tr className="mono faint" style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase" }}>
-                  <th style={{ textAlign: "left", padding: "12px 14px" }}>Variable</th>
-                  <th style={{ textAlign: "left", padding: "12px 14px" }}>Required</th>
-                  <th style={{ textAlign: "left", padding: "12px 14px" }}>Purpose</th>
+                <tr>
+                  <th>Variable</th>
+                  <th>Required</th>
+                  <th>Purpose</th>
                 </tr>
               </thead>
               <tbody>
                 {CONFIG.map(([name, required, purpose]) => (
-                  <tr key={name} style={{ borderTop: "1px solid var(--line)" }}>
-                    <td className="mono" style={{ padding: "11px 14px", color: "#fff", whiteSpace: "nowrap" }}>{name}</td>
-                    <td style={{ padding: "11px 14px" }}>
+                  <tr key={name}>
+                    <td className="mono nowrap" style={{ color: "#fff" }}>{name}</td>
+                    <td>
                       <span className={`chip ${required === "yes" || required.includes("one") ? "chip-solid" : ""}`} style={{ fontSize: 9 }}>{required}</span>
                     </td>
-                    <td className="muted" style={{ padding: "11px 14px", lineHeight: 1.6 }}>{purpose}</td>
+                    <td className="muted" style={{ lineHeight: 1.6 }}>{purpose}</td>
                   </tr>
                 ))}
               </tbody>
@@ -165,7 +165,7 @@ npm run web                        # console on :3000`}</pre>
         <div className="grid-2" style={{ marginTop: 20 }}>
           {TOOLS.map((tool, index) => (
             <Reveal key={tool.name} delay={index * 50}>
-              <div className="panel" style={{ padding: 20, height: "100%" }}>
+              <div className="panel pad-sm" style={{ height: "100%" }}>
                 <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
                   <strong className="mono" style={{ fontSize: 13.5, color: "#fff" }}>{tool.name}</strong>
                   {tool.approval === "YES"
@@ -183,7 +183,7 @@ npm run web                        # console on :3000`}</pre>
           <h2 className="display" style={{ fontSize: 26, margin: "46px 0 0" }}>Deploying this console</h2>
         </Reveal>
         <Reveal delay={80}>
-          <div className="panel brackets" style={{ padding: 26, marginTop: 20 }}>
+          <div className="panel brackets pad-md" style={{ marginTop: 20 }}>
             <p className="muted small" style={{ marginTop: 0, lineHeight: 1.8 }}>
               The console is a standard Next.js App Router project — Vercel detects it automatically.
             </p>
@@ -220,11 +220,11 @@ vercel            # or: import the repo in the Vercel dashboard
 
         <Reveal>
           <div className="row center" style={{ justifyContent: "center", margin: "56px 0 0" }}>
-            <Link href="/app" style={{ textDecoration: "none" }}>
-              <Btn variant="primary" style={{ padding: "15px 30px", fontSize: 15 }}>Open the console ⬢</Btn>
+            <Link href="/app" className="plain">
+              <Btn variant="primary" className="btn-lg">Open the console ⬢</Btn>
             </Link>
-            <a href="https://github.com/geohot0199/sentinental" target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
-              <Btn style={{ padding: "15px 30px", fontSize: 15 }}>View source ★</Btn>
+            <a href="https://github.com/geohot0199/sentinental" target="_blank" rel="noreferrer" className="plain">
+              <Btn className="btn-lg">View source ★</Btn>
             </a>
           </div>
         </Reveal>
