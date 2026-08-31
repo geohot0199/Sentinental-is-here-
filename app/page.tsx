@@ -5,6 +5,7 @@ import Wordmark from "@/components/Wordmark";
 import { Btn, Reveal, Tilt, KineticWords } from "@/components/interactive";
 import HeroGraphic from "@/components/motion/HeroGraphic";
 import Marquee from "@/components/motion/Marquee";
+import Radar from "@/components/motion/Radar";
 
 export const metadata = {
   title: "SENTINEL — Autonomous Supply-Chain CVE Strike Team",
@@ -82,6 +83,21 @@ export default function LandingPage() {
         {/* ================================================== HERO */}
         <section className="hero">
           <HeroGraphic />
+          {/* drifting tool satellites — pure CSS motion, desktop only */}
+          {([
+            ["scan_dependencies", "13%", "34%", "1.1s", "0s", false],
+            ["lookup_advisories", "35%", "6%", "1.45s", "1.3s", false],
+            ["assess_blast_radius", "58%", "28%", "1.8s", "2.2s", false],
+            ["open_pull_request · gated", "77%", "10%", "2.15s", "0.7s", true],
+          ] as const).map(([label, top, right, sd, fd, red]) => (
+            <span
+              key={label}
+              className={`hero-sat ${red ? "hero-sat-red" : ""}`}
+              style={{ top, right, "--sd": sd, "--fd": fd } as CSSProperties}
+            >
+              <i /> {label}
+            </span>
+          ))}
           <div className="hero-copy">
             <span className="kicker kicker-in">TrueForge agent harness · MCP tools · Daytona sandbox</span>
             <h1 className="hero-wordmark display">
@@ -136,37 +152,53 @@ export default function LandingPage() {
         {/* ============================================ CONSOLE DEMO */}
         <section className="sec">
           <Reveal>
-            <Tilt strength={4}>
-              <div className="panel brackets" style={{ padding: 0 }}>
-                <div className="toolbar">
-                  <span className="dot" />
-                  <span className="dot" />
-                  <span className="dot active" />
-                  <span className="title">sentinel — triage owner/repo</span>
-                </div>
-                <div className="term term-flush">
-                  {[
-                    ["01 Inventory", "lockfile resolved"],
-                    ["02 Triage", "14 advisories → 3 match"],
-                    ["03 Delegate", "3 subagents spawned"],
-                    ["04 Assess", "1 major · 2 patch"],
-                    ["05 Plan", "highest fix version"],
-                    ["06 Patch", "ranges preserved"],
-                    ["07 Verify", "93/93 in sandbox"],
-                    ["08 Propose", "waiting for a human"],
-                  ].map(([stage, detail], index) => (
-                    <div className="term-line" key={stage} style={{ animationDelay: `${index * 90}ms` }}>
-                      <span className="who">{stage}</span>
-                      <span className="term-narration">{detail}</span>
+            <div className="demo-grid">
+              <Tilt strength={4}>
+                <div className="panel brackets" style={{ padding: 0 }}>
+                  <div className="toolbar">
+                    <span className="dot" />
+                    <span className="dot" />
+                    <span className="dot active" />
+                    <span className="title">sentinel — triage owner/repo</span>
+                  </div>
+                  <div className="term term-flush">
+                    {[
+                      ["01 Inventory", "lockfile resolved"],
+                      ["02 Triage", "14 advisories → 3 match"],
+                      ["03 Delegate", "3 subagents spawned"],
+                      ["04 Assess", "1 major · 2 patch"],
+                      ["05 Plan", "highest fix version"],
+                      ["06 Patch", "ranges preserved"],
+                      ["07 Verify", "93/93 in sandbox"],
+                      ["08 Propose", "waiting for a human"],
+                    ].map(([stage, detail], index) => (
+                      <div className="term-line" key={stage} style={{ animationDelay: `${index * 90}ms` }}>
+                        <span className="who">{stage}</span>
+                        <span className="term-narration">{detail}</span>
+                      </div>
+                    ))}
+                    <div className="term-line" style={{ marginTop: 10 }}>
+                      <span className="term-approval">approval required: open_pull_request · destructive</span>
+                      <span className="cursor-blink" />
                     </div>
-                  ))}
-                  <div className="term-line" style={{ marginTop: 10 }}>
-                    <span className="term-approval">approval required: open_pull_request · destructive</span>
-                    <span className="cursor-blink" />
                   </div>
                 </div>
-              </div>
-            </Tilt>
+              </Tilt>
+              <Reveal delay={160}>
+                <div className="panel brackets pad-md radar-card">
+                  <div className="h-row">
+                    <span className="kicker">Live scope</span>
+                    <span className="chip chip-green"><span className="dot" style={{ width: 6, height: 6 }} /> sweeping</span>
+                  </div>
+                  <Radar />
+                  <div className="row" style={{ gap: 8, justifyContent: "center" }}>
+                    <span className="chip chip-red">3 matches</span>
+                    <span className="chip">14 swept</span>
+                    <span className="chip">1 PR held</span>
+                  </div>
+                </div>
+              </Reveal>
+            </div>
           </Reveal>
           <Reveal delay={120}>
             <p className="center faint small" style={{ margin: "18px 0 0" }}>
@@ -228,7 +260,7 @@ export default function LandingPage() {
                 <Tilt>
                   <div className="panel pad-sm" style={{ height: "100%" }}>
                     <div className="h-row" style={{ alignItems: "baseline" }}>
-                      <span className="display chrome-text" style={{ fontSize: 26, fontWeight: 700 }}>{stage.n}</span>
+                      <span className={`display ${index === STAGES.length - 1 ? "tx-red-glow" : "tx-green-glow"}`} style={{ fontSize: 26, fontWeight: 700 }}>{stage.n}</span>
                       <span className="mono faint" style={{ fontSize: 10.5 }}>{stage.tool}</span>
                     </div>
                     <h3 className="display" style={{ fontSize: 19, margin: "10px 0 8px" }}>{stage.name}</h3>
@@ -311,7 +343,7 @@ export default function LandingPage() {
                 <tbody>
                   {TOOLS.map((tool) => (
                     <tr key={tool.name}>
-                      <td className="mono nowrap" style={{ color: "#fff" }}>{tool.name}</td>
+                      <td className="mono nowrap tool-name">{tool.name}</td>
                       <td className="mono muted">{tool.annotation}</td>
                       <td>
                         {tool.approval.startsWith("YES") ? (
@@ -411,6 +443,9 @@ export default function LandingPage() {
             </div>
           </Reveal>
         </section>
+
+        {/* second ticker — the tool inventory, drifting the other way */}
+        <Marquee alt items={TOOLS.map((tool) => `${tool.name} · ${tool.annotation}`)} />
 
         {/* ================================================== FAQ */}
         <section className="sec">

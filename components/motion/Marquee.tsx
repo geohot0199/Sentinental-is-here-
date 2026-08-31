@@ -12,15 +12,25 @@ const DEFAULT_ITEMS = [
   "TrueForge harness",
 ];
 
-export default function Marquee({ items = DEFAULT_ITEMS }: { items?: string[] }) {
+/**
+ * Endless motion ticker. `alt` flips the direction, slows it down and swaps
+ * the palette to the green terminal look used for the tool ticker.
+ */
+export default function Marquee({
+  items = DEFAULT_ITEMS,
+  alt = false,
+}: {
+  items?: string[];
+  alt?: boolean;
+}) {
   const loop = [...items, ...items];
   return (
-    <div className="marquee" aria-hidden="true">
+    <div className={`marquee${alt ? " marquee-alt" : ""}`} aria-hidden="true">
       <div className="marquee-fade" />
       <div className="marquee-track">
         {loop.map((item, index) => (
           <span className="marquee-item" key={`${item}-${index}`}>
-            <em>✳</em> {item}
+            <em>{alt ? "▸" : "✳"}</em> {item}
           </span>
         ))}
       </div>

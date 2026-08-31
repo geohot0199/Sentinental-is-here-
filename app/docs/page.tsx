@@ -50,7 +50,7 @@ export default function DocsPage() {
         {/* --------------------------------------------------- web vs repo */}
         <Reveal>
           <div className="panel brackets pad-lg" style={{ marginTop: 40 }}>
-            <h2 className="display" style={{ fontSize: 22, margin: "0 0 14px" }}>What runs where</h2>
+            <h2 className="display tx-green" style={{ fontSize: 22, margin: "0 0 14px" }}>What runs where</h2>
             <div className="grid-2">
               <div>
                 <span className="chip chip-solid">in this browser console</span>
@@ -80,7 +80,7 @@ export default function DocsPage() {
 
         {/* ------------------------------------------------------- install */}
         <Reveal>
-          <h2 className="display" style={{ fontSize: 26, margin: "46px 0 0" }}>Install the strike team</h2>
+          <h2 className="display tx-red" style={{ fontSize: 26, margin: "46px 0 0" }}>Install the strike team</h2>
         </Reveal>
         <div className="grid-2" style={{ marginTop: 20 }}>
           <Reveal delay={60}>
@@ -126,7 +126,7 @@ npm run web                        # console on :3000`}</pre>
 
         {/* ------------------------------------------------------ config */}
         <Reveal>
-          <h2 className="display" style={{ fontSize: 26, margin: "46px 0 0" }}>Configuration</h2>
+          <h2 className="display tx-green" style={{ fontSize: 26, margin: "46px 0 0" }}>Configuration</h2>
           <p className="muted small" style={{ lineHeight: 1.8, maxWidth: 700 }}>
             In the console these live in the <Link className="link" href="/app">key vault</Link> (browser
             localStorage). In the repository they live in <code className="mono">.env</code> — git-ignored, read in
@@ -160,14 +160,14 @@ npm run web                        # console on :3000`}</pre>
 
         {/* ------------------------------------------------------- tools */}
         <Reveal>
-          <h2 className="display" style={{ fontSize: 26, margin: "46px 0 0" }}>The 7 MCP tools</h2>
+          <h2 className="display tx-red" style={{ fontSize: 26, margin: "46px 0 0" }}>The 7 MCP tools</h2>
         </Reveal>
         <div className="grid-2" style={{ marginTop: 20 }}>
           {TOOLS.map((tool, index) => (
             <Reveal key={tool.name} delay={index * 50}>
               <div className="panel pad-sm" style={{ height: "100%" }}>
                 <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
-                  <strong className="mono" style={{ fontSize: 13.5, color: "#fff" }}>{tool.name}</strong>
+                  <strong className="mono tool-name" style={{ fontSize: 13.5 }}>{tool.name}</strong>
                   {tool.approval === "YES"
                     ? <span className="sev sev-critical">approval required</span>
                     : <span className="chip" style={{ fontSize: 9 }}>{tool.annotation}</span>}
@@ -180,7 +180,7 @@ npm run web                        # console on :3000`}</pre>
 
         {/* ------------------------------------------------------ deploy */}
         <Reveal>
-          <h2 className="display" style={{ fontSize: 26, margin: "46px 0 0" }}>Deploying this console</h2>
+          <h2 className="display tx-green" style={{ fontSize: 26, margin: "46px 0 0" }}>Deploying this console</h2>
         </Reveal>
         <Reveal delay={80}>
           <div className="panel brackets pad-md" style={{ marginTop: 20 }}>
@@ -207,7 +207,7 @@ vercel            # or: import the repo in the Vercel dashboard
 
         {/* ------------------------------------------------------ safety */}
         <Reveal>
-          <h2 className="display" style={{ fontSize: 26, margin: "46px 0 0" }}>Control and safety</h2>
+          <h2 className="display tx-red" style={{ fontSize: 26, margin: "46px 0 0" }}>Control and safety</h2>
           <ul className="muted small" style={{ lineHeight: 2.1, paddingLeft: 20, maxWidth: 760 }}>
             <li>The approval policy is declared on the tool, once — both front ends inherit it.</li>
             <li>Destructive handlers check the kill switch <strong style={{ color: "#fff" }}>before any network call</strong>.</li>

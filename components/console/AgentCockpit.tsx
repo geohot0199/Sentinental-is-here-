@@ -305,7 +305,7 @@ export default function AgentCockpit({ context }: { context: ConsoleContext }) {
 
       {/* --------------------------------------------- full-width term */}
       <div style={{ gridColumn: "1 / -1" }}>
-        <div className="panel" style={{ padding: 20 }}>
+        <div className="panel sweep" style={{ padding: 20 }}>
           <div className="row" style={{ justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
             <span className="kicker">Transcript — a record of actual tool output</span>
             {phase === "running" && <span className="chip chip-glow"><span className="dot" style={{ width: 6, height: 6 }} /> working</span>}

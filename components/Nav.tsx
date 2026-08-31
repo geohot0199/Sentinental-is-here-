@@ -29,8 +29,8 @@ export default function Nav() {
         zIndex: 100,
         transition: "background 0.4s, border-color 0.4s",
         borderBottom: `1px solid ${scrolled ? "var(--line)" : "transparent"}`,
-        background: scrolled ? "rgba(243, 241, 233, 0.78)" : "transparent",
-        backdropFilter: scrolled ? "blur(18px)" : "none",
+        background: scrolled ? "rgba(3, 3, 4, 0.72)" : "transparent",
+        backdropFilter: scrolled ? "blur(18px) saturate(1.2)" : "none",
       }}
     >
       <nav className="container nav-row">
