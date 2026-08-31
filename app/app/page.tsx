@@ -35,11 +35,11 @@ export interface ServerStatus {
 type TabId = "deck" | "scan" | "agent" | "labs" | "keys";
 
 const TABS: { id: TabId; label: string; hint: string }[] = [
-  { id: "deck", label: "◈ Deck", hint: "capability report" },
-  { id: "scan", label: "⬡ Scan", hint: "live triage" },
-  { id: "agent", label: "⌘ Agent", hint: "eight-stage mission" },
-  { id: "labs", label: "⬢ OMNI-LAB", hint: "five laboratories" },
-  { id: "keys", label: "⚿ Keys", hint: "API key vault" },
+  { id: "deck", label: "Deck", hint: "capability report" },
+  { id: "scan", label: "Scan", hint: "live triage" },
+  { id: "agent", label: "Agent", hint: "eight-stage mission" },
+  { id: "labs", label: "OMNI-LAB", hint: "five laboratories" },
+  { id: "keys", label: "Keys", hint: "API key vault" },
 ];
 
 export default function ConsolePage() {
@@ -77,15 +77,13 @@ export default function ConsolePage() {
     push("Vault cleared. Keys removed from this browser.", "alert");
   }, [push]);
 
-  const serverRemoteWrites = server === null ? null : server.remoteWrites;
-
   if (vault === null) {
     return (
       <>
         <Nav />
         <main className="container" style={{ paddingTop: "calc(var(--nav-h) + 80px)", paddingBottom: 80 }}>
           <div className="skeleton" style={{ height: 22, width: 220, marginBottom: 18 }} />
-          <div className="skeleton" style={{ height: 320, borderRadius: 0 }} />
+          <div className="skeleton" style={{ height: 320, borderRadius: 8 }} />
         </main>
       </>
     );
@@ -98,9 +96,9 @@ export default function ConsolePage() {
       <Nav />
       <main className="container" style={{ paddingTop: "calc(var(--nav-h) + 30px)", paddingBottom: 70 }}>
         <div className="row" style={{ justifyContent: "space-between", alignItems: "flex-end", marginBottom: 22 }}>
-          <div className="row" style={{ gap: 20, alignItems: "center", flexWrap: "nowrap" }}>
+          <div className="row" style={{ gap: 18, alignItems: "center", flexWrap: "nowrap" }}>
             <Radar
-              size={54}
+              size={50}
               contacts={[
                 { top: 32, left: 64, delay: 0 },
                 { top: 66, left: 38, delay: 1.2, green: true },
@@ -108,20 +106,20 @@ export default function ConsolePage() {
             />
             <div>
               <span className="kicker">Console</span>
-              <h1 className="display tx-green-glow" style={{ fontSize: "clamp(28px, 4vw, 40px)", margin: "10px 0 0" }}>
+              <h1 className="display" style={{ fontSize: "clamp(26px, 3.6vw, 36px)", fontWeight: 600, letterSpacing: "-0.028em", margin: "6px 0 0" }}>
                 Mission control
               </h1>
             </div>
           </div>
-          <div className="row" style={{ gap: 9 }}>
+          <div className="row" style={{ gap: 8, alignItems: "center" }}>
             <span className={`chip ${server === null ? "" : "chip-green"}`}>
               <span className="dot" style={{ width: 6, height: 6 }} />
               {server === null ? "server…" : "server online"}
             </span>
             <span className="chip">{webmcp === null ? "webmcp…" : `${webmcp.registeredCount} webmcp tools`}</span>
             <button
-              className="chip"
-              style={{ cursor: "pointer", background: "#fff", color: "#000", fontWeight: 700, borderColor: "#fff" }}
+              className="chip chip-solid"
+              style={{ cursor: "pointer" }}
               onClick={() => setTab("keys")}
             >
               ⚿ Insert API keys
@@ -129,7 +127,7 @@ export default function ConsolePage() {
           </div>
         </div>
 
-        <div className="tabs" style={{ marginBottom: 26 }}>
+        <div className="tabs" style={{ marginBottom: 24 }}>
           {TABS.map((item, index) => (
             <button
               key={item.id}

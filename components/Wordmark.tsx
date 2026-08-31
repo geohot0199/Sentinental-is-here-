@@ -1,9 +1,8 @@
 import type { CSSProperties } from "react";
 
 /**
- * The SENTINEL wordmark — every letter rendered inside its own framed box,
- * with the chrome gradient clipped to the glyph. Used in the hero (large) and
- * the nav bar (small). The `--i` custom property staggers the entrance.
+ * The SENTINEL wordmark — OpenAI & Anthropic inspired minimalist typography lockup.
+ * Clean modern sans letterforms, tight optical kerning, and staggered entrance.
  */
 interface WordmarkProps {
   text?: string;
@@ -12,7 +11,12 @@ interface WordmarkProps {
   className?: string;
 }
 
-export default function Wordmark({ text = "SENTINEL", small = false, hidden = false, className = "" }: WordmarkProps) {
+export default function Wordmark({
+  text = "SENTINEL",
+  small = false,
+  hidden = false,
+  className = "",
+}: WordmarkProps) {
   const cls = `wordmark${small ? " wordmark-sm" : ""}${className ? ` ${className}` : ""}`;
   return (
     <span className={cls} {...(hidden ? { "aria-hidden": true } : { role: "img", "aria-label": text })}>

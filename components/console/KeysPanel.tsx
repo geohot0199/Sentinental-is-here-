@@ -60,10 +60,10 @@ function SecretField({
       ) : (
         <div className="row" style={{ gap: 8 }}>
           <input className="input mono" value={maskSecret(value)} readOnly onFocus={() => setEditing(true)} />
-          <Btn variant="ghost" style={{ padding: "10px 14px" }} onClick={() => setEditing(true)}>Edit</Btn>
+          <Btn variant="ghost" style={{ padding: "8px 14px", fontSize: 13 }} onClick={() => setEditing(true)}>Edit</Btn>
         </div>
       )}
-      <span className="faint small" style={{ fontFamily: "var(--font-body)" }}>{hint}</span>
+      <span className="faint small" style={{ lineHeight: 1.5 }}>{hint}</span>
     </div>
   );
 }
@@ -125,10 +125,10 @@ export default function KeysPanel({ context }: { context: ConsoleContext }) {
       <Tilt strength={4}>
         <div className="panel brackets" style={{ padding: 26, height: "100%" }}>
           <div className="row" style={{ justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-            <h3 className="display" style={{ fontSize: 18, margin: 0 }}>Model provider</h3>
+            <h3 className="display" style={{ fontSize: 17, fontWeight: 600, margin: 0 }}>Model provider</h3>
             <span className="chip">{provider === null ? "scripted model" : provider}</span>
           </div>
-          <p className="muted small" style={{ marginTop: 0, lineHeight: 1.7 }}>
+          <p className="muted small" style={{ marginTop: 0, lineHeight: 1.65 }}>
             One key is required for a live model. SENTINEL picks whichever it finds, in order — or force one below.
             Without any key the bundled scripted model runs the whole path: real advisory data, real tools, real
             gate, zero spend.
@@ -182,7 +182,7 @@ export default function KeysPanel({ context }: { context: ConsoleContext }) {
         <Tilt strength={4}>
           <div className="panel brackets" style={{ padding: 26 }}>
             <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
-              <h3 className="display" style={{ fontSize: 18, margin: 0 }}>GitHub</h3>
+              <h3 className="display" style={{ fontSize: 17, fontWeight: 600, margin: 0 }}>GitHub</h3>
               <span className="chip">{draft.GITHUB_TOKEN ? "configured" : "not configured"}</span>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 16, marginTop: 18 }}>
@@ -198,12 +198,12 @@ export default function KeysPanel({ context }: { context: ConsoleContext }) {
                 <input
                   className="input"
                   value={draft.SENTINEL_TARGET_REPO}
-                  placeholder="owner/name — the default mission target"
+                  placeholder="owner/name — default mission target"
                   onChange={(event) => set("SENTINEL_TARGET_REPO", event.target.value)}
                 />
               </div>
               <div className="row" style={{ alignItems: "center", gap: 10 }}>
-                <Btn style={{ padding: "10px 16px" }} onClick={testGithub} disabled={githubTest.status === "running"}>
+                <Btn style={{ padding: "8px 16px", fontSize: 13 }} onClick={testGithub} disabled={githubTest.status === "running"}>
                   {githubTest.status === "running" ? "Testing…" : "Test token"}
                 </Btn>
                 {githubTest.detail !== undefined && (
@@ -220,10 +220,10 @@ export default function KeysPanel({ context }: { context: ConsoleContext }) {
         <Tilt strength={4}>
           <div className="panel brackets" style={{ padding: 26 }}>
             <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
-              <h3 className="display" style={{ fontSize: 18, margin: 0 }}>Daytona sandbox</h3>
+              <h3 className="display" style={{ fontSize: 17, fontWeight: 600, margin: 0 }}>Daytona sandbox</h3>
               <span className="chip">{draft.DAYTONA_API_KEY ? "configured" : "patches unverified"}</span>
             </div>
-            <p className="muted small" style={{ lineHeight: 1.7, margin: "12px 0 0" }}>
+            <p className="muted small" style={{ lineHeight: 1.65, margin: "12px 0 0" }}>
               Without a sandbox key the agent is instructed to report every patch as{" "}
               <strong style={{ color: "#fff" }}>UNVERIFIED</strong> — it never guesses that a fix works. With one,
               the verify stage provisions a real sandbox, installs, and runs the test suite.
@@ -237,7 +237,7 @@ export default function KeysPanel({ context }: { context: ConsoleContext }) {
                 placeholder="dtn_…"
               />
               <div className="row" style={{ alignItems: "center", gap: 10 }}>
-                <Btn style={{ padding: "10px 16px" }} onClick={testDaytona} disabled={daytonaTest.status === "running"}>
+                <Btn style={{ padding: "8px 16px", fontSize: 13 }} onClick={testDaytona} disabled={daytonaTest.status === "running"}>
                   {daytonaTest.status === "running" ? "Testing…" : "Test key"}
                 </Btn>
                 {daytonaTest.detail !== undefined && (
@@ -254,10 +254,10 @@ export default function KeysPanel({ context }: { context: ConsoleContext }) {
         <Tilt strength={4}>
           <div className="panel brackets" style={{ padding: 26 }}>
             <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
-              <h3 className="display" style={{ fontSize: 18, margin: 0 }}>TrueForge harness</h3>
+              <h3 className="display" style={{ fontSize: 17, fontWeight: 600, margin: 0 }}>TrueForge harness</h3>
               <span className="chip">{draft.TRUEFORGE_URL || server?.harnessUrl ? "url set" : "default 127.0.0.1:8790"}</span>
             </div>
-            <p className="muted small" style={{ lineHeight: 1.7, margin: "12px 0 0" }}>
+            <p className="muted small" style={{ lineHeight: 1.65, margin: "12px 0 0" }}>
               The agent loop, context management, subagents and approvals all live in the harness. Point the console
               at a running TrueForge instance — the server probes it, so browser CORS never blocks the attempt.
             </p>
@@ -272,7 +272,7 @@ export default function KeysPanel({ context }: { context: ConsoleContext }) {
                 />
               </div>
               <div className="row" style={{ alignItems: "center", gap: 10 }}>
-                <Btn style={{ padding: "10px 16px" }} onClick={testHarness} disabled={harnessTest.status === "running"}>
+                <Btn style={{ padding: "8px 16px", fontSize: 13 }} onClick={testHarness} disabled={harnessTest.status === "running"}>
                   {harnessTest.status === "running" ? "Probing…" : "Probe harness"}
                 </Btn>
                 {harnessTest.detail !== undefined && (
@@ -284,9 +284,9 @@ export default function KeysPanel({ context }: { context: ConsoleContext }) {
         </Tilt>
 
         {/* ------------------------------------------------ safety */}
-        <div className="panel" style={{ padding: 26, borderColor: draft.SENTINEL_ALLOW_REMOTE_WRITES ? "var(--line)" : "rgba(255,255,255,0.55)" }}>
+        <div className="panel" style={{ padding: 26, borderColor: draft.SENTINEL_ALLOW_REMOTE_WRITES ? "var(--line)" : "rgba(255,255,255,0.4)" }}>
           <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
-            <h3 className="display" style={{ fontSize: 18, margin: 0 }}>SENTINEL_ALLOW_REMOTE_WRITES</h3>
+            <h3 className="display" style={{ fontSize: 17, fontWeight: 600, margin: 0 }}>SENTINEL_ALLOW_REMOTE_WRITES</h3>
             <button
               className="switch"
               data-on={draft.SENTINEL_ALLOW_REMOTE_WRITES}
@@ -294,19 +294,19 @@ export default function KeysPanel({ context }: { context: ConsoleContext }) {
               onClick={() => set("SENTINEL_ALLOW_REMOTE_WRITES", !draft.SENTINEL_ALLOW_REMOTE_WRITES)}
             />
           </div>
-          <p className="muted small" style={{ lineHeight: 1.7, margin: "12px 0 0" }}>
-            The hard kill switch. Off (shown bright) means destructive tools refuse{" "}
+          <p className="muted small" style={{ lineHeight: 1.65, margin: "12px 0 0" }}>
+            The hard kill switch. Off means destructive tools refuse{" "}
             <strong style={{ color: "#fff" }}>before any network call</strong>, regardless of what the model or the
             approval UI says. {server?.serverKillSwitch === "off" && " The server-side switch is also OFF — it overrides this browser."}
           </p>
         </div>
 
         {/* ------------------------------------------------- save */}
-        <div className="row" style={{ alignItems: "center" }}>
-          <Btn variant="primary" onClick={save} disabled={!dirty} style={{ padding: "13px 24px" }}>
+        <div className="row" style={{ alignItems: "center", gap: 12 }}>
+          <Btn variant="primary" onClick={save} disabled={!dirty} style={{ padding: "10px 22px" }}>
             {dirty ? "Save vault" : "Saved"}
           </Btn>
-          <Btn variant="ghost" onClick={wipeVault} style={{ padding: "13px 20px" }}>
+          <Btn variant="ghost" onClick={wipeVault} style={{ padding: "10px 18px" }}>
             Wipe all keys
           </Btn>
           <span className="faint small">Keys never leave this browser except to this app's own proxy routes.</span>

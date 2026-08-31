@@ -37,10 +37,10 @@ export default function DocsPage() {
       <main className="container" style={{ paddingTop: "calc(var(--nav-h) + 50px)", paddingBottom: 90, maxWidth: 980 }}>
         <Reveal>
           <span className="kicker">Documentation</span>
-          <h1 className="display chrome-text" style={{ fontSize: "clamp(36px, 6vw, 60px)", margin: "16px 0 0" }}>
+          <h1 className="display" style={{ fontSize: "clamp(34px, 5.5vw, 56px)", fontWeight: 600, letterSpacing: "-0.035em", margin: "16px 0 0" }}>
             Every surface, in one place.
           </h1>
-          <p className="muted" style={{ fontSize: 16, lineHeight: 1.8, maxWidth: 700, margin: "18px 0 0" }}>
+          <p className="muted" style={{ fontSize: 16, lineHeight: 1.75, maxWidth: 700, margin: "16px 0 0" }}>
             This console is the web front end of the SENTINEL strike team: live advisory triage, the eight-stage
             mission runner with a real approval gate, the Daytona verify stage, and the WebMCP OMNI-LAB. The CLI and
             the MCP tool server live in the repository.
@@ -49,12 +49,12 @@ export default function DocsPage() {
 
         {/* --------------------------------------------------- web vs repo */}
         <Reveal>
-          <div className="panel brackets pad-lg" style={{ marginTop: 40 }}>
-            <h2 className="display tx-green" style={{ fontSize: 22, margin: "0 0 14px" }}>What runs where</h2>
+          <div className="panel brackets pad-lg" style={{ marginTop: 36 }}>
+            <h2 className="display" style={{ fontSize: 20, fontWeight: 600, letterSpacing: "-0.02em", margin: "0 0 14px" }}>What runs where</h2>
             <div className="grid-2">
               <div>
                 <span className="chip chip-solid">in this browser console</span>
-                <ul className="muted small" style={{ margin: "12px 0 0", paddingLeft: 18, lineHeight: 2 }}>
+                <ul className="muted small" style={{ margin: "12px 0 0", paddingLeft: 18, lineHeight: 1.9 }}>
                   <li>Live dependency triage — real GitHub Advisory / OSV data, no key needed</li>
                   <li>The eight-stage mission with the approval gate</li>
                   <li>Real pull-request opening (needs a GitHub token in the vault, behind the gate)</li>
@@ -65,7 +65,7 @@ export default function DocsPage() {
               </div>
               <div>
                 <span className="chip">from the repository</span>
-                <ul className="muted small" style={{ margin: "12px 0 0", paddingLeft: 18, lineHeight: 2 }}>
+                <ul className="muted small" style={{ margin: "12px 0 0", paddingLeft: 18, lineHeight: 1.9 }}>
                   <li><code className="mono">npm run web</code> — the full console against a live TrueForge harness</li>
                   <li><code className="mono">npm run cli</code> — the terminal client</li>
                   <li><code className="mono">npm run mcp</code> — the MCP tool server on :8791</li>
@@ -80,9 +80,9 @@ export default function DocsPage() {
 
         {/* ------------------------------------------------------- install */}
         <Reveal>
-          <h2 className="display tx-red" style={{ fontSize: 26, margin: "46px 0 0" }}>Install the strike team</h2>
+          <h2 className="display" style={{ fontSize: 24, fontWeight: 600, letterSpacing: "-0.025em", margin: "44px 0 0" }}>Install the strike team</h2>
         </Reveal>
-        <div className="grid-2" style={{ marginTop: 20 }}>
+        <div className="grid-2" style={{ marginTop: 18 }}>
           <Reveal delay={60}>
             <Tilt strength={5}>
               <div className="panel brackets pad-md" style={{ height: "100%" }}>
@@ -116,7 +116,7 @@ npm run web                        # console on :3000`}</pre>
         <Reveal delay={160}>
           <div className="panel pad-md" style={{ marginTop: 18 }}>
             <span className="chip">C · no API key demo</span>
-            <p className="muted small" style={{ margin: "12px 0 0", lineHeight: 1.8 }}>
+            <p className="muted small" style={{ margin: "12px 0 0", lineHeight: 1.75 }}>
               A scripted model endpoint ships with the repo, so you can see the whole path — real advisory data,
               real tools, real approval gate — without spending anything. In this console, the same experience is
               the default: with no keys at all, the scan and mission stations run on live public advisory data.
@@ -126,8 +126,8 @@ npm run web                        # console on :3000`}</pre>
 
         {/* ------------------------------------------------------ config */}
         <Reveal>
-          <h2 className="display tx-green" style={{ fontSize: 26, margin: "46px 0 0" }}>Configuration</h2>
-          <p className="muted small" style={{ lineHeight: 1.8, maxWidth: 700 }}>
+          <h2 className="display" style={{ fontSize: 24, fontWeight: 600, letterSpacing: "-0.025em", margin: "44px 0 0" }}>Configuration</h2>
+          <p className="muted small" style={{ lineHeight: 1.75, maxWidth: 700, margin: "8px 0 0" }}>
             In the console these live in the <Link className="link" href="/app">key vault</Link> (browser
             localStorage). In the repository they live in <code className="mono">.env</code> — git-ignored, read in
             exactly one place (<code className="mono">src/core/config.ts</code>).
@@ -148,7 +148,7 @@ npm run web                        # console on :3000`}</pre>
                   <tr key={name}>
                     <td className="mono nowrap" style={{ color: "#fff" }}>{name}</td>
                     <td>
-                      <span className={`chip ${required === "yes" || required.includes("one") ? "chip-solid" : ""}`} style={{ fontSize: 9 }}>{required}</span>
+                      <span className={`chip ${required === "yes" || required.includes("one") ? "chip-solid" : ""}`} style={{ fontSize: 10 }}>{required}</span>
                     </td>
                     <td className="muted" style={{ lineHeight: 1.6 }}>{purpose}</td>
                   </tr>
@@ -160,9 +160,9 @@ npm run web                        # console on :3000`}</pre>
 
         {/* ------------------------------------------------------- tools */}
         <Reveal>
-          <h2 className="display tx-red" style={{ fontSize: 26, margin: "46px 0 0" }}>The 7 MCP tools</h2>
+          <h2 className="display" style={{ fontSize: 24, fontWeight: 600, letterSpacing: "-0.025em", margin: "44px 0 0" }}>The 7 MCP tools</h2>
         </Reveal>
-        <div className="grid-2" style={{ marginTop: 20 }}>
+        <div className="grid-2" style={{ marginTop: 18 }}>
           {TOOLS.map((tool, index) => (
             <Reveal key={tool.name} delay={index * 50}>
               <div className="panel pad-sm" style={{ height: "100%" }}>
@@ -170,9 +170,9 @@ npm run web                        # console on :3000`}</pre>
                   <strong className="mono tool-name" style={{ fontSize: 13.5 }}>{tool.name}</strong>
                   {tool.approval === "YES"
                     ? <span className="sev sev-critical">approval required</span>
-                    : <span className="chip" style={{ fontSize: 9 }}>{tool.annotation}</span>}
+                    : <span className="chip" style={{ fontSize: 10 }}>{tool.annotation}</span>}
                 </div>
-                <p className="muted small" style={{ margin: "10px 0 0", lineHeight: 1.7 }}>{tool.text}</p>
+                <p className="muted small" style={{ margin: "10px 0 0", lineHeight: 1.65 }}>{tool.text}</p>
               </div>
             </Reveal>
           ))}
@@ -180,11 +180,11 @@ npm run web                        # console on :3000`}</pre>
 
         {/* ------------------------------------------------------ deploy */}
         <Reveal>
-          <h2 className="display tx-green" style={{ fontSize: 26, margin: "46px 0 0" }}>Deploying this console</h2>
+          <h2 className="display" style={{ fontSize: 24, fontWeight: 600, letterSpacing: "-0.025em", margin: "44px 0 0" }}>Deploying this console</h2>
         </Reveal>
         <Reveal delay={80}>
-          <div className="panel brackets pad-md" style={{ marginTop: 20 }}>
-            <p className="muted small" style={{ marginTop: 0, lineHeight: 1.8 }}>
+          <div className="panel brackets pad-md" style={{ marginTop: 18 }}>
+            <p className="muted small" style={{ marginTop: 0, lineHeight: 1.75 }}>
               The console is a standard Next.js App Router project — Vercel detects it automatically.
             </p>
             <div className="code-block">
@@ -197,7 +197,7 @@ vercel            # or: import the repo in the Vercel dashboard
 #   DAYTONA_API_KEY=…                    # server-side sandbox key
 #   TRUEFORGE_URL=…                      # a reachable TrueForge harness`}</pre>
             </div>
-            <p className="muted small" style={{ lineHeight: 1.8, marginBottom: 0 }}>
+            <p className="muted small" style={{ lineHeight: 1.75, marginBottom: 0, marginTop: 14 }}>
               API routes proxy every upstream call (advisories, GitHub, Daytona, the harness probe) — the browser
               never talks to a third party directly. Browser-vault keys are used per-request and never stored
               server-side.
@@ -207,8 +207,8 @@ vercel            # or: import the repo in the Vercel dashboard
 
         {/* ------------------------------------------------------ safety */}
         <Reveal>
-          <h2 className="display tx-red" style={{ fontSize: 26, margin: "46px 0 0" }}>Control and safety</h2>
-          <ul className="muted small" style={{ lineHeight: 2.1, paddingLeft: 20, maxWidth: 760 }}>
+          <h2 className="display" style={{ fontSize: 24, fontWeight: 600, letterSpacing: "-0.025em", margin: "44px 0 0" }}>Control and safety</h2>
+          <ul className="muted small" style={{ lineHeight: 2, paddingLeft: 20, maxWidth: 760, marginTop: 14 }}>
             <li>The approval policy is declared on the tool, once — both front ends inherit it.</li>
             <li>Destructive handlers check the kill switch <strong style={{ color: "#fff" }}>before any network call</strong>.</li>
             <li>Branch names are generated and validated against git's ref rules — the model never supplies a ref.</li>
@@ -219,7 +219,7 @@ vercel            # or: import the repo in the Vercel dashboard
         </Reveal>
 
         <Reveal>
-          <div className="row center" style={{ justifyContent: "center", margin: "56px 0 0" }}>
+          <div className="row center" style={{ justifyContent: "center", margin: "50px 0 0" }}>
             <Link href="/app" className="plain">
               <Btn variant="primary" className="btn-lg">Open the console ⬢</Btn>
             </Link>

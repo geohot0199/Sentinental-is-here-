@@ -26,7 +26,7 @@ function StatusCard({
     <Tilt strength={6}>
       <div className="panel brackets" style={{ padding: 22, height: "100%" }}>
         <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
-          <h3 className="display" style={{ fontSize: 15, margin: 0, letterSpacing: "0.04em" }}>{title}</h3>
+          <h3 className="display" style={{ fontSize: 15, margin: 0, fontWeight: 600, letterSpacing: "-0.01em" }}>{title}</h3>
           <span className={`chip ${on ? "chip-solid" : ""}`}>{on ? onLabel : offLabel}</span>
         </div>
         <div style={{ marginTop: 12 }}>{children}</div>
@@ -52,7 +52,7 @@ export default function Deck({ context, onNavigate }: { context: ConsoleContext;
       <div className="grid-3">
         <Reveal>
           <StatusCard title="MODEL" on={capabilities.model !== null} onLabel={capabilities.model ?? "ready"} offLabel="scripted model">
-            <p className="muted small" style={{ margin: 0, lineHeight: 1.7 }}>
+            <p className="muted small" style={{ margin: 0, lineHeight: 1.65 }}>
               {capabilities.model === null
                 ? "No provider key. The bundled scripted model runs the full path — real advisory data, real tools, real approval gate — without spending anything."
                 : `Provider ${capabilities.model}${vault.MODEL_ID ? ` · ${vault.MODEL_ID}` : " · mid-tier model from the harness catalog"}.`}
@@ -62,7 +62,7 @@ export default function Deck({ context, onNavigate }: { context: ConsoleContext;
 
         <Reveal delay={60}>
           <StatusCard title="GITHUB" on={capabilities.github} onLabel="token set" offLabel="public data only">
-            <p className="muted small" style={{ margin: 0, lineHeight: 1.7 }}>
+            <p className="muted small" style={{ margin: 0, lineHeight: 1.65 }}>
               {capabilities.github
                 ? `Token loaded${capabilities.targetRepo ? ` · default target ${capabilities.targetRepo}` : ""}. Repositories can be read and pull requests opened — behind the gate.`
                 : "Advisory triage works without a token; private repos and pull requests need one."}
@@ -72,7 +72,7 @@ export default function Deck({ context, onNavigate }: { context: ConsoleContext;
 
         <Reveal delay={120}>
           <StatusCard title="SANDBOX" on={capabilities.sandbox} onLabel="Daytona ready" offLabel="patches unverified">
-            <p className="muted small" style={{ margin: 0, lineHeight: 1.7 }}>
+            <p className="muted small" style={{ margin: 0, lineHeight: 1.65 }}>
               {capabilities.sandbox
                 ? "Daytona key present. The verify stage provisions an isolated sandbox, installs dependencies and runs the test suite for real."
                 : "No sandbox key. Every patch is reported UNVERIFIED — never silently claimed."}
@@ -82,7 +82,7 @@ export default function Deck({ context, onNavigate }: { context: ConsoleContext;
 
         <Reveal delay={180}>
           <StatusCard title="REMOTE WRITES" on={capabilities.remoteWrites} onLabel="permitted" offLabel="kill switch ON">
-            <p className="muted small" style={{ margin: 0, lineHeight: 1.7 }}>
+            <p className="muted small" style={{ margin: 0, lineHeight: 1.65 }}>
               {capabilities.remoteWrites
                 ? "Destructive tools may write — but only after the approval gate asks a human, every time."
                 : "Destructive tools refuse before any network call, regardless of what the model or the approval UI says."}
@@ -92,7 +92,7 @@ export default function Deck({ context, onNavigate }: { context: ConsoleContext;
 
         <Reveal delay={240}>
           <StatusCard title="HARNESS" on={(server?.harnessUrl ?? vault.TRUEFORGE_URL) !== null && (server?.harnessUrl ?? vault.TRUEFORGE_URL) !== ""} onLabel="url configured" offLabel="scripted fallback">
-            <p className="muted small" style={{ margin: 0, lineHeight: 1.7 }}>
+            <p className="muted small" style={{ margin: 0, lineHeight: 1.65 }}>
               TrueForge runs the agent loop, subagents, approvals and session state. The cockpit probes it through
               the server; unreachable means the scripted model takes over — same tools, same gate.
             </p>
@@ -101,7 +101,7 @@ export default function Deck({ context, onNavigate }: { context: ConsoleContext;
 
         <Reveal delay={300}>
           <StatusCard title="ADVISORY SOURCE" on onLabel="live" offLabel="">
-            <p className="muted small" style={{ margin: 0, lineHeight: 1.7 }}>
+            <p className="muted small" style={{ margin: 0, lineHeight: 1.65 }}>
               {server?.advisorySource ?? "GitHub Advisory Database (OSV fallback)"} — live queries, no key required.
             </p>
           </StatusCard>
@@ -111,9 +111,9 @@ export default function Deck({ context, onNavigate }: { context: ConsoleContext;
       {/* notes + health */}
       <div className="grid-2" style={{ marginTop: 20 }}>
         <Reveal>
-          <div className="panel sweep" style={{ padding: 24, height: "100%" }}>
+          <div className="panel" style={{ padding: 24, height: "100%" }}>
             <span className="kicker">Operator notes</span>
-            <ul className="muted small" style={{ margin: "14px 0 0", paddingLeft: 18, lineHeight: 1.9 }}>
+            <ul className="muted small" style={{ margin: "14px 0 0", paddingLeft: 18, lineHeight: 1.85 }}>
               {capabilities.notes.map((note) => (
                 <li key={note}>{note}</li>
               ))}
@@ -121,7 +121,7 @@ export default function Deck({ context, onNavigate }: { context: ConsoleContext;
           </div>
         </Reveal>
         <Reveal delay={80}>
-          <div className="panel sweep" style={{ padding: 24, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 18 }}>
+          <div className="panel" style={{ padding: 24, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 18 }}>
             <div>
               <span className="kicker">Server</span>
               <div className="row" style={{ gap: 10, marginTop: 14 }}>
