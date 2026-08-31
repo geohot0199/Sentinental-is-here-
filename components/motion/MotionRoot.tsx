@@ -46,13 +46,13 @@ export default function MotionRoot() {
     let height = 0;
     let frame = 0;
     let running = true;
-    let cometTimer = 90;
+    let cometTimer = 50;
 
     let particles: Particle[] = [];
     const comets: Comet[] = [];
 
     const seed = () => {
-      const count = Math.min(96, Math.floor((width * height) / 21000));
+      const count = Math.min(140, Math.floor((width * height) / 15000));
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -125,7 +125,7 @@ export default function MotionRoot() {
       cometTimer -= 1;
       if (cometTimer <= 0) {
         spawnComet();
-        cometTimer = 120 + Math.random() * 200;
+        cometTimer = 70 + Math.random() * 150;
       }
       for (let i = comets.length - 1; i >= 0; i -= 1) {
         const comet = comets[i];
@@ -140,17 +140,17 @@ export default function MotionRoot() {
         const tailX = comet.x - comet.vx * 14;
         const tailY = comet.y - comet.vy * 14;
         const gradient = context.createLinearGradient(comet.x, comet.y, tailX, tailY);
-        gradient.addColorStop(0, `rgba(${comet.c}, ${0.75 * fade})`);
+        gradient.addColorStop(0, `rgba(${comet.c}, ${0.95 * fade})`);
         gradient.addColorStop(1, `rgba(${comet.c}, 0)`);
         context.beginPath();
         context.moveTo(comet.x, comet.y);
         context.lineTo(tailX, tailY);
         context.strokeStyle = gradient;
-        context.lineWidth = 1.4;
+        context.lineWidth = 2;
         context.stroke();
         context.beginPath();
-        context.arc(comet.x, comet.y, 1.6, 0, Math.PI * 2);
-        context.fillStyle = `rgba(${comet.c}, ${0.9 * fade})`;
+        context.arc(comet.x, comet.y, 2.1, 0, Math.PI * 2);
+        context.fillStyle = `rgba(${comet.c}, ${fade})`;
         context.fill();
       }
 
@@ -177,8 +177,8 @@ export default function MotionRoot() {
         p.vy += (Math.random() - 0.5) * 0.01;
 
         context.beginPath();
-        context.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        context.fillStyle = `rgba(${p.c}, 0.5)`;
+        context.arc(p.x, p.y, p.r + 0.35, 0, Math.PI * 2);
+        context.fillStyle = `rgba(${p.c}, 0.85)`;
         context.fill();
 
         for (let j = i + 1; j < particles.length; j += 1) {
@@ -187,12 +187,12 @@ export default function MotionRoot() {
           const ddy = p.y - q.y;
           const d2 = ddx * ddx + ddy * ddy;
           if (d2 < link * link) {
-            const alpha = 0.14 * (1 - Math.sqrt(d2) / link);
+            const alpha = 0.3 * (1 - Math.sqrt(d2) / link);
             context.beginPath();
             context.moveTo(p.x, p.y);
             context.lineTo(q.x, q.y);
             context.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-            context.lineWidth = 0.7;
+            context.lineWidth = 0.9;
             context.stroke();
           }
         }

@@ -40,6 +40,9 @@ export default function Radar({
       aria-label="Radar scope sweeping for vulnerable packages"
     >
       <span className="radar-sweep" aria-hidden />
+      <span className="sonar sonar-red" aria-hidden>
+        <i /><i /><i />
+      </span>
       {contacts.map((contact, index) => (
         <i
           key={index}
@@ -47,7 +50,7 @@ export default function Radar({
           style={{
             top: `${contact.top}%`,
             left: `${contact.left}%`,
-            animationDelay: `${contact.delay ?? 0}s`,
+            animationDelay: `${(contact.delay ?? 0) * 0.6}s`,
           }}
         />
       ))}

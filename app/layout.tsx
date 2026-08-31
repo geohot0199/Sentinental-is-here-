@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import MotionRoot from "@/components/motion/MotionRoot";
+import Aurora from "@/components/motion/Aurora";
+import GlyphField from "@/components/motion/GlyphField";
 
 // Self-hosted variable fonts — OpenAI & Claude inspired typography stack:
 // 1. Inter (Variable): Neo-grotesque Swiss sans matching OpenAI's Söhne / OpenAI Sans and Claude Sans.
@@ -51,7 +53,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${sans.variable} ${serif.variable} ${mono.variable}`}>
       <body>
+        <Aurora />
         <div className="backdrop" aria-hidden />
+        <GlyphField />
         <MotionRoot />
         {children}
       </body>
