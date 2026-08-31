@@ -69,7 +69,6 @@ function ApprovalGate({
 }) {
   const [reason, setReason] = useState("");
 
-  // Escape denies. Denial is the default for every input it cannot interpret.
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") onDecision(false);
@@ -82,7 +81,7 @@ function ApprovalGate({
     <div
       style={{
         position: "fixed", inset: 0, zIndex: 300,
-        background: "rgba(0,0,0,0.78)", backdropFilter: "blur(8px)",
+        background: "rgba(0,0,0,0.8)", backdropFilter: "blur(12px)",
         display: "grid", placeItems: "center", padding: 20,
         animation: "rise 0.3s ease both",
       }}
@@ -90,15 +89,15 @@ function ApprovalGate({
       aria-modal="true"
       aria-label="Approval required"
     >
-      <div className="panel brackets" style={{ maxWidth: 640, width: "100%", padding: 30, boxShadow: "0 0 80px rgba(255,255,255,0.14)" }}>
+      <div className="panel brackets" style={{ maxWidth: 640, width: "100%", padding: 30, boxShadow: "0 0 80px rgba(0,0,0,0.8)" }}>
         <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
           <span className="kicker">The turn ends here</span>
           <span className="sev sev-critical">destructiveHint</span>
         </div>
-        <h3 className="display" style={{ fontSize: 24, margin: "14px 0 6px" }}>
+        <h3 className="display" style={{ fontSize: 22, fontWeight: 600, letterSpacing: "-0.02em", margin: "14px 0 6px" }}>
           approval required: {request.toolName}
         </h3>
-        <p className="muted small" style={{ margin: "0 0 16px", lineHeight: 1.7 }}>
+        <p className="muted small" style={{ margin: "0 0 16px", lineHeight: 1.65 }}>
           {request.summary} Nothing happens until a person decides. Denial is the default — Escape denies too.
         </p>
         <div className="code-block" style={{ margin: "0 0 18px" }}>
@@ -117,9 +116,9 @@ function ApprovalGate({
             }}
           />
         </div>
-        <div className="row" style={{ justifyContent: "flex-end" }}>
+        <div className="row" style={{ justifyContent: "flex-end", gap: 10 }}>
           <Btn variant="ghost" onClick={() => onDecision(false)}>Deny (default)</Btn>
-          <Btn variant="primary" onClick={() => onDecision(true)}>Approve — open the pull request</Btn>
+          <Btn variant="primary" onClick={() => onDecision(true)}>Approve — open pull request</Btn>
         </div>
       </div>
     </div>
@@ -140,7 +139,6 @@ export default function AgentCockpit({ context }: { context: ConsoleContext }) {
   const transcriptRef = useRef<HTMLDivElement>(null);
   const approvalResolver = useRef<((value: { approved: boolean; reason?: string }) => void) | null>(null);
 
-  // Probe the harness once on mount.
   useEffect(() => {
     fetch("/api/harness", {
       method: "POST",
@@ -207,22 +205,22 @@ export default function AgentCockpit({ context }: { context: ConsoleContext }) {
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         <div className="panel brackets" style={{ padding: 24 }}>
           <div className="row" style={{ justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-            <h3 className="display" style={{ fontSize: 18, margin: 0 }}>Mission target</h3>
+            <h3 className="display" style={{ fontSize: 17, fontWeight: 600, margin: 0 }}>Mission target</h3>
             <span className={`chip ${harnessMode?.reachable === true ? "chip-solid" : ""}`}>
               {harnessMode === null ? "probing harness…" : harnessMode.reachable ? "TrueForge harness" : "scripted model"}
             </span>
           </div>
 
           <div className="tabs" style={{ padding: 3, marginBottom: 14 }}>
-            <button className="tab" data-active={mode === "repo"} style={{ padding: "7px 14px", fontSize: 12 }} onClick={() => setMode("repo")}>owner/repo</button>
-            <button className="tab" data-active={mode === "manifest"} style={{ padding: "7px 14px", fontSize: 12 }} onClick={() => setMode("manifest")}>manifest</button>
+            <button className="tab" data-active={mode === "repo"} style={{ padding: "6px 13px", fontSize: 12.5 }} onClick={() => setMode("repo")}>owner/repo</button>
+            <button className="tab" data-active={mode === "manifest"} style={{ padding: "6px 13px", fontSize: 12.5 }} onClick={() => setMode("manifest")}>manifest</button>
           </div>
 
           {mode === "repo" ? (
             <div className="field">
               <label>Repository</label>
               <input className="input" placeholder="owner/name" value={repo} onChange={(event) => setRepo(event.target.value)} />
-              <span className="faint small" style={{ fontFamily: "var(--font-body)" }}>
+              <span className="faint small" style={{ lineHeight: 1.6 }}>
                 Full mission: read from GitHub → triage live advisories → patch → verify (Daytona) → approval gate → pull request.
               </span>
             </div>
@@ -236,21 +234,21 @@ export default function AgentCockpit({ context }: { context: ConsoleContext }) {
                 spellCheck={false}
                 style={{ minHeight: 150 }}
               />
-              <Btn variant="ghost" style={{ padding: "9px 15px", fontSize: 12.5, marginTop: 12 }} onClick={() => setManifest(SAMPLE_MANIFEST)}>
+              <Btn variant="ghost" style={{ padding: "8px 14px", fontSize: 13, marginTop: 12 }} onClick={() => setManifest(SAMPLE_MANIFEST)}>
                 Load vulnerable sample
               </Btn>
             </>
           )}
 
           <div className="row" style={{ margin: "20px 0 0", alignItems: "center" }}>
-            <Btn variant="primary" onClick={launch} disabled={phase === "running"} style={{ padding: "13px 24px" }}>
+            <Btn variant="primary" onClick={launch} disabled={phase === "running"} style={{ padding: "10px 22px" }}>
               {phase === "running" ? "Mission running…" : "Launch mission ⌘"}
             </Btn>
             <span className="chip">{vault.SENTINEL_ALLOW_REMOTE_WRITES ? "writes permitted (gated)" : "kill switch: read-only"}</span>
           </div>
 
           {harnessMode !== null && !harnessMode.reachable && (
-            <p className="faint small" style={{ margin: "14px 0 0", lineHeight: 1.7 }}>{harnessMode.detail}</p>
+            <p className="faint small" style={{ margin: "14px 0 0", lineHeight: 1.65 }}>{harnessMode.detail}</p>
           )}
         </div>
 
@@ -305,9 +303,9 @@ export default function AgentCockpit({ context }: { context: ConsoleContext }) {
 
       {/* --------------------------------------------- full-width term */}
       <div style={{ gridColumn: "1 / -1" }}>
-        <div className="panel sweep" style={{ padding: 20 }}>
+        <div className="panel" style={{ padding: 20 }}>
           <div className="row" style={{ justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-            <span className="kicker">Transcript — a record of actual tool output</span>
+            <span className="kicker">Transcript — record of actual tool output</span>
             {phase === "running" && <span className="chip chip-glow"><span className="dot" style={{ width: 6, height: 6 }} /> working</span>}
           </div>
           <div className="term" ref={transcriptRef} style={{ minHeight: 320, maxHeight: 520, overflowY: "auto" }}>

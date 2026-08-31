@@ -3,23 +3,27 @@ import localFont from "next/font/local";
 import "./globals.css";
 import MotionRoot from "@/components/motion/MotionRoot";
 
-// Self-hosted variable fonts (fontsource woff2, bundled with the app) — the
-// build never depends on a third-party font CDN.
-const display = localFont({
-  src: "./fonts/orbitron-latin-wght-normal.woff2",
-  variable: "--font-orbitron",
-  display: "swap",
-  weight: "400 900",
-});
-const body = localFont({
-  src: "./fonts/saira-latin-wght-normal.woff2",
-  variable: "--font-saira",
+// Self-hosted variable fonts — OpenAI & Claude inspired typography stack:
+// 1. Inter (Variable): Neo-grotesque Swiss sans matching OpenAI's Söhne / OpenAI Sans and Claude Sans.
+// 2. Newsreader (Variable): Literary optical-size serif matching Claude's Tiempos / Anthropic Serif and OpenAI's Signifier.
+// 3. JetBrains Mono (Variable): Precision monospace matching Söhne Mono & Anthropic Mono.
+const sans = localFont({
+  src: "./fonts/inter-latin-wght-normal.woff2",
+  variable: "--font-sans",
   display: "swap",
   weight: "100 900",
 });
+
+const serif = localFont({
+  src: "./fonts/newsreader-latin-opsz-normal.woff2",
+  variable: "--font-serif",
+  display: "swap",
+  weight: "200 800",
+});
+
 const mono = localFont({
   src: "./fonts/jetbrains-mono-latin-wght-normal.woff2",
-  variable: "--font-jetbrains",
+  variable: "--font-mono",
   display: "swap",
   weight: "100 800",
 });
@@ -45,7 +49,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html lang="en" className={`${sans.variable} ${serif.variable} ${mono.variable}`}>
       <body>
         <div className="backdrop" aria-hidden />
         <MotionRoot />

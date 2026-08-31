@@ -89,7 +89,6 @@ function diffLines(before: string, after: string): { line: string; kind: "same" 
       i += 1;
       j += 1;
     } else {
-      // naive lookahead: deletion then insertion
       const nextMatch = b.findIndex((line, index) => index > j && line === a[i]);
       if (i < a.length && (j >= b.length || (nextMatch === -1 && a[i] !== b[j]))) {
         out.push({ line: a[i], kind: "del" });
@@ -128,7 +127,7 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
     who.className = "who";
     const text = document.createElement("span");
     text.className = "term-narration";
-    text.textContent = line; // upstream data — textContent only
+    text.textContent = line;
     div.append(who, text);
     node.appendChild(div);
     node.scrollTop = node.scrollHeight;
@@ -154,7 +153,6 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
     };
 
     try {
-      // ---------------------------------------------------- inventory
       let manifestRaw = manifest;
       let lockRaw: string | null = null;
       if (mode === "repo") {
@@ -193,7 +191,6 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
         return;
       }
 
-      // ------------------------------------------------------- triage
       await advance(1, "Querying the GitHub Advisory Database (OSV fallback)…");
       const response = await fetch("/api/advisories", {
         method: "POST",
@@ -218,19 +215,16 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
       }
       log(`Triage complete: ${matches.length} genuine match(es) across ${new Set(matches.map((m) => m.packageName)).size} package(s).`);
 
-      // --------------------------------------------------------- plan
       const plan = buildPlan(matches);
       await advance(2, "Collapsing to one safe target version per package…");
       for (const item of plan) {
         log(`${item.packageName}: ${item.installedVersion} → ${item.targetVersion ?? "no published fix"} (${item.worstSeverity})`);
       }
 
-      // -------------------------------------------------------- patch
       const patch = buildPatch(manifestRaw, plan);
       await advance(3, "Regenerating package.json, range operators preserved…");
       for (const applied of patch.applied) log(applied);
 
-      // ---------------------------------------------------------- done
       await advance(4, matches.length === 0 ? "Scan complete. No advisories match the versions in use." : `Scan complete. ${matches.length} advisory match(es).`);
       setResult({
         projectName: inventory.projectName,
@@ -271,10 +265,10 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
       <div>
         <div className="panel brackets" style={{ padding: 24 }}>
           <div className="row" style={{ justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-            <h3 className="display" style={{ fontSize: 18, margin: 0 }}>Target</h3>
+            <h3 className="display" style={{ fontSize: 17, fontWeight: 600, margin: 0 }}>Target</h3>
             <div className="tabs" style={{ padding: 3 }}>
-              <button className="tab" data-active={mode === "manifest"} style={{ padding: "6px 13px", fontSize: 12 }} onClick={() => setMode("manifest")}>Manifest</button>
-              <button className="tab" data-active={mode === "repo"} style={{ padding: "6px 13px", fontSize: 12 }} onClick={() => setMode("repo")}>owner/repo</button>
+              <button className="tab" data-active={mode === "manifest"} style={{ padding: "5px 12px", fontSize: 12.5 }} onClick={() => setMode("manifest")}>Manifest</button>
+              <button className="tab" data-active={mode === "repo"} style={{ padding: "5px 12px", fontSize: 12.5 }} onClick={() => setMode("repo")}>owner/repo</button>
             </div>
           </div>
 
@@ -289,8 +283,8 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
                 style={{ minHeight: 200 }}
               />
               <div className="row" style={{ margin: "14px 0 0" }}>
-                <Btn variant="ghost" style={{ padding: "9px 15px", fontSize: 12.5 }} onClick={() => setManifest(SAMPLE_MANIFEST)}>Load vulnerable sample</Btn>
-                <Btn variant="ghost" style={{ padding: "9px 15px", fontSize: 12.5 }} onClick={() => setManifest(OWN_MANIFEST)}>Load own manifest</Btn>
+                <Btn variant="ghost" style={{ padding: "8px 14px", fontSize: 13 }} onClick={() => setManifest(SAMPLE_MANIFEST)}>Load vulnerable sample</Btn>
+                <Btn variant="ghost" style={{ padding: "8px 14px", fontSize: 13 }} onClick={() => setManifest(OWN_MANIFEST)}>Load own manifest</Btn>
               </div>
               <p className="faint small" style={{ margin: "12px 0 0", lineHeight: 1.6 }}>
                 The vulnerable sample ships known CVEs in lodash, minimist, axios, node-fetch and handlebars — real
@@ -316,7 +310,7 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
           )}
 
           <div className="row" style={{ margin: "20px 0 0", alignItems: "center" }}>
-            <Btn variant="primary" onClick={runScan} disabled={phase === "running"} style={{ padding: "13px 24px" }}>
+            <Btn variant="primary" onClick={runScan} disabled={phase === "running"} style={{ padding: "10px 22px" }}>
               {phase === "running" ? "Scanning…" : "Run scan ⬡"}
             </Btn>
             {server !== null && (
@@ -329,7 +323,7 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
         </div>
 
         {/* transcript */}
-        <div className="panel sweep" style={{ padding: 18, marginTop: 20 }}>
+        <div className="panel" style={{ padding: 18, marginTop: 20 }}>
           <span className="kicker">Transcript</span>
           <div className="term" ref={transcriptRef} style={{ marginTop: 12, minHeight: 140, maxHeight: 300, overflowY: "auto" }}>
             <div className="term-line">
@@ -383,11 +377,11 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
           <Reveal>
             <span className="kicker">Advisory matches — worst first</span>
             <div className="grid-2" style={{ marginTop: 16 }}>
-              {result.matches.map((match, index) => (
+              {result.matches.map((match) => (
                 <Tilt key={`${match.packageName}-${match.advisory.id}`} strength={5}>
                   <div className="panel brackets" style={{ padding: 20, height: "100%" }}>
                     <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
-                      <strong className="mono" style={{ fontSize: 15, color: "#fff" }}>{match.packageName}@{match.installedVersion}</strong>
+                      <strong className="mono" style={{ fontSize: 14.5, color: "#fff" }}>{match.packageName}@{match.installedVersion}</strong>
                       <SevChip severity={match.advisory.severity} />
                     </div>
                     <div className="row" style={{ gap: 8, margin: "10px 0 0" }}>
@@ -397,9 +391,9 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
                       <span className="chip">{match.advisory.source}</span>
                       {match.scope !== undefined && <span className="chip">{match.scope}</span>}
                     </div>
-                    <p className="muted small" style={{ margin: "12px 0 0", lineHeight: 1.7 }}>{match.advisory.summary}</p>
+                    <p className="muted small" style={{ margin: "12px 0 0", lineHeight: 1.65 }}>{match.advisory.summary}</p>
                     <hr className="divider" style={{ margin: "14px 0" }} />
-                    <div className="mono faint" style={{ fontSize: 11.5, lineHeight: 1.9 }}>
+                    <div className="mono faint" style={{ fontSize: 11.5, lineHeight: 1.8 }}>
                       <div>vulnerable range · {match.advisory.vulnerableRange}</div>
                       <div>
                         first patched · {match.advisory.firstPatchedVersion ?? "none published"}
@@ -422,7 +416,7 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
               <div style={{ overflowX: "auto", marginTop: 14 }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
                   <thead>
-                    <tr className="mono faint" style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                    <tr className="mono faint" style={{ fontSize: 10.5, letterSpacing: "0.06em", textTransform: "uppercase" }}>
                       <th style={{ textAlign: "left", padding: "10px 12px" }}>Package</th>
                       <th style={{ textAlign: "left", padding: "10px 12px" }}>Installed</th>
                       <th style={{ textAlign: "left", padding: "10px 12px" }}>Target</th>
@@ -454,7 +448,7 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
               <div className="panel" style={{ padding: 22, marginTop: 22 }}>
                 <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
                   <span className="kicker">Patched package.json — nothing has been written anywhere</span>
-                  <Btn style={{ padding: "9px 16px", fontSize: 12.5 }} onClick={copyPatch}>
+                  <Btn style={{ padding: "8px 16px", fontSize: 13 }} onClick={copyPatch}>
                     {copied ? "Copied ✓" : "Copy patch"}
                   </Btn>
                 </div>
@@ -466,7 +460,7 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
                         style={{
                           display: "block",
                           color: line.kind === "add" ? "#fff" : line.kind === "del" ? "var(--ink-faint)" : "var(--ink-dim)",
-                          background: line.kind === "add" ? "rgba(255,255,255,0.09)" : line.kind === "del" ? "rgba(255,255,255,0.03)" : undefined,
+                          background: line.kind === "add" ? "rgba(255,255,255,0.08)" : line.kind === "del" ? "rgba(255,255,255,0.03)" : undefined,
                           textDecoration: line.kind === "del" ? "line-through" : undefined,
                         }}
                       >

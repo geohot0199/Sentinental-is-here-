@@ -25,12 +25,14 @@ export default function Nav() {
     <header
       style={{
         position: "fixed",
-        top: 0, left: 0, right: 0,
+        top: 0,
+        left: 0,
+        right: 0,
         zIndex: 100,
-        transition: "background 0.4s, border-color 0.4s",
+        transition: "background 0.3s, border-color 0.3s",
         borderBottom: `1px solid ${scrolled ? "var(--line)" : "transparent"}`,
-        background: scrolled ? "rgba(3, 3, 4, 0.72)" : "transparent",
-        backdropFilter: scrolled ? "blur(18px) saturate(1.2)" : "none",
+        background: scrolled ? "rgba(5, 5, 7, 0.8)" : "transparent",
+        backdropFilter: scrolled ? "blur(16px) saturate(1.2)" : "none",
       }}
     >
       <nav className="container nav-row">
@@ -40,16 +42,26 @@ export default function Nav() {
         </Link>
 
         <div className="nav-right">
-          <div className="row nav-links" style={{ gap: 20 }}>
+          <div className="row nav-links" style={{ gap: 24 }}>
             {LINKS.map((link) => (
-              <Link key={link.href} href={link.href} className="link" style={{ fontSize: 13.5, color: "var(--ink-dim)", fontWeight: 500 }}>
+              <Link
+                key={link.href}
+                href={link.href}
+                className="link"
+                style={{
+                  fontSize: 14,
+                  color: "var(--ink-dim)",
+                  fontWeight: 450,
+                  letterSpacing: "-0.01em",
+                }}
+              >
                 {link.label}
               </Link>
             ))}
           </div>
           <Link href="/app" style={{ textDecoration: "none" }} className="nav-cta">
-            <Btn variant="primary">
-              Launch Console
+            <Btn variant="primary" className="btn-md">
+              Launch console
             </Btn>
           </Link>
         </div>

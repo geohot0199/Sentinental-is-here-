@@ -211,7 +211,7 @@ function ProteinCanvas({ atoms, mutationSite }: { atoms: Atom[]; mutationSite: n
   return (
     <canvas
       ref={canvasRef}
-      style={{ width: "100%", height: 300, display: "block", touchAction: "none", cursor: "grab", background: "radial-gradient(circle at 50% 45%, rgba(255,255,255,0.05), transparent 70%), #050506", borderRadius: 0, border: "1px solid var(--line)" }}
+      style={{ width: "100%", height: 300, display: "block", touchAction: "none", cursor: "grab", background: "radial-gradient(circle at 50% 45%, rgba(255,255,255,0.04), transparent 70%), #060608", borderRadius: "var(--radius)", border: "1px solid var(--line)" }}
       aria-label="3D protein structure — drag to rotate"
     />
   );
@@ -276,13 +276,6 @@ export default function Labs({ context }: { context: ConsoleContext }) {
     setAnomalies(null);
   };
 
-  const loadProtein = useCallback(() => {
-    const parsed = BioSynth.parsePDB(BioSynth.SAMPLE_PDB_1CRN);
-    setAtoms(parsed.atoms as Atom[]);
-    setMutationSite(null);
-    return parsed;
-  }, []);
-
   return (
     <div>
       {/* lab selector */}
@@ -298,16 +291,16 @@ export default function Labs({ context }: { context: ConsoleContext }) {
               cursor: "pointer",
               textAlign: "left",
               flex: "1 1 200px",
-              borderColor: lab === item.id ? "rgba(255,255,255,0.55)" : "var(--line)",
-              background: lab === item.id ? "rgba(255,255,255,0.07)" : undefined,
-              boxShadow: lab === item.id ? "0 0 34px -6px rgba(255,255,255,0.25)" : undefined,
-              transition: "all 0.3s",
+              borderColor: lab === item.id ? "rgba(255,255,255,0.4)" : "var(--line)",
+              background: lab === item.id ? "rgba(255,255,255,0.06)" : undefined,
+              boxShadow: lab === item.id ? "0 4px 20px -4px rgba(0,0,0,0.5)" : undefined,
+              transition: "all 0.25s",
               color: "inherit",
             }}
           >
             <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
-              <strong className="display" style={{ fontSize: 15 }}>{item.name}</strong>
-              <span className="chip" style={{ fontSize: 9 }}>{item.tag}</span>
+              <strong className="display" style={{ fontSize: 14.5, fontWeight: 600 }}>{item.name}</strong>
+              <span className="chip" style={{ fontSize: 9.5 }}>{item.tag}</span>
             </div>
             <p className="faint small" style={{ margin: "8px 0 0", lineHeight: 1.55 }}>{item.blurb}</p>
           </button>
@@ -326,7 +319,7 @@ export default function Labs({ context }: { context: ConsoleContext }) {
       {lab === "breach" && (
         <div className="grid-2" style={{ gridTemplateColumns: "minmax(300px, 5fr) minmax(280px, 4fr)" }}>
           <div className="panel brackets" style={{ padding: 22 }}>
-            <h3 className="display" style={{ fontSize: 17, margin: "0 0 12px" }}>Target code</h3>
+            <h3 className="display" style={{ fontSize: 16.5, fontWeight: 600, margin: "0 0 12px" }}>Target code</h3>
             <textarea
               className="textarea mono"
               style={{ minHeight: 220, fontSize: 12 }}
@@ -352,13 +345,13 @@ export default function Labs({ context }: { context: ConsoleContext }) {
             </div>
           </div>
           <div className="panel" style={{ padding: 22 }}>
-            <h3 className="display" style={{ fontSize: 17, margin: "0 0 14px" }}>Threat assessment</h3>
+            <h3 className="display" style={{ fontSize: 16.5, fontWeight: 600, margin: "0 0 14px" }}>Threat assessment</h3>
             {threat === null ? (
               <p className="faint small">Run the AST analysis to populate the assessment.</p>
             ) : (
               <>
                 <div className="row" style={{ justifyContent: "space-between", alignItems: "baseline" }}>
-                  <span className="display chrome-text" style={{ fontSize: 42, fontWeight: 700 }}>{threat.threatScore}</span>
+                  <span className="display" style={{ fontSize: 38, fontWeight: 600, color: "#fff" }}>{threat.threatScore}</span>
                   <span className="sev sev-critical">{String(threat.verdict)}</span>
                 </div>
                 <div className="meter" style={{ margin: "12px 0" }}>
@@ -381,7 +374,7 @@ export default function Labs({ context }: { context: ConsoleContext }) {
         <div className="grid-2" style={{ gridTemplateColumns: "minmax(300px, 5fr) minmax(280px, 4fr)" }}>
           <div className="panel brackets" style={{ padding: 22 }}>
             <div className="row" style={{ justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-              <h3 className="display" style={{ fontSize: 17, margin: 0 }}>3D atomic structure — 1CRN Crambin</h3>
+              <h3 className="display" style={{ fontSize: 16.5, fontWeight: 600, margin: 0 }}>3D atomic structure — 1CRN Crambin</h3>
               <span className="chip">drag to rotate · wheel to zoom</span>
             </div>
             <ProteinCanvas atoms={atoms} mutationSite={mutationSite} />
@@ -399,7 +392,7 @@ export default function Labs({ context }: { context: ConsoleContext }) {
             </div>
           </div>
           <div className="panel" style={{ padding: 22 }}>
-            <h3 className="display" style={{ fontSize: 17, margin: "0 0 12px" }}>Point mutagenesis</h3>
+            <h3 className="display" style={{ fontSize: 16.5, fontWeight: 600, margin: "0 0 12px" }}>Point mutagenesis</h3>
             <div className="row" style={{ gap: 10, alignItems: "flex-end" }}>
               <div className="field grow">
                 <label>Residue seq</label>
@@ -415,7 +408,6 @@ export default function Labs({ context }: { context: ConsoleContext }) {
               </div>
             </div>
             <Btn style={{ marginTop: 16 }} onClick={() => runTool("biosynth_mutate_residue", { chain: "A", resSeq: Number(residue) || 2, targetResidue3: target }, () => {
-              // highlight an atom near the mutated residue
               const parsed = BioSynth.parsePDB(BioSynth.SAMPLE_PDB_1CRN);
               const site = (parsed.atoms as (Atom & { resSeq?: number })[]).findIndex((atom) => atom.resSeq === (Number(residue) || 2));
               setAtoms(parsed.atoms as Atom[]);
@@ -423,7 +415,7 @@ export default function Labs({ context }: { context: ConsoleContext }) {
             })} disabled={busy !== null}>
               {busy === "biosynth_mutate_residue" ? "Simulating…" : `Mutate A/${residue} → ${target}`}
             </Btn>
-            <p className="faint small" style={{ margin: "14px 0 0", lineHeight: 1.7 }}>
+            <p className="faint small" style={{ margin: "14px 0 0", lineHeight: 1.65 }}>
               The mutation reports ΔΔG (kcal/mol), a stability verdict and steric clashes. The highlighted atom marks
               the mutation site in the viewer.
             </p>
@@ -438,7 +430,7 @@ export default function Labs({ context }: { context: ConsoleContext }) {
       {lab === "chrono" && (
         <div className="grid-2" style={{ gridTemplateColumns: "minmax(300px, 5fr) minmax(280px, 4fr)" }}>
           <div className="panel brackets" style={{ padding: 22 }}>
-            <h3 className="display" style={{ fontSize: 17, margin: "0 0 12px" }}>Multi-angle sensor streams</h3>
+            <h3 className="display" style={{ fontSize: 16.5, fontWeight: 600, margin: "0 0 12px" }}>Multi-angle sensor streams</h3>
             {feeds.length === 0 ? (
               <p className="faint small">No streams loaded. Retrieve the demo feeds to begin reconstruction.</p>
             ) : (
@@ -474,14 +466,14 @@ export default function Labs({ context }: { context: ConsoleContext }) {
             </div>
           </div>
           <div className="panel" style={{ padding: 22 }}>
-            <h3 className="display" style={{ fontSize: 17, margin: "0 0 12px" }}>Reconstruction protocol</h3>
-            <ol className="muted small" style={{ margin: 0, paddingLeft: 18, lineHeight: 2 }}>
+            <h3 className="display" style={{ fontSize: 16.5, fontWeight: 600, margin: "0 0 12px" }}>Reconstruction protocol</h3>
+            <ol className="muted small" style={{ margin: 0, paddingLeft: 18, lineHeight: 1.9 }}>
               <li>Retrieve the CCTV, bodycam and drone feeds.</li>
               <li>Cross-correlate optical flash peaks against acoustic transients for millisecond offsets.</li>
               <li>Triangulate the 3D origin via time-difference-of-arrival.</li>
               <li>Seal the dossier with a SHA-256 evidence hash.</li>
             </ol>
-            <p className="faint small" style={{ lineHeight: 1.7, marginTop: 14 }}>
+            <p className="faint small" style={{ lineHeight: 1.65, marginTop: 14 }}>
               Evidence hashes are real SHA-256 digests computed in your browser — verify them in any terminal.
             </p>
           </div>
@@ -495,7 +487,7 @@ export default function Labs({ context }: { context: ConsoleContext }) {
       {lab === "meta" && (
         <div className="grid-2" style={{ gridTemplateColumns: "minmax(300px, 5fr) minmax(280px, 4fr)" }}>
           <div className="panel brackets" style={{ padding: 22 }}>
-            <h3 className="display" style={{ fontSize: 17, margin: "0 0 12px" }}>Swarm flight recorder</h3>
+            <h3 className="display" style={{ fontSize: 16.5, fontWeight: 600, margin: "0 0 12px" }}>Swarm flight recorder</h3>
             {anomalies === null ? (
               <p className="faint small">Inspect the trace tree to surface infinite loops, token spikes and drift.</p>
             ) : (
@@ -525,8 +517,8 @@ export default function Labs({ context }: { context: ConsoleContext }) {
             </div>
           </div>
           <div className="panel" style={{ padding: 22 }}>
-            <h3 className="display" style={{ fontSize: 17, margin: "0 0 12px" }}>Cognitive compensator</h3>
-            <p className="muted small" style={{ lineHeight: 1.75 }}>
+            <h3 className="display" style={{ fontSize: 16.5, fontWeight: 600, margin: "0 0 12px" }}>Cognitive compensator</h3>
+            <p className="muted small" style={{ lineHeight: 1.7 }}>
               Agent swarms degrade in recognisable ways: tool loops that never terminate, token budgets that spike
               on repeated context, and answers that drift from the mission. MetaLoop detects the pattern, forks the
               trace at the trap point, and synthesises steering guidance.
@@ -542,7 +534,7 @@ export default function Labs({ context }: { context: ConsoleContext }) {
       {lab === "zk" && (
         <div className="grid-2" style={{ gridTemplateColumns: "minmax(300px, 5fr) minmax(280px, 4fr)" }}>
           <div className="panel brackets" style={{ padding: 22 }}>
-            <h3 className="display" style={{ fontSize: 17, margin: "0 0 12px" }}>Cryptographic escrow contract</h3>
+            <h3 className="display" style={{ fontSize: 16.5, fontWeight: 600, margin: "0 0 12px" }}>Cryptographic escrow contract</h3>
             <div className="row" style={{ gap: 12 }}>
               <div className="field grow">
                 <label>Contractor</label>
@@ -570,8 +562,8 @@ export default function Labs({ context }: { context: ConsoleContext }) {
             </div>
           </div>
           <div className="panel" style={{ padding: 22 }}>
-            <h3 className="display" style={{ fontSize: 17, margin: "0 0 12px" }}>Arbiter rules</h3>
-            <ul className="muted small" style={{ margin: 0, paddingLeft: 18, lineHeight: 2 }}>
+            <h3 className="display" style={{ fontSize: 16.5, fontWeight: 600, margin: "0 0 12px" }}>Arbiter rules</h3>
+            <ul className="muted small" style={{ margin: 0, paddingLeft: 18, lineHeight: 1.9 }}>
               <li>Deliverable fingerprints are real SHA-256 digests.</li>
               <li>A milestone must be <strong style={{ color: "#fff" }}>verified</strong> before escrow release.</li>
               <li>Release proofs are HMAC-SHA-256 under the arbiter key.</li>

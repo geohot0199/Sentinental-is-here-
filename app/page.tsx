@@ -83,7 +83,7 @@ export default function LandingPage() {
         {/* ================================================== HERO */}
         <section className="hero">
           <HeroGraphic />
-          {/* drifting tool satellites — pure CSS motion, desktop only */}
+          {/* drifting tool satellites */}
           {([
             ["scan_dependencies", "13%", "34%", "1.1s", "0s", false],
             ["lookup_advisories", "35%", "6%", "1.45s", "1.3s", false],
@@ -114,7 +114,7 @@ export default function LandingPage() {
             </p>
             <div className="row hero-cta cta-in">
               <Link href="/app" className="plain">
-                <Btn variant="primary" className="btn-md">Launch the console</Btn>
+                <Btn variant="primary" className="btn-md">Launch console</Btn>
               </Link>
               <Link href="/docs" className="plain">
                 <Btn className="btn-md">Read the docs</Btn>
@@ -216,11 +216,11 @@ export default function LandingPage() {
               <h2 className="display sec-title">Nobody has an afternoon.</h2>
             </div>
           </Reveal>
-          <div className="grid-2" style={{ marginTop: 34 }}>
+          <div className="grid-2" style={{ marginTop: 30 }}>
             <Reveal delay={60}>
               <Tilt>
                 <div className="panel brackets pad-md" style={{ height: "100%" }}>
-                  <p className="muted" style={{ fontSize: 15.5, lineHeight: 1.85, margin: 0 }}>
+                  <p className="muted" style={{ fontSize: 15.5, lineHeight: 1.75, margin: 0 }}>
                     A dependency advisory lands. Someone has to work out whether <em>this</em> repository is
                     genuinely affected, whether the fix is a one-line bump or a breaking change, whether the
                     test suite survives it, and then write the pull request. That is an afternoon per advisory,
@@ -232,7 +232,7 @@ export default function LandingPage() {
             <Reveal delay={140}>
               <Tilt>
                 <div className="panel brackets pad-md" style={{ height: "100%" }}>
-                  <p className="muted" style={{ fontSize: 15.5, lineHeight: 1.85, margin: 0 }}>
+                  <p className="muted" style={{ fontSize: 15.5, lineHeight: 1.75, margin: 0 }}>
                     Every software team on earth has this backlog. The work is not knowledge work any more; it is
                     repetition at scale, and{" "}
                     <strong className="hl">repetition is exactly what an agent should be doing.</strong>{" "}
@@ -251,20 +251,20 @@ export default function LandingPage() {
           <Reveal>
             <div className="sec-head">
               <span className="kicker">What SENTINEL does</span>
-              <h2 className="display sec-title" style={{ marginBottom: 6 }}>Eight stages. The last one is yours.</h2>
+              <h2 className="display sec-title">Eight stages. The last one is yours.</h2>
             </div>
           </Reveal>
-          <div className="grid-2" style={{ marginTop: 34 }}>
+          <div className="grid-2" style={{ marginTop: 30 }}>
             {STAGES.map((stage, index) => (
-              <Reveal key={stage.n} delay={index * 60}>
+              <Reveal key={stage.n} delay={index * 50}>
                 <Tilt>
                   <div className="panel pad-sm" style={{ height: "100%" }}>
                     <div className="h-row" style={{ alignItems: "baseline" }}>
-                      <span className={`display ${index === STAGES.length - 1 ? "tx-red-glow" : "tx-green-glow"}`} style={{ fontSize: 26, fontWeight: 700 }}>{stage.n}</span>
-                      <span className="mono faint" style={{ fontSize: 10.5 }}>{stage.tool}</span>
+                      <span className={`mono ${index === STAGES.length - 1 ? "tx-red" : "tx-green"}`} style={{ fontSize: 20, fontWeight: 600 }}>{stage.n}</span>
+                      <span className="mono faint" style={{ fontSize: 11 }}>{stage.tool}</span>
                     </div>
-                    <h3 className="display" style={{ fontSize: 19, margin: "10px 0 8px" }}>{stage.name}</h3>
-                    <p className="muted small" style={{ margin: 0, lineHeight: 1.7 }}>{stage.text}</p>
+                    <h3 className="display" style={{ fontSize: 17.5, margin: "10px 0 6px", fontWeight: 600, letterSpacing: "-0.018em" }}>{stage.name}</h3>
+                    <p className="muted small" style={{ margin: 0, lineHeight: 1.65 }}>{stage.text}</p>
                   </div>
                 </Tilt>
               </Reveal>
@@ -287,7 +287,7 @@ export default function LandingPage() {
             </div>
           </Reveal>
           <Reveal delay={120}>
-            <div className="panel panel-scroll pad-lg" style={{ marginTop: 30 }}>
+            <div className="panel panel-scroll pad-lg" style={{ marginTop: 28 }}>
               <pre className="diagram">{`┌──────────────────┐        ┌──────────────────┐
 │  Terminal client │        │    Web client    │      ← this console
 │  (src/cli)       │        │  (src/web)       │
@@ -331,7 +331,7 @@ export default function LandingPage() {
             </div>
           </Reveal>
           <Reveal delay={100}>
-            <div className="panel panel-scroll" style={{ marginTop: 30, padding: 8 }}>
+            <div className="panel panel-scroll" style={{ marginTop: 28, padding: 8 }}>
               <table className="tbl">
                 <thead>
                   <tr>
@@ -368,18 +368,18 @@ export default function LandingPage() {
               <h2 className="display sec-title">Structural, not a prompt the model can talk its way out of.</h2>
             </div>
           </Reveal>
-          <div className="grid-2" style={{ marginTop: 34 }}>
+          <div className="grid-2" style={{ marginTop: 30 }}>
             {[
               ["The approval policy is declared on the tool, once", "TrueForge resolves its @read-only / @write / @destructive approval selectors from MCP tool annotations. The classification lives next to the implementation, and both front ends inherit it automatically."],
               ["Defence in depth on the irreversible path", "The agent spec gates @destructive and names both tools literally. Destructive handlers check the kill switch before any network call. GitHubClient re-checks it at the point of mutation. Branch names are generated by us — the model never supplies a ref."],
               ["Failing safe", "Denial is the default everywhere: empty input, EOF, Escape, and unparseable answers all deny. The web API only accepts approvals for tool calls the harness actually raised."],
               ["Keeping secrets out", "Keys live only in .env, git-ignored, read at one place. The browser never talks to the harness or a provider directly — everything is proxied. Two-layer redaction scrubs every log line, tool result and SSE frame."],
             ].map(([title, text], index) => (
-              <Reveal key={title} delay={index * 70}>
+              <Reveal key={title} delay={index * 60}>
                 <Tilt>
                   <div className="panel brackets pad-md" style={{ height: "100%" }}>
-                    <h3 className="display" style={{ fontSize: 17, margin: "0 0 10px" }}>✓ {title}</h3>
-                    <p className="muted small" style={{ margin: 0, lineHeight: 1.75 }}>{text}</p>
+                    <h3 className="display" style={{ fontSize: 16.5, margin: "0 0 8px", fontWeight: 600, letterSpacing: "-0.015em" }}>✓ {title}</h3>
+                    <p className="muted small" style={{ margin: 0, lineHeight: 1.7 }}>{text}</p>
                   </div>
                 </Tilt>
               </Reveal>
@@ -392,15 +392,15 @@ export default function LandingPage() {
           <Reveal>
             <div className="sec-head">
               <span className="kicker">Degradation strategy</span>
-              <h2 className="display sec-title" style={{ fontSize: "clamp(28px, 4vw, 40px)" }}>Each capability degrades independently.</h2>
+              <h2 className="display sec-title">Each capability degrades independently.</h2>
             </div>
           </Reveal>
-          <div className="grid-2" style={{ marginTop: 30 }}>
+          <div className="grid-2" style={{ marginTop: 28 }}>
             {DEGRADATION.map((row, index) => (
-              <Reveal key={row.missing} delay={index * 60}>
+              <Reveal key={row.missing} delay={index * 50}>
                 <div className="panel pad-sm h-row" style={{ alignItems: "flex-start" }}>
                   <span className="chip chip-solid">{row.missing}</span>
-                  <p className="muted small" style={{ margin: 0, lineHeight: 1.7 }}>{row.behaviour}</p>
+                  <p className="muted small" style={{ margin: 0, lineHeight: 1.65 }}>{row.behaviour}</p>
                 </div>
               </Reveal>
             ))}
@@ -420,23 +420,23 @@ export default function LandingPage() {
               </p>
             </div>
           </Reveal>
-          <div className="grid-3" style={{ marginTop: 34 }}>
+          <div className="grid-3" style={{ marginTop: 30 }}>
             {LABS.map((lab, index) => (
-              <Reveal key={lab.name} delay={index * 70}>
+              <Reveal key={lab.name} delay={index * 60}>
                 <Tilt>
                   <div className="panel brackets pad-md" style={{ height: "100%" }}>
                     <div className="h-row">
-                      <h3 className="display" style={{ fontSize: 18, margin: 0 }}>{lab.name}</h3>
+                      <h3 className="display" style={{ fontSize: 17.5, margin: 0, fontWeight: 600 }}>{lab.name}</h3>
                       <span className="chip">{lab.tag}</span>
                     </div>
-                    <p className="muted small" style={{ margin: "12px 0 0", lineHeight: 1.7 }}>{lab.text}</p>
+                    <p className="muted small" style={{ margin: "12px 0 0", lineHeight: 1.65 }}>{lab.text}</p>
                   </div>
                 </Tilt>
               </Reveal>
             ))}
           </div>
-          <Reveal delay={200}>
-            <div className="center" style={{ margin: "34px 0 0" }}>
+          <Reveal delay={160}>
+            <div className="center" style={{ margin: "32px 0 0" }}>
               <Link href="/app" className="plain">
                 <Btn variant="primary" className="btn-md">Enter the OMNI-LAB ⬡</Btn>
               </Link>
@@ -444,7 +444,7 @@ export default function LandingPage() {
           </Reveal>
         </section>
 
-        {/* second ticker — the tool inventory, drifting the other way */}
+        {/* second ticker */}
         <Marquee alt items={TOOLS.map((tool) => `${tool.name} · ${tool.annotation}`)} />
 
         {/* ================================================== FAQ */}
@@ -455,9 +455,9 @@ export default function LandingPage() {
               <h2 className="display sec-title">The questions that matter.</h2>
             </div>
           </Reveal>
-          <div style={{ marginTop: 30 }}>
+          <div style={{ marginTop: 28 }}>
             {FAQ.map((item, index) => (
-              <Reveal key={item.q} delay={index * 50}>
+              <Reveal key={item.q} delay={index * 40}>
                 <details className="panel faq-item">
                   <summary>{item.q}</summary>
                   <p className="muted small faq-answer">{item.a}</p>
@@ -473,14 +473,14 @@ export default function LandingPage() {
             <div className="panel brackets cta-panel">
               <div className="cta-glow" aria-hidden="true" />
               <span className="kicker">The pause is the product</span>
-              <h2 className="display chrome-text cta-title">Run the strike team.</h2>
+              <h2 className="display cta-title">Run the strike team.</h2>
               <p className="muted cta-lede">
                 No API key needed to see the whole path — real advisory data, real tools, real approval gate —
                 straight from the browser.
               </p>
               <div className="row cta-row">
                 <Link href="/app" className="plain">
-                  <Btn variant="primary" className="btn-lg">Launch Console ⬢</Btn>
+                  <Btn variant="primary" className="btn-lg">Launch console ⬢</Btn>
                 </Link>
                 <a href="https://github.com/geohot0199/sentinental" target="_blank" rel="noreferrer" className="plain">
                   <Btn className="btn-lg">Star on GitHub ★</Btn>
@@ -493,13 +493,13 @@ export default function LandingPage() {
         {/* =============================================== FOOTER */}
         <footer className="footer">
           <div className="container">
-            <span className="mono faint" style={{ fontSize: 11.5 }}>
+            <span className="mono faint" style={{ fontSize: 12 }}>
               SENTINEL · MIT License · built on the TrueForge agent harness
             </span>
             <div className="footer-links">
-              <a className="link mono faint" style={{ fontSize: 11.5 }} href="https://github.com/geohot0199/sentinental" target="_blank" rel="noreferrer">GitHub</a>
-              <Link className="link mono faint" style={{ fontSize: 11.5 }} href="/docs">Docs</Link>
-              <Link className="link mono faint" style={{ fontSize: 11.5 }} href="/app">Console</Link>
+              <a className="link mono faint" style={{ fontSize: 12 }} href="https://github.com/geohot0199/sentinental" target="_blank" rel="noreferrer">GitHub</a>
+              <Link className="link mono faint" style={{ fontSize: 12 }} href="/docs">Docs</Link>
+              <Link className="link mono faint" style={{ fontSize: 12 }} href="/app">Console</Link>
             </div>
           </div>
         </footer>
