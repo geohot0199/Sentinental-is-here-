@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-/** Morphing blob, orbital rings, and a slow-spinning asterisk — the hero's motion graphic. */
+/** Morphing blob, orbital signal rings, breathing core and a drifting asterisk — the hero machine. */
 export default function HeroGraphic() {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -33,6 +33,7 @@ export default function HeroGraphic() {
       </svg>
       <div className="hero-orbit"><i /></div>
       <div className="hero-orbit hero-orbit-2"><i /></div>
+      <div className="hero-core" />
       <span className="hero-asterisk">✳</span>
     </div>
   );

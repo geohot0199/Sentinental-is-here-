@@ -111,7 +111,7 @@ export default function Deck({ context, onNavigate }: { context: ConsoleContext;
       {/* notes + health */}
       <div className="grid-2" style={{ marginTop: 20 }}>
         <Reveal>
-          <div className="panel" style={{ padding: 24, height: "100%" }}>
+          <div className="panel sweep" style={{ padding: 24, height: "100%" }}>
             <span className="kicker">Operator notes</span>
             <ul className="muted small" style={{ margin: "14px 0 0", paddingLeft: 18, lineHeight: 1.9 }}>
               {capabilities.notes.map((note) => (
@@ -121,7 +121,7 @@ export default function Deck({ context, onNavigate }: { context: ConsoleContext;
           </div>
         </Reveal>
         <Reveal delay={80}>
-          <div className="panel" style={{ padding: 24, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 18 }}>
+          <div className="panel sweep" style={{ padding: 24, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 18 }}>
             <div>
               <span className="kicker">Server</span>
               <div className="row" style={{ gap: 10, marginTop: 14 }}>

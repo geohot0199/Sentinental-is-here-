@@ -329,7 +329,7 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
         </div>
 
         {/* transcript */}
-        <div className="panel" style={{ padding: 18, marginTop: 20 }}>
+        <div className="panel sweep" style={{ padding: 18, marginTop: 20 }}>
           <span className="kicker">Transcript</span>
           <div className="term" ref={transcriptRef} style={{ marginTop: 12, minHeight: 140, maxHeight: 300, overflowY: "auto" }}>
             <div className="term-line">

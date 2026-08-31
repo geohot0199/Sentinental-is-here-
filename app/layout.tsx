@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f3f1e9",
+  themeColor: "#030304",
   width: "device-width",
   initialScale: 1,
 };

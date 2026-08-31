@@ -9,9 +9,10 @@
  *   Labs   the WebMCP OMNI-LAB — five laboratories, seventeen tools
  *   Keys   the API key vault — insertion, masking, live connection tests
  */
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import Nav from "@/components/Nav";
 import { ToastStack, useToasts } from "@/components/interactive";
+import Radar from "@/components/motion/Radar";
 import Deck from "@/components/console/Deck";
 import ScanView from "@/components/console/ScanView";
 import AgentCockpit from "@/components/console/AgentCockpit";
@@ -97,14 +98,23 @@ export default function ConsolePage() {
       <Nav />
       <main className="container" style={{ paddingTop: "calc(var(--nav-h) + 30px)", paddingBottom: 70 }}>
         <div className="row" style={{ justifyContent: "space-between", alignItems: "flex-end", marginBottom: 22 }}>
-          <div>
-            <span className="kicker">Console</span>
-            <h1 className="display" style={{ fontSize: "clamp(28px, 4vw, 40px)", margin: "10px 0 0" }}>
-              Mission control
-            </h1>
+          <div className="row" style={{ gap: 20, alignItems: "center", flexWrap: "nowrap" }}>
+            <Radar
+              size={54}
+              contacts={[
+                { top: 32, left: 64, delay: 0 },
+                { top: 66, left: 38, delay: 1.2, green: true },
+              ]}
+            />
+            <div>
+              <span className="kicker">Console</span>
+              <h1 className="display tx-green-glow" style={{ fontSize: "clamp(28px, 4vw, 40px)", margin: "10px 0 0" }}>
+                Mission control
+              </h1>
+            </div>
           </div>
           <div className="row" style={{ gap: 9 }}>
-            <span className={`chip ${server === null ? "" : "chip-glow"}`}>
+            <span className={`chip ${server === null ? "" : "chip-green"}`}>
               <span className="dot" style={{ width: 6, height: 6 }} />
               {server === null ? "server…" : "server online"}
             </span>
@@ -120,24 +130,27 @@ export default function ConsolePage() {
         </div>
 
         <div className="tabs" style={{ marginBottom: 26 }}>
-          {TABS.map((item) => (
+          {TABS.map((item, index) => (
             <button
               key={item.id}
               className="tab"
               data-active={tab === item.id}
               onClick={() => setTab(item.id)}
               title={item.hint}
+              style={{ "--i": index } as CSSProperties}
             >
               {item.label}
             </button>
           ))}
         </div>
 
-        {tab === "deck" && <Deck context={context} onNavigate={setTab} />}
-        {tab === "scan" && <ScanView context={context} />}
-        {tab === "agent" && <AgentCockpit context={context} />}
-        {tab === "labs" && <Labs context={context} />}
-        {tab === "keys" && <KeysPanel context={context} />}
+        <div className="station-entry" key={tab}>
+          {tab === "deck" && <Deck context={context} onNavigate={setTab} />}
+          {tab === "scan" && <ScanView context={context} />}
+          {tab === "agent" && <AgentCockpit context={context} />}
+          {tab === "labs" && <Labs context={context} />}
+          {tab === "keys" && <KeysPanel context={context} />}
+        </div>
       </main>
       <ToastStack toasts={toasts} />
     </>
