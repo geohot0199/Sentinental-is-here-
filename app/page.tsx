@@ -6,6 +6,7 @@ import { Btn, Reveal, Tilt, KineticWords } from "@/components/interactive";
 import HeroGraphic from "@/components/motion/HeroGraphic";
 import Marquee from "@/components/motion/Marquee";
 import Radar from "@/components/motion/Radar";
+import TypeLine from "@/components/motion/TypeLine";
 
 export const metadata = {
   title: "SENTINEL — Autonomous Supply-Chain CVE Strike Team",
@@ -82,6 +83,7 @@ export default function LandingPage() {
 
         {/* ================================================== HERO */}
         <section className="hero">
+          <div className="hero-scan" aria-hidden="true" />
           <HeroGraphic />
           {/* drifting tool satellites */}
           {([
@@ -177,6 +179,16 @@ export default function LandingPage() {
                         <span className="term-narration">{detail}</span>
                       </div>
                     ))}
+                    <div style={{ marginTop: 12 }}>
+                      <TypeLine
+                        lines={[
+                          "triage owner/repo → lockfile resolved",
+                          "3 subagents · blast-radius assessed",
+                          "patch ready · 93/93 tests green",
+                          "holding for human approval…",
+                        ]}
+                      />
+                    </div>
                     <div className="term-line" style={{ marginTop: 10 }}>
                       <span className="term-approval">approval required: open_pull_request · destructive</span>
                       <span className="cursor-blink" />
@@ -185,16 +197,20 @@ export default function LandingPage() {
                 </div>
               </Tilt>
               <Reveal delay={160}>
-                <div className="panel brackets pad-md radar-card">
-                  <div className="h-row">
-                    <span className="kicker">Live scope</span>
-                    <span className="chip chip-green"><span className="dot" style={{ width: 6, height: 6 }} /> sweeping</span>
-                  </div>
-                  <Radar />
-                  <div className="row" style={{ gap: 8, justifyContent: "center" }}>
-                    <span className="chip chip-red">3 matches</span>
-                    <span className="chip">14 swept</span>
-                    <span className="chip">1 PR held</span>
+                <div className="ring-border ring-border-green">
+                  <div className="panel brackets pad-md radar-card" style={{ borderRadius: "calc(var(--radius) - 1px)" }}>
+                    <div className="h-row">
+                      <span className="kicker">Live scope</span>
+                      <span className="waveform" aria-hidden="true">
+                        {Array.from({ length: 11 }).map((_, i) => <i key={i} />)}
+                      </span>
+                    </div>
+                    <Radar />
+                    <div className="row" style={{ gap: 8, justifyContent: "center" }}>
+                      <span className="chip chip-red">3 matches</span>
+                      <span className="chip">14 swept</span>
+                      <span className="chip">1 PR held</span>
+                    </div>
                   </div>
                 </div>
               </Reveal>
@@ -470,21 +486,23 @@ export default function LandingPage() {
         {/* ================================================= CTA */}
         <section className="sec sec-cta">
           <Reveal>
-            <div className="panel brackets cta-panel">
-              <div className="cta-glow" aria-hidden="true" />
-              <span className="kicker">The pause is the product</span>
-              <h2 className="display cta-title">Run the strike team.</h2>
-              <p className="muted cta-lede">
-                No API key needed to see the whole path — real advisory data, real tools, real approval gate —
-                straight from the browser.
-              </p>
-              <div className="row cta-row">
-                <Link href="/app" className="plain">
-                  <Btn variant="primary" className="btn-lg">Launch console ⬢</Btn>
-                </Link>
-                <a href="https://github.com/geohot0199/sentinental" target="_blank" rel="noreferrer" className="plain">
-                  <Btn className="btn-lg">Star on GitHub ★</Btn>
-                </a>
+            <div className="ring-border" style={{ borderRadius: 12 }}>
+              <div className="panel brackets cta-panel" style={{ borderRadius: 11 }}>
+                <div className="cta-glow" aria-hidden="true" />
+                <span className="kicker">The pause is the product</span>
+                <h2 className="display cta-title">Run the strike team.</h2>
+                <p className="muted cta-lede">
+                  No API key needed to see the whole path — real advisory data, real tools, real approval gate —
+                  straight from the browser.
+                </p>
+                <div className="row cta-row">
+                  <Link href="/app" className="plain">
+                    <Btn variant="primary" className="btn-lg">Launch console ⬢</Btn>
+                  </Link>
+                  <a href="https://github.com/geohot0199/sentinental" target="_blank" rel="noreferrer" className="plain">
+                    <Btn className="btn-lg">Star on GitHub ★</Btn>
+                  </a>
+                </div>
               </div>
             </div>
           </Reveal>
