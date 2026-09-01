@@ -5,38 +5,50 @@
    ========================================================================== */
 
 :root {
-  /* Colors */
-  --bg: #050507;
-  --bg-2: #0c0c0f;
-  --panel: rgba(255, 255, 255, 0.032);
-  --panel-strong: rgba(255, 255, 255, 0.065);
-  --line: rgba(255, 255, 255, 0.09);
-  --line-strong: rgba(255, 255, 255, 0.18);
-  --ink: #f4f4f6;
-  --ink-dim: #9ca3af;
-  --ink-faint: #52525b;
-  --silver: linear-gradient(135deg, #ffffff 0%, #d4d4d8 30%, #71717a 50%, #e4e4e7 75%, #ffffff 100%);
-  --silver-soft: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.65));
+  /* Colour — OpenAI monochrome. Paper white, ink black, and the greys between.
+     There is deliberately no hue anywhere in this system: state is carried by
+     fill, weight and dash pattern, never by colour. */
+  --bg: #ffffff;
+  --bg-2: #fafafa;
+  --paper: #ffffff;
+  --panel: rgba(13, 13, 13, 0.024);
+  --panel-strong: rgba(13, 13, 13, 0.055);
+  --line: rgba(13, 13, 13, 0.11);
+  --line-strong: rgba(13, 13, 13, 0.22);
+  --ink: #0d0d0d;
+  --ink-dim: #5d5d5d;
+  --ink-faint: #909090;
+  --ink-rgb: 13, 13, 13;
+  --on-ink: #ffffff;
+  --shadow-1: 0 1px 2px rgba(13, 13, 13, 0.05);
+  --shadow-2: 0 12px 32px -18px rgba(13, 13, 13, 0.22);
+  --shadow-3: 0 26px 60px -28px rgba(13, 13, 13, 0.26);
+  --silver: linear-gradient(115deg, #0d0d0d 0%, #4d4d4d 26%, #0d0d0d 48%, #7a7a7a 72%, #0d0d0d 100%);
+  --silver-soft: linear-gradient(135deg, rgba(13, 13, 13, 0.92), rgba(13, 13, 13, 0.6));
 
-  /* Signals */
-  --green: #10a37f;
-  --green-rgb: 16, 163, 127;
-  --green-soft: rgba(16, 163, 127, 0.12);
-  --red: #ef4444;
-  --red-rgb: 239, 68, 68;
-  --red-soft: rgba(239, 68, 68, 0.12);
+  /* "Signals" — kept as names so the console still reads semantically, but
+     resolved to monochrome. Critical = solid ink; safe = outlined ink. */
+  --green: #0d0d0d;
+  --green-rgb: 13, 13, 13;
+  --green-soft: rgba(13, 13, 13, 0.06);
+  --red: #0d0d0d;
+  --red-rgb: 13, 13, 13;
+  --red-soft: rgba(13, 13, 13, 0.06);
 
-  /* Typography Stack — OpenAI (Söhne/Inter) & Claude (Claude Sans / Tiempos / JetBrains Mono) */
-  --font-sans: var(--font-sans), "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-serif: var(--font-serif), "Newsreader", "Source Serif 4", "Tiempos Headline", "Copernicus", Georgia, "Times New Roman", serif;
-  --font-mono: var(--font-mono), "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  /* Typography — the OpenAI stack: a neutral neo-grotesque for everything, a
+     literary serif only for editorial moments, mono for machine output.
+     `next/font/local` injects the three *_src tokens on <html>; each role adds
+     system fallbacks, so the page degrades to a comparable face rather than to
+     a browser default if a font file is ever missing. */
+  --font-sans: var(--font-sans-src, "Inter"), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-serif-src, "Newsreader"), Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-mono-src, "JetBrains Mono"), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  /* Aliases */
   --font-display: var(--font-sans);
   --font-editorial: var(--font-serif);
   --font-body: var(--font-sans);
 
-  --radius: 8px;
+  --radius: 12px;
   --nav-h: 64px;
 }
 
@@ -54,9 +66,9 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.65;
-  letter-spacing: -0.011em;
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: -0.014em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -65,8 +77,8 @@ body {
 }
 
 ::selection {
-  background: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
+  background: var(--ink);
+  color: var(--on-ink);
 }
 
 /* ------------------------------------------------------------- scrollbar */
@@ -75,14 +87,14 @@ body {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #08080a;
+  background: #f4f4f4;
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #d5d5d5;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #a4a4a4;
 }
 
 /* ============================================================================
@@ -95,42 +107,29 @@ body {
   z-index: -10;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 255, 255, 0.07), transparent 65%),
-    radial-gradient(ellipse 60% 40% at 85% 105%, rgba(16, 163, 127, 0.04), transparent 60%),
+    radial-gradient(ellipse 90% 55% at 50% -12%, rgba(13, 13, 13, 0.045), transparent 62%),
+    radial-gradient(ellipse 70% 45% at 92% 108%, rgba(13, 13, 13, 0.03), transparent 60%),
     var(--bg);
 }
 
+/* A faint survey grid: the only "technical" texture on the page, drawn in
+   1px hairlines at 2% ink so it reads as paper, not as a HUD. */
 .backdrop::before {
   content: "";
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, black 25%, transparent 80%);
-  animation: gridDrift 28s linear infinite;
-}
-
-.backdrop::after {
-  content: "";
-  position: absolute;
-  inset: -50%;
-  opacity: 0.06;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.8'/%3E%3C/svg%3E");
-  animation: grain 1.2s steps(4) infinite;
+    linear-gradient(rgba(13, 13, 13, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(13, 13, 13, 0.055) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 75% 55% at 50% 14%, black 10%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 55% at 50% 14%, black 10%, transparent 78%);
+  animation: gridDrift 44s linear infinite;
 }
 
 @keyframes gridDrift {
   from { background-position: 0 0, 0 0; }
-  to { background-position: 48px 48px, 48px 48px; }
-}
-@keyframes grain {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-1.5%, 1%); }
-  50% { transform: translate(1%, -1.5%); }
-  75% { transform: translate(-1%, 1.5%); }
-  100% { transform: translate(1.5%, -1%); }
+  to { background-position: 56px 56px, 56px 56px; }
 }
 
 /* ============================================================================
@@ -140,8 +139,9 @@ body {
 .display {
   font-family: var(--font-display);
   font-weight: 600;
-  letter-spacing: -0.028em;
-  line-height: 1.15;
+  letter-spacing: -0.032em;
+  line-height: 1.1;
+  text-wrap: balance;
 }
 
 .editorial, .display-serif {
@@ -172,17 +172,15 @@ body {
 .kicker::before {
   content: "";
   display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 8px rgba(var(--green-rgb), 0.6);
+  width: 18px;
+  height: 1px;
+  background: var(--ink);
   flex-shrink: 0;
 }
 
 .chrome-text {
   background: var(--silver);
-  background-size: 200% 200%;
+  background-size: 220% 220%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -194,20 +192,21 @@ body {
   50% { background-position: 100% 50%; }
 }
 
-/* Signal colors */
-.tx-green { color: var(--green) !important; }
-.tx-red { color: var(--red) !important; }
-.tx-green-glow { color: var(--green); }
-.tx-red-glow { color: var(--red); }
+/* Signal classes — monochrome by design. "Red" is expressed as solid ink,
+   "green" as ordinary ink; the difference is weight, not hue. */
+.tx-green { color: var(--ink-dim) !important; }
+.tx-red { color: var(--ink) !important; font-weight: 600; }
+.tx-green-glow { color: var(--ink-dim); }
+.tx-red-glow { color: var(--ink); }
 
 /* Section Title & Headings */
 .sec-title {
   font-family: var(--font-display);
-  font-size: clamp(28px, 3.8vw, 42px);
+  font-size: clamp(30px, 4.2vw, 46px);
   font-weight: 600;
-  letter-spacing: -0.028em;
-  line-height: 1.18;
-  color: #ffffff;
+  letter-spacing: -0.032em;
+  line-height: 1.1;
+  color: var(--ink);
   margin: 14px 0 0;
 }
 
@@ -223,8 +222,9 @@ body {
 }
 
 .hl {
-  color: #ffffff;
-  font-weight: 550;
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow: inset 0 -0.34em 0 rgba(13, 13, 13, 0.07);
 }
 
 /* ============================================================================
@@ -252,7 +252,7 @@ body {
   font-weight: inherit;
   letter-spacing: inherit;
   line-height: 1;
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .wordmark-sm {
@@ -262,7 +262,7 @@ body {
 }
 
 .wordmark-sm .letter i {
-  color: #ffffff;
+  color: var(--ink);
 }
 
 @keyframes letterIn {
@@ -280,10 +280,10 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 8px 18px;
+  padding: 9px 19px;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(13, 13, 13, 0.15);
+  background: var(--paper);
   color: var(--ink);
   font-family: var(--font-sans);
   font-weight: 500;
@@ -295,13 +295,13 @@ body {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-1);
 }
 
 .btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.24);
-  color: #ffffff;
+  background: #f4f4f4;
+  border-color: rgba(13, 13, 13, 0.3);
+  color: var(--ink);
   transform: translateY(-1px);
 }
 
@@ -309,20 +309,21 @@ body {
   transform: translateY(0);
 }
 
-/* Primary CTA — crisp white solid, black text (OpenAI / Claude signature) */
+/* Primary CTA — solid ink, paper text. The OpenAI signature. */
 .btn-primary {
-  background: #ffffff;
-  color: #09090b !important;
-  border-color: #ffffff;
+  background: var(--ink);
+  color: var(--on-ink) !important;
+  border-color: var(--ink);
   font-weight: 550;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 0 16px rgba(255, 255, 255, 0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 0 16px rgba(var(--ink-rgb), 0.12);
 }
 
 .btn-primary:hover {
-  background: #e4e4e7;
-  border-color: #e4e4e7;
-  color: #000000 !important;
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.22);
+  background: #000000;
+  border-color: #000000;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-2);
 }
 
 /* Ghost button */
@@ -334,9 +335,9 @@ body {
 }
 
 .btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
+  background: transparent;
+  border-color: rgba(13, 13, 13, 0.35);
+  color: var(--ink);
 }
 
 .btn-lg {
@@ -363,30 +364,22 @@ body {
   position: relative;
   border-radius: var(--radius);
   border: 1px solid var(--line);
-  background:
-    linear-gradient(175deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.015) 40%, rgba(255, 255, 255, 0.025) 100%),
-    #09090c;
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.06) inset,
-    0 16px 36px -16px rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(16px);
+  background: var(--paper);
+  box-shadow: var(--shadow-1);
   overflow: hidden;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s, box-shadow 0.25s;
 }
 
 .panel:hover {
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: rgba(13, 13, 13, 0.2);
 }
 
 .grid-2 > .reveal .panel:hover,
 .grid-3 > .reveal .panel:hover,
 .demo-grid .panel:hover {
   transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.22);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.08) inset,
-    0 20px 40px -18px rgba(0, 0, 0, 0.95),
-    0 0 30px -10px rgba(16, 163, 127, 0.08);
+  border-color: rgba(13, 13, 13, 0.26);
+  box-shadow: var(--shadow-3);
 }
 
 /* Subtle panel shine */
@@ -395,7 +388,7 @@ body {
   position: absolute;
   top: 0; left: 10%; right: 10%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(var(--ink-rgb), 0.35), transparent);
   pointer-events: none;
 }
 
@@ -405,7 +398,7 @@ body {
   position: absolute;
   width: 12px;
   height: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(var(--ink-rgb), 0.2);
   z-index: 2;
   transition: all 0.25s;
   pointer-events: none;
@@ -413,7 +406,7 @@ body {
 .brackets::before { top: 6px; left: 6px; border-right: none; border-bottom: none; }
 .brackets::after { bottom: 6px; right: 6px; border-left: none; border-top: none; }
 .brackets:hover::before, .brackets:hover::after {
-  border-color: rgba(255, 255, 255, 0.45);
+  border-color: rgba(var(--ink-rgb), 0.45);
 }
 
 /* 3D tilt */
@@ -431,7 +424,7 @@ body {
   inset: 0;
   z-index: 4;
   pointer-events: none;
-  background: radial-gradient(280px circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.06), transparent 70%);
+  background: radial-gradient(280px circle at var(--gx, 50%) var(--gy, 50%), rgba(var(--ink-rgb), 0.06), transparent 70%);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -446,40 +439,43 @@ body {
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: 9999px;
   border: 1px solid var(--line);
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.02em;
   color: var(--ink-dim);
-  background: rgba(255, 255, 255, 0.035);
+  background: var(--bg-2);
   white-space: nowrap;
 }
 
 .chip-solid {
-  background: #ffffff;
-  color: #000000;
-  border-color: #ffffff;
+  background: var(--ink);
+  color: var(--on-ink);
+  border-color: var(--ink);
   font-weight: 600;
 }
 
+./* Monochrome severity ladder: solid ink → outlined ink → dashed ink → faint.
+   The ordering is legible without a single hue. */
 .chip-glow {
-  border-color: rgba(16, 163, 127, 0.4);
-  color: var(--green);
-  box-shadow: 0 0 14px rgba(16, 163, 127, 0.15);
+  border-color: var(--ink);
+  color: var(--ink);
+  font-weight: 600;
 }
 
 .chip-green {
-  border-color: rgba(16, 163, 127, 0.4);
-  color: var(--green);
-  background: rgba(16, 163, 127, 0.08);
+  border-color: var(--line-strong);
+  color: var(--ink);
+  background: var(--paper);
 }
 
 .chip-red {
-  border-color: rgba(239, 68, 68, 0.4);
-  color: var(--red);
-  background: rgba(239, 68, 68, 0.08);
+  border-color: var(--ink);
+  color: var(--on-ink);
+  background: var(--ink);
+  font-weight: 600;
 }
 
 .sev {
@@ -493,61 +489,86 @@ body {
 }
 
 .sev-critical {
-  background: rgba(239, 68, 68, 0.16);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.45);
-  font-weight: 600;
+  background: var(--ink);
+  color: var(--on-ink);
+  border: 1px solid var(--ink);
+  font-weight: 700;
 }
 
 .sev-high {
-  border: 1px solid rgba(239, 68, 68, 0.6);
-  color: #f87171;
-  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  background: var(--paper);
+  font-weight: 600;
 }
 
 .sev-moderate {
-  border: 1px dashed rgba(255, 255, 255, 0.4);
-  color: rgba(255, 255, 255, 0.85);
+  border: 1px dashed var(--line-strong);
+  color: var(--ink-dim);
 }
 
 .sev-low {
-  border: 1px dotted rgba(255, 255, 255, 0.3);
-  color: var(--ink-dim);
+  border: 1px dotted var(--line);
+  color: var(--ink-faint);
+}
+
+.sev-none, .sev-info {
+  color: var(--ink-faint);
 }
 
 .sev-unknown {
   color: var(--ink-faint);
 }
 
+./* "Live" indicators pulse by scale and opacity, never by colour. */
 .dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 8px rgba(16, 163, 127, 0.8);
+  background: var(--ink);
+  box-shadow: none;
 }
 .dot-red {
-  background: var(--red);
-  box-shadow: 0 0 8px rgba(239, 68, 68, 0.8);
+  background: var(--ink);
+  animation: pulseDot 1.8s ease-in-out infinite;
 }
 .dot-white {
-  background: #ffffff;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+  background: var(--ink);
+  box-shadow: none;
+}
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.45; }
 }
 
 /* ============================================================================
    TERMINAL / TRANSCRIPT / CODE
    ========================================================================== */
 
+./* Terminal + code islands stay inverted: a black instrument on white paper.
+   Every token is re-declared locally so children keep working unchanged. */
+.term, .code-block {
+  --ink: #f5f5f5;
+  --ink-dim: #a4a4a4;
+  --ink-faint: #747474;
+  --ink-rgb: 255, 255, 255;
+  --line: rgba(255, 255, 255, 0.14);
+  --line-strong: rgba(255, 255, 255, 0.3);
+  --green: #e9e9e9;
+  --red: #ffffff;
+  --on-ink: #0b0b0b;
+}
+
 .term {
   font-family: var(--font-mono);
   font-size: 12.5px;
   line-height: 1.7;
   letter-spacing: -0.01em;
-  background: #08080a;
-  border: 1px solid var(--line);
+  background: #0b0b0b;
+  border: 1px solid rgba(13, 13, 13, 0.9);
   border-radius: var(--radius);
   padding: 18px;
+  color: var(--ink);
   position: relative;
   overflow: hidden;
 }
@@ -590,8 +611,8 @@ body {
 }
 
 .term-error {
-  color: #f87171;
-  background: rgba(239, 68, 68, 0.1);
+  color: var(--ink);
+  background: rgba(var(--ink-rgb), 0.1);
   padding: 4px 8px;
   border-radius: 4px;
 }
@@ -599,24 +620,23 @@ body {
 .term-sub {
   color: var(--ink-dim);
   padding-left: 16px;
-  border-left: 1px dashed rgba(255, 255, 255, 0.2);
+  border-left: 1px dashed rgba(var(--ink-rgb), 0.2);
   margin-left: 4px;
 }
 
 .term-approval {
-  color: #000000;
-  background: #ffffff;
+  color: #0b0b0b;
+  background: #f5f5f5;
   font-weight: 600;
   font-size: 11.5px;
   letter-spacing: 0.02em;
   padding: 4px 10px;
   border-radius: 4px;
   display: inline-block;
-  box-shadow: 0 0 16px rgba(255, 255, 255, 0.3);
 }
 
 .term-report {
-  color: #ffffff;
+  color: var(--ink);
   border-top: 1px solid var(--line-strong);
   margin-top: 8px;
   padding-top: 8px;
@@ -636,7 +656,7 @@ body {
 }
 
 .tool-name {
-  color: #ffffff;
+  color: var(--ink);
   font-weight: 500;
 }
 
@@ -668,7 +688,7 @@ body {
 }
 .rail-node:first-child::before { top: 50%; }
 .rail-node:last-child::before { bottom: 50%; }
-.rail-node.done::before { background: linear-gradient(180deg, var(--green), rgba(16, 163, 127, 0.2)); }
+.rail-node.done::before { background: linear-gradient(180deg, var(--green), rgba(var(--ink-rgb), 0.2)); }
 
 .rail-dot {
   width: 30px;
@@ -680,24 +700,24 @@ body {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--ink-faint);
-  background: #09090c;
+  background: var(--paper);
   z-index: 1;
   transition: all 0.25s;
 }
 
 .rail-node.active .rail-dot {
-  color: #000000;
-  background: #ffffff;
+  color: var(--on-ink);
+  background: var(--ink);
   font-weight: 600;
-  border-color: #ffffff;
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
+  border-color: var(--ink);
+  box-shadow: 0 0 0 4px rgba(var(--ink-rgb), 0.051);
   transform: scale(1.05);
 }
 
 .rail-node.done .rail-dot {
   color: var(--green);
   border-color: var(--green);
-  background: rgba(16, 163, 127, 0.1);
+  background: rgba(var(--ink-rgb), 0.1);
 }
 
 .rail-node.skipped .rail-dot {
@@ -714,7 +734,7 @@ body {
 }
 
 .rail-node.active .rail-label {
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .rail-node.done .rail-label {
@@ -750,23 +770,26 @@ body {
 .input, .textarea, .select {
   width: 100%;
   padding: 10px 14px;
-  border-radius: 6px;
-  border: 1px solid var(--line);
-  background: rgba(0, 0, 0, 0.45);
+  border-radius: 8px;
+  border: 1px solid rgba(13, 13, 13, 0.16);
+  background: var(--paper);
   color: var(--ink);
   font-family: var(--font-mono);
   font-size: 13px;
   line-height: 1.5;
   letter-spacing: -0.01em;
   outline: none;
-  caret-color: #ffffff;
+  caret-color: var(--ink);
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.input::placeholder, .textarea::placeholder {
+  color: var(--ink-faint);
 }
 
 .input:focus, .textarea:focus, .select:focus {
-  border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
-  background: rgba(0, 0, 0, 0.65);
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(13, 13, 13, 0.07);
+  background: var(--paper);
 }
 
 .textarea {
@@ -780,7 +803,8 @@ body {
   cursor: pointer;
 }
 .select option {
-  background: #0e0e12;
+  background: #ffffff;
+  color: #0d0d0d;
 }
 
 .switch {
@@ -789,7 +813,7 @@ body {
   height: 24px;
   border-radius: 9999px;
   border: 1px solid var(--line-strong);
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(var(--ink-rgb), 0.08);
   cursor: pointer;
   transition: all 0.25s;
   flex-shrink: 0;
@@ -805,12 +829,12 @@ body {
   border-radius: 50%;
   background: #ffffff;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 3px rgba(13, 13, 13, 0.3);
 }
 
 .switch[data-on="true"] {
-  background: var(--green);
-  border-color: var(--green);
+  background: var(--ink);
+  border-color: var(--ink);
 }
 
 .switch[data-on="true"]::after {
@@ -828,7 +852,7 @@ body {
   padding: 4px;
   border-radius: 8px;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.025);
+  background: rgba(var(--ink-rgb), 0.025);
   backdrop-filter: blur(12px);
   overflow-x: auto;
   max-width: 100%;
@@ -853,15 +877,15 @@ body {
 }
 
 .tab:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.05);
+  color: var(--ink);
+  background: rgba(var(--ink-rgb), 0.05);
 }
 
 .tab[data-active="true"] {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.12);
+  color: var(--ink);
+  background: rgba(var(--ink-rgb), 0.12);
   font-weight: 550;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-1);
 }
 
 @keyframes tabIn {
@@ -899,7 +923,7 @@ body {
   transition: color 0.2s;
 }
 .link:hover {
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .divider {
@@ -914,10 +938,11 @@ body {
   font-size: 12.5px;
   line-height: 1.65;
   letter-spacing: -0.01em;
-  background: #08080a;
-  border: 1px solid var(--line);
+  background: #0b0b0b;
+  border: 1px solid rgba(13, 13, 13, 0.9);
   border-radius: var(--radius);
   padding: 16px 18px;
+  color: #e5e5e5;
   overflow-x: auto;
   position: relative;
 }
@@ -926,7 +951,7 @@ body {
 }
 
 .skeleton {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
+  background: linear-gradient(90deg, rgba(var(--ink-rgb), 0.03) 25%, rgba(var(--ink-rgb), 0.08) 50%, rgba(var(--ink-rgb), 0.03) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s linear infinite;
   border-radius: 6px;
@@ -947,13 +972,13 @@ body {
 .meter {
   height: 6px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(13, 13, 13, 0.08);
   overflow: hidden;
 }
 .meter > i {
   display: block;
   height: 100%;
-  background: #ffffff;
+  background: var(--ink);
   border-radius: 9999px;
   transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -975,7 +1000,7 @@ body {
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .nav-mark {
@@ -983,13 +1008,13 @@ body {
   place-items: center;
   width: 28px;
   height: 28px;
-  border-radius: 7px;
-  background: #ffffff;
-  color: #09090b;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--on-ink);
   font-family: var(--font-sans);
   font-weight: 700;
   font-size: 14px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  box-shadow: var(--shadow-1);
 }
 
 .nav-right {
@@ -1107,12 +1132,16 @@ body {
    ========================================================================== */
 
 .toolbar {
+  --ink-faint: #929292;
+  --line: rgba(255, 255, 255, 0.12);
+  --line-strong: rgba(255, 255, 255, 0.28);
+  --green: #e9e9e9;
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 12px 16px;
-  border-bottom: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background: #141414;
 }
 
 .toolbar .dot {
@@ -1126,9 +1155,9 @@ body {
 }
 
 .toolbar .dot.active {
-  background: var(--green);
-  border-color: var(--green);
-  box-shadow: 0 0 8px rgba(16, 163, 127, 0.6);
+  background: #ffffff;
+  border-color: #ffffff;
+  box-shadow: none;
 }
 
 .toolbar .title {
@@ -1141,7 +1170,7 @@ body {
 .term-flush {
   border: none;
   border-radius: 0;
-  background: #060608;
+  background: #0b0b0b;
 }
 
 /* ============================================================================
@@ -1183,7 +1212,7 @@ body {
 }
 
 .tbl tbody tr:hover {
-  background: rgba(255, 255, 255, 0.025);
+  background: rgba(var(--ink-rgb), 0.025);
 }
 
 /* ============================================================================
@@ -1240,11 +1269,11 @@ body {
 }
 
 .faq-item summary:hover {
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .faq-item summary:hover::after {
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .faq-item[open] summary {
@@ -1253,7 +1282,7 @@ body {
 
 .faq-item[open] summary::after {
   transform: rotate(45deg);
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .faq-answer {
@@ -1278,7 +1307,7 @@ body {
   position: absolute;
   inset: -40% -20% auto;
   height: 150%;
-  background: radial-gradient(ellipse 50% 40% at 50% 30%, rgba(255, 255, 255, 0.16), rgba(16, 163, 127, 0.08) 45%, transparent 70%);
+  background: radial-gradient(ellipse 50% 40% at 50% 30%, rgba(var(--ink-rgb), 0.16), rgba(var(--ink-rgb), 0.08) 45%, transparent 70%);
   pointer-events: none;
   animation: ctaGlowPulse 6s ease-in-out infinite;
 }
@@ -1391,13 +1420,15 @@ body {
 }
 
 :where(a, button, summary, input, textarea, select, [tabindex]):focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.75);
+  outline: 2px solid rgba(var(--ink-rgb), 0.75);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
 /* ============================================================================
-   MOTION GRAPHICS & VISUALS
+   MOTION GRAPHICS — one language only: orbiting satellites.
+   No radar sweeps, no target reticles, no scanning beams. Every moving part
+   on the landing page is a body on an orbit, a trail, or a downlink.
    ========================================================================== */
 
 @keyframes glyphRise {
@@ -1408,13 +1439,8 @@ body {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: none; }
 }
-@keyframes blobMorph {
-  0%, 100% { border-radius: 46% 54% 42% 58% / 52% 40% 60% 48%; }
-  33% { border-radius: 58% 42% 62% 38% / 38% 56% 44% 62%; }
-  66% { border-radius: 40% 60% 38% 62% / 62% 46% 54% 38%; }
-}
-@keyframes spinReverse { to { transform: rotate(-360deg); } }
 @keyframes orbit { to { transform: rotate(360deg); } }
+@keyframes spinReverse { to { transform: rotate(-360deg); } }
 @keyframes marqueeMove {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -1440,139 +1466,221 @@ body {
   animation-delay: calc(0.8s + var(--i, 0) * 70ms);
 }
 
-/* Hero graphic */
+/* ---------------------------------------------------------------- 1 · stage
+   The stage is a fixed 480×480 coordinate box so that CSS `offset-path`
+   (which speaks px, not viewBox units) and the SVG orbit paths agree.
+   Responsiveness comes from a scale transform on the wrapper. */
 .hero-graphic {
-  --px: 0; --py: 0;
+  --px: 0;
+  --py: 0;
   position: absolute;
-  right: 1%;
-  top: 9%;
-  width: min(42vw, 480px);
-  aspect-ratio: 1;
+  right: 0;
+  top: 6%;
+  width: 480px;
+  height: 480px;
   z-index: 0;
   pointer-events: none;
   transform: translate3d(calc(var(--px) * 16px), calc(var(--py) * 12px), 0);
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
 }
-.hero-blob {
-  position: absolute;
-  inset: 14%;
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  background:
-    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05) 52%, transparent 70%),
-    radial-gradient(circle at 50% 50%, rgba(16, 163, 127, 0.22), transparent 65%);
-  box-shadow:
-    inset 0 0 90px rgba(16, 163, 127, 0.18),
-    inset 0 0 40px rgba(255, 255, 255, 0.06),
-    0 0 90px rgba(16, 163, 127, 0.14),
-    0 0 60px rgba(255, 255, 255, 0.08);
-  animation: blobMorph 16s ease-in-out infinite;
-  will-change: border-radius;
-}
-.hero-blob::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: conic-gradient(from 0deg, transparent 0deg, rgba(16, 163, 127, 0.55) 70deg, rgba(255, 255, 255, 0.35) 130deg, transparent 200deg);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  padding: 1px;
-  animation: orbit 9s linear infinite;
-  opacity: 0.85;
-  pointer-events: none;
-}
-.hero-rings { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.hero-rings .ring { stroke: rgba(255, 255, 255, 0.32); stroke-width: 1.2; transform-origin: 250px 250px; }
-.hero-rings .ring-a { stroke-dasharray: 3 11; animation: orbit 48s linear infinite; }
-.hero-rings .ring-b { stroke: rgba(16, 163, 127, 0.85); stroke-dasharray: 1 16; animation: spinReverse 32s linear infinite; }
-.hero-rings .ring-c { stroke: rgba(239, 68, 68, 0.8); stroke-dasharray: 60 260; animation: orbit 22s linear infinite; }
-.hero-orbit { position: absolute; inset: 8%; animation: orbit 24s linear infinite; }
-.hero-orbit i {
-  position: absolute;
-  top: 0; left: 50%;
-  width: 8px; height: 8px;
-  margin-left: -4px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 18px rgba(255, 255, 255, 0.95), 0 0 34px rgba(255, 255, 255, 0.45);
-}
-.hero-orbit-2 { inset: 20%; animation-duration: 35s; animation-direction: reverse; }
-.hero-orbit-2 i { width: 6px; height: 6px; background: var(--green); box-shadow: 0 0 16px rgba(16, 163, 127, 1), 0 0 30px rgba(16, 163, 127, 0.5); }
-.hero-core {
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 12px; height: 12px;
-  margin: -6px 0 0 -6px;
-  border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 26px rgba(16, 163, 127, 1), 0 0 60px rgba(16, 163, 127, 0.5);
-  animation: corePulse 2.4s ease-in-out infinite;
-}
-@keyframes corePulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 26px rgba(16, 163, 127, 1), 0 0 60px rgba(16, 163, 127, 0.5); }
-  50% { transform: scale(1.35); box-shadow: 0 0 34px rgba(16, 163, 127, 1), 0 0 90px rgba(16, 163, 127, 0.7); }
-}
-.hero-asterisk {
+.sats-scaler {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
-  color: rgba(255, 255, 255, 0.32);
-  font-family: var(--font-sans);
-  font-size: 120px;
-  font-weight: 300;
-  line-height: 1;
-  animation: astSpin 60s linear infinite;
+  transform: scale(var(--gscale, 1));
+  transform-origin: 50% 50%;
 }
-@keyframes astSpin { to { transform: rotate(360deg); } }
 
-/* Satellites */
+/* the Earth: hairline sphere, graticule, soft terminator — no neon */
+.sats-earth {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 168px;
+  height: 168px;
+  margin: -84px 0 0 -84px;
+  border-radius: 50%;
+  border: 1px solid rgba(13, 13, 13, 0.28);
+  background:
+    radial-gradient(circle at 34% 30%, #ffffff 0%, #f6f6f6 42%, #eaeaea 70%, #dadada 100%);
+  box-shadow:
+    inset -14px -18px 40px rgba(13, 13, 13, 0.10),
+    0 26px 60px -30px rgba(13, 13, 13, 0.3);
+  overflow: hidden;
+}
+.sats-earth svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sats-earth .graticule { stroke: rgba(13, 13, 13, 0.22); stroke-width: 0.8; fill: none; }
+.sats-earth .graticule-soft { stroke: rgba(13, 13, 13, 0.12); stroke-width: 0.7; fill: none; }
+/* a coverage sweep crossing the disc once every 11s — the only "live" cue */
+.sats-earth::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: conic-gradient(from 0deg, rgba(13, 13, 13, 0.16), transparent 42deg, transparent 360deg);
+  animation: orbit 11s linear infinite;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+}
+
+/* orbit planes: one <g> in SVG for the path + trail, one rotated CSS box for
+   the satellite body. Same centre, same angle, therefore always in sync. */
+.orbits { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.orbit-plane { transform-origin: 240px 240px; }
+.orbit-path { fill: none; stroke: rgba(13, 13, 13, 0.18); stroke-width: 1; }
+.orbit-path-dash {
+  fill: none;
+  stroke: rgba(13, 13, 13, 0.3);
+  stroke-width: 1;
+  stroke-dasharray: 1 7;
+}
+.orbit-trail {
+  fill: none;
+  stroke: #0d0d0d;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 54 946;
+  animation: trailRun var(--dur, 26s) linear infinite;
+}
+.orbit-trail.rev { animation-direction: reverse; }
+@keyframes trailRun {
+  from { stroke-dashoffset: 54; }
+  to { stroke-dashoffset: -946; }
+}
+
+.plane-1 { transform: rotate(-16deg); }
+.plane-2 { transform: rotate(34deg); }
+.plane-3 { transform: rotate(-64deg); }
+
+/* satellites ride the same paths */
+.sat-plane {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+}
+.sat-plane.p1 { transform: rotate(-16deg); }
+.sat-plane.p2 { transform: rotate(34deg); }
+.sat-plane.p3 { transform: rotate(-64deg); }
+
+.sat {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  offset-path: path("M 44,240 A 196,78 0 1 1 436,240 A 196,78 0 1 1 44,240");
+  offset-rotate: auto;
+  offset-anchor: 50% 50%;
+  animation: satRun var(--dur, 26s) linear infinite;
+  will-change: offset-distance;
+}
+.sat-2 { offset-path: path("M 88,240 A 152,58 0 1 1 392,240 A 152,58 0 1 1 88,240"); }
+.sat-3 { offset-path: path("M 26,240 A 214,102 0 1 1 454,240 A 214,102 0 1 1 26,240"); }
+.sat.rev { animation-direction: reverse; }
+/* a second, phasing satellite on the same plane */
+.sat.phase-b { animation-delay: calc(var(--dur, 26s) * -0.55); }
+@keyframes satRun {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+
+.sat > i { position: absolute; display: block; }
+.sat-body {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 2px;
+  background: #0d0d0d;
+}
+.sat-array-l, .sat-array-r {
+  width: 5px;
+  height: 3px;
+  border: 1px solid #0d0d0d;
+  background: rgba(13, 13, 13, 0.08);
+}
+.sat-array-l { margin: -1.5px 0 0 -13px; }
+.sat-array-r { margin: -1.5px 0 0 8px; }
+.sat-small .sat-body { width: 4px; height: 4px; margin: -2px 0 0 -2px; border-radius: 50%; }
+.sat-small .sat-array-l, .sat-small .sat-array-r { display: none; }
+.sat-echo {
+  width: 15px;
+  height: 15px;
+  margin: -7.5px 0 0 -7.5px;
+  border-radius: 50%;
+  border: 1px solid rgba(13, 13, 13, 0.22);
+  animation: satEcho 2.6s ease-out infinite;
+}
+@keyframes satEcho {
+  0% { transform: scale(0.5); opacity: 0.75; }
+  70%, 100% { transform: scale(1.9); opacity: 0; }
+}
+
+/* downlink: a ground station receiving packets along a dashed beam */
+.sats-station { position: absolute; left: 96px; bottom: 74px; width: 26px; height: 26px; }
+.sats-station .dish {
+  position: absolute;
+  inset: 0;
+  color: rgba(13, 13, 13, 0.55);
+}
+.packet {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #0d0d0d;
+  offset-path: path("M 12,0 C 40,-58 96,-86 150,-104");
+  animation: packetRun 3.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  opacity: 0;
+}
+.packet.b { animation-delay: 1.7s; }
+@keyframes packetRun {
+  0% { offset-distance: 0%; opacity: 0; }
+  12% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+.beam { stroke: rgba(13, 13, 13, 0.3); stroke-width: 1; stroke-dasharray: 2 6; fill: none; }
+
+/* ------------------------------------------------------------ 2 · tool tags
+   The drifting labels are the "satellites" of the copy: each names a tool. */
 .hero-sat {
   position: absolute;
-  z-index: 0;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: 7px;
   padding: 6px 13px;
-  border: 1px solid rgba(255, 255, 255, 0.32);
+  border: 1px solid rgba(13, 13, 13, 0.16);
   border-radius: 9999px;
-  background: rgba(10, 12, 14, 0.9);
-  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(6px);
   font-family: var(--font-mono);
   font-size: 10.5px;
   letter-spacing: 0.04em;
   color: var(--ink);
   white-space: nowrap;
   pointer-events: none;
-  box-shadow: 0 0 22px rgba(16, 163, 127, 0.18), 0 8px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-2);
   opacity: 0;
   animation:
     fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--sd, 1.2s) both,
-    float 7s ease-in-out var(--fd, 0s) infinite;
+    float 9s ease-in-out var(--fd, 0s) infinite;
 }
 .hero-sat i {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 10px rgba(16, 163, 127, 1);
-  animation: satBlink 1.6s ease-in-out infinite;
+  background: var(--ink);
+  animation: satBlink 2.4s ease-in-out infinite;
 }
-.hero-sat-red i {
-  background: var(--red);
-  box-shadow: 0 0 10px rgba(239, 68, 68, 1);
-  animation: satBlinkRed 1.1s ease-in-out infinite;
-}
+/* The gated tool is filled rather than outlined, and its dot blinks faster:
+   the only difference on screen is weight, because hue is not available here. */
+.hero-sat-gated { border-color: var(--ink); background: var(--ink); color: var(--on-ink); font-weight: 600; }
+.hero-sat-gated i { width: 7px; height: 7px; background: var(--on-ink); animation-duration: 1.6s; }
 @keyframes satBlink {
-  0%, 100% { opacity: 1; box-shadow: 0 0 10px rgba(16, 163, 127, 1); }
-  50% { opacity: 0.35; box-shadow: 0 0 3px rgba(16, 163, 127, 0.4); }
-}
-@keyframes satBlinkRed {
-  0%, 100% { opacity: 1; box-shadow: 0 0 10px rgba(239, 68, 68, 1); }
-  50% { opacity: 0.4; box-shadow: 0 0 3px rgba(239, 68, 68, 0.4); }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
 }
 
 .scroll-cue {
@@ -1595,7 +1703,7 @@ body {
   animation: cuePulse 2s ease-in-out infinite;
 }
 
-/* Marquee */
+/* ------------------------------------------------------------- 3 · marquee */
 .marquee {
   position: relative;
   overflow: hidden;
@@ -1623,12 +1731,12 @@ body {
 }
 .marquee-item em {
   font-style: normal;
-  color: var(--green);
+  color: var(--ink-faint);
   font-size: 11px;
 }
 .marquee-alt {
   border-top: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.01);
+  background: var(--bg-2);
 }
 .marquee-alt .marquee-track {
   animation-direction: reverse;
@@ -1640,9 +1748,7 @@ body {
   font-size: 11.5px;
   letter-spacing: 0.02em;
 }
-.marquee-alt .marquee-item em {
-  color: #ffffff;
-}
+.marquee-alt .marquee-item em { color: var(--ink); }
 .marquee-fade {
   pointer-events: none;
   position: absolute;
@@ -1650,24 +1756,99 @@ body {
   z-index: 1;
   background: linear-gradient(90deg, var(--bg), transparent 12%, transparent 88%, var(--bg));
 }
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
-}
+.marquee:hover .marquee-track { animation-play-state: paused; }
 
-/* Console demo grid */
+/* --------------------------------------------------- 4 · satellite scope card
+   Replaces the old radar card: same slot in the grid, but the motion is an
+   orbit, and the numbers are real (they come from the WebMCP bridge). */
 .demo-grid {
   display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(230px, 3fr);
+  grid-template-columns: minmax(0, 7fr) minmax(250px, 3fr);
   gap: 18px;
   align-items: stretch;
 }
-.radar-card {
+.scope-card {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
+.scope-stage {
+  position: relative;
+  height: 196px;
+  border-radius: calc(var(--radius) - 3px);
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 50% 120%, rgba(13, 13, 13, 0.06), transparent 62%),
+    var(--bg-2);
+  overflow: hidden;
+}
+.scope-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid rgba(13, 13, 13, 0.14);
+  border-radius: 50%;
+}
+.scope-ring.r1 { width: 186px; height: 186px; margin: -93px 0 0 -93px; }
+.scope-ring.r2 { width: 136px; height: 136px; margin: -68px 0 0 -68px; border-style: dashed; }
+.scope-ring.r3 { width: 88px; height: 88px; margin: -44px 0 0 -44px; }
+.scope-earth {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border-radius: 50%;
+  border: 1px solid rgba(13, 13, 13, 0.35);
+  background: radial-gradient(circle at 34% 30%, #ffffff, #ededed 72%, #dedede);
+}
+.scope-arm {
+  position: absolute;
+  inset: 0;
+  animation: orbit var(--d, 10s) linear infinite;
+}
+.scope-arm.a1 { --d: 11s; }
+.scope-arm.a2 { --d: 17s; animation-direction: reverse; }
+.scope-arm.a3 { --d: 26s; }
+.scope-arm i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 1px;
+  background: #0d0d0d;
+  transform: translateX(var(--r, 93px));
+}
+.scope-arm.a1 i { --r: 93px; }
+.scope-arm.a2 i { --r: 68px; }
+.scope-arm.a3 i { --r: 44px; width: 3px; height: 3px; margin: -1.5px 0 0 -1.5px; }
+.scope-telemetry {
+  display: grid;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+.scope-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px dashed var(--line);
+  padding-bottom: 7px;
+}
+.scope-row:last-child { border-bottom: none; }
+.scope-row b {
+  color: var(--ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
 
-/* Radar */
+/* -------------------------------------------------- 5 · orbit console radar
+   Kept for the console only (mission instruments). Monochrome. */
 .radar {
   position: relative;
   width: 100%;
@@ -1675,33 +1856,21 @@ body {
   aspect-ratio: 1;
   margin: 0 auto;
   border-radius: 50%;
-  border: 1px solid rgba(16, 163, 127, 0.45);
+  border: 1px solid var(--line);
   background:
-    linear-gradient(rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.13)) no-repeat center / 100% 1px,
-    linear-gradient(rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.13)) no-repeat center / 1px 100%,
-    repeating-radial-gradient(circle at center, transparent 0 23.9%, rgba(16, 163, 127, 0.22) 23.9% calc(23.9% + 1px)),
-    radial-gradient(circle at center, rgba(16, 163, 127, 0.3) 0 2px, transparent 3px),
-    radial-gradient(circle at center, rgba(16, 163, 127, 0.07), transparent 70%),
-    #05080a;
-  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.85), inset 0 0 60px rgba(16, 163, 127, 0.12), 0 0 36px rgba(16, 163, 127, 0.14);
+    linear-gradient(rgba(13, 13, 13, 0.1), rgba(13, 13, 13, 0.1)) no-repeat center / 100% 1px,
+    linear-gradient(rgba(13, 13, 13, 0.1), rgba(13, 13, 13, 0.1)) no-repeat center / 1px 100%,
+    repeating-radial-gradient(circle at center, transparent 0 23.9%, rgba(13, 13, 13, 0.14) 23.9% calc(23.9% + 1px)),
+    var(--bg-2);
   overflow: hidden;
   flex-shrink: 0;
-}
-.radar::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  box-shadow: inset 0 0 36px rgba(0, 0, 0, 0.9);
-  pointer-events: none;
 }
 .radar-sweep {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, rgba(16, 163, 127, 0.85) 0deg, rgba(16, 163, 127, 0.3) 55deg, transparent 100deg);
+  background: conic-gradient(from 0deg, rgba(13, 13, 13, 0.22) 0deg, rgba(13, 13, 13, 0.06) 60deg, transparent 110deg);
   animation: radarSpin 4s linear infinite;
-  mix-blend-mode: screen;
 }
 @keyframes radarSpin { to { transform: rotate(360deg); } }
 .radar-blip {
@@ -1710,43 +1879,49 @@ body {
   height: 6px;
   margin: -3px 0 0 -3px;
   border-radius: 50%;
-  background: var(--red);
-  box-shadow: 0 0 12px rgba(239, 68, 68, 1);
+  background: #0d0d0d;
   animation: blipPulse 1.8s ease-in-out infinite;
-  animation-delay: var(--bd, 0s);
 }
-.radar-blip-green {
-  background: var(--green);
-  box-shadow: 0 0 12px rgba(16, 163, 127, 1);
-}
+.radar-blip-green { background: transparent; border: 1px solid #0d0d0d; }
 @keyframes blipPulse {
   0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.6); opacity: 0.65; }
+  50% { transform: scale(1.6); opacity: 0.4; }
+}
+.sonar { position: absolute; top: 50%; left: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; pointer-events: none; z-index: 3; }
+.sonar i {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(13, 13, 13, 0.5);
+  animation: sonarPing 3.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+.sonar i:nth-child(2) { animation-delay: 1.05s; }
+.sonar i:nth-child(3) { animation-delay: 2.1s; }
+@keyframes sonarPing {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(20); opacity: 0; border-width: 1px; }
 }
 
-/* Motion field */
+/* --------------------------------------- 6 · constellation field + progress */
 .motion-field {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.9;
+  opacity: 0.55;
 }
-
 .scroll-progress {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 400;
-  height: 3px;
+  height: 2px;
   width: 100%;
-  background: linear-gradient(90deg, var(--green), #ffffff 60%, var(--red));
+  background: var(--ink);
   transform: scaleX(0);
   transform-origin: 0 50%;
   pointer-events: none;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.55), 0 0 6px rgba(16, 163, 127, 0.5);
 }
-
 .cursor-ring, .cursor-dot {
   display: none;
   position: fixed;
@@ -1759,33 +1934,28 @@ body {
 }
 html.has-cursor .cursor-ring {
   display: block;
-  width: 34px;
-  height: 34px;
-  margin: -17px 0 0 -17px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  mix-blend-mode: difference;
-  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), height 0.25s cubic-bezier(0.16, 1, 0.3, 1), margin 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border: 1px solid rgba(13, 13, 13, 0.4);
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), height 0.25s cubic-bezier(0.16, 1, 0.3, 1), margin 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s;
 }
 html.has-cursor .cursor-dot {
   display: block;
   width: 4px;
   height: 4px;
   margin: -2px 0 0 -2px;
-  background: #ffffff;
+  background: var(--ink);
 }
 html.cursor-link .cursor-ring {
-  width: 50px;
-  height: 50px;
-  margin: -25px 0 0 -25px;
-  border-color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-color: rgba(13, 13, 13, 0.85);
+  background: rgba(13, 13, 13, 0.03);
 }
 
-/* ============================================================================
-   NEW MOTION GRAPHICS
-   ========================================================================== */
-
-/* --------------------------------------------------------------- 1 · Aurora */
+/* ------------------------------------------------------------- 7 · ambient */
 .aurora {
   position: fixed;
   inset: 0;
@@ -1796,41 +1966,41 @@ html.cursor-link .cursor-ring {
 .aurora-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.5;
+  filter: blur(110px);
+  opacity: 0.6;
   will-change: transform;
 }
 .aurora-a {
   width: 46vw;
   height: 46vw;
-  top: -14%;
+  top: -16%;
   left: -8%;
-  background: radial-gradient(circle, rgba(16, 163, 127, 0.5), transparent 65%);
-  animation: auroraDrift1 26s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(13, 13, 13, 0.05), transparent 66%);
+  animation: auroraDrift1 34s ease-in-out infinite;
 }
 .aurora-b {
   width: 40vw;
   height: 40vw;
-  top: 6%;
+  top: 4%;
   right: -12%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.28), transparent 65%);
-  animation: auroraDrift2 32s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(13, 13, 13, 0.035), transparent 66%);
+  animation: auroraDrift2 40s ease-in-out infinite;
 }
 .aurora-c {
   width: 50vw;
   height: 50vw;
-  bottom: -24%;
+  bottom: -26%;
   left: 22%;
-  background: radial-gradient(circle, rgba(16, 163, 127, 0.32), transparent 65%);
-  animation: auroraDrift3 38s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(13, 13, 13, 0.04), transparent 66%);
+  animation: auroraDrift3 46s ease-in-out infinite;
 }
 .aurora-d {
   width: 26vw;
   height: 26vw;
-  top: 44%;
+  top: 42%;
   left: 56%;
-  background: radial-gradient(circle, rgba(239, 68, 68, 0.18), transparent 65%);
-  animation: auroraDrift1 30s ease-in-out infinite reverse;
+  background: radial-gradient(circle, rgba(13, 13, 13, 0.03), transparent 66%);
+  animation: auroraDrift1 38s ease-in-out infinite reverse;
 }
 @keyframes auroraDrift1 {
   0%, 100% { transform: translate(0, 0) scale(1); }
@@ -1845,146 +2015,8 @@ html.cursor-link .cursor-ring {
   0%, 100% { transform: translate(0, 0) scale(1); }
   50% { transform: translate(5vw, -9vh) scale(1.1); }
 }
-.aurora::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, transparent 0%, rgba(16, 163, 127, 0.05) 50%, transparent 100%);
-  background-size: 100% 340px;
-  animation: auroraScan 14s linear infinite;
-}
-@keyframes auroraScan {
-  from { background-position: 0 -340px; }
-  to { background-position: 0 100vh; }
-}
 
-/* ----------------------------------------------------------- 2 · Glyphs */
-.glyph-field {
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  overflow: hidden;
-}
-.glyph-field i {
-  position: absolute;
-  top: 0;
-  font-family: var(--font-mono);
-  font-style: normal;
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1;
-  color: var(--green);
-  text-shadow: 0 0 10px rgba(16, 163, 127, 0.7);
-  animation: glyphFall linear infinite;
-  opacity: 0;
-  will-change: transform, opacity;
-}
-.glyph-field i.glyph-white {
-  color: rgba(255, 255, 255, 0.8);
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
-.glyph-field i.glyph-red {
-  color: rgba(239, 68, 68, 0.85);
-  text-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
-}
-@keyframes glyphFall {
-  0% { transform: translateY(-6vh); opacity: 0; }
-  8% { opacity: var(--go, 0.55); }
-  88% { opacity: var(--go, 0.55); }
-  100% { transform: translateY(108vh); opacity: 0; }
-}
-
-/* ------------------------------------------------------- 3 · Sonar pings */
-.sonar {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 14px;
-  height: 14px;
-  margin: -7px 0 0 -7px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 3;
-}
-.sonar i {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1.5px solid rgba(16, 163, 127, 0.8);
-  animation: sonarPing 3.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-}
-.sonar i:nth-child(2) { animation-delay: 1.05s; }
-.sonar i:nth-child(3) { animation-delay: 2.1s; }
-@keyframes sonarPing {
-  0% { transform: scale(1); opacity: 0.9; }
-  100% { transform: scale(22); opacity: 0; border-width: 0.5px; }
-}
-.sonar-red i {
-  border-color: rgba(239, 68, 68, 0.8);
-}
-.sonar-hero {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 26px;
-  height: 26px;
-  margin: -13px 0 0 -13px;
-  z-index: 1;
-}
-.sonar-hero i { animation-duration: 4.4s; }
-
-/* ---------------------------------------------------- 4 · Hero reticles */
-.hero-reticle {
-  position: absolute;
-  width: 64px;
-  height: 64px;
-  margin: -32px 0 0 -32px;
-  color: rgba(16, 163, 127, 0.9);
-  filter: drop-shadow(0 0 6px rgba(16, 163, 127, 0.7));
-  animation: reticleSpin 14s linear infinite, reticlePulse 3.4s ease-in-out infinite;
-  pointer-events: none;
-  z-index: 1;
-}
-.hero-reticle svg { width: 100%; height: 100%; }
-.hero-reticle-2 {
-  color: rgba(239, 68, 68, 0.85);
-  filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.7));
-  animation: reticleSpin 20s linear infinite reverse, reticlePulse 4.1s ease-in-out infinite;
-}
-@keyframes reticleSpin { to { transform: rotate(360deg); } }
-@keyframes reticlePulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-
-/* ----------------------------------------------------- 5 · Hero scan beam */
-.hero-scan {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-.hero-scan::before {
-  content: "";
-  position: absolute;
-  top: -20%;
-  bottom: -20%;
-  left: 0;
-  width: 26%;
-  background: linear-gradient(100deg, transparent, rgba(16, 163, 127, 0.1) 35%, rgba(255, 255, 255, 0.22) 50%, rgba(16, 163, 127, 0.1) 65%, transparent);
-  border-left: 1px solid rgba(255, 255, 255, 0.35);
-  border-right: 1px solid rgba(16, 163, 127, 0.3);
-  transform: translateX(-160%);
-  animation: heroSweep 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-@keyframes heroSweep {
-  0% { transform: translateX(-160%); }
-  55%, 100% { transform: translateX(520%); }
-}
-
-/* ------------------------------------------------- 6 · Rotating ring border */
+/* ------------------------------------------------------- 8 · rotating border */
 @property --rb-angle {
   syntax: "<angle>";
   initial-value: 0deg;
@@ -1996,40 +2028,37 @@ html.cursor-link .cursor-ring {
   padding: 1.5px;
   background: conic-gradient(
     from var(--rb-angle),
-    transparent 0deg,
-    rgba(16, 163, 127, 0.9) 60deg,
-    rgba(255, 255, 255, 0.85) 120deg,
-    transparent 180deg,
-    transparent 360deg
+    rgba(13, 13, 13, 0.55) 0deg,
+    transparent 90deg,
+    transparent 250deg,
+    rgba(13, 13, 13, 0.35) 330deg,
+    rgba(13, 13, 13, 0.55) 360deg
   );
-  animation: ringSpin 5s linear infinite;
+  animation: ringSpin 7s linear infinite;
 }
 .ring-border-green {
   background: conic-gradient(
     from var(--rb-angle),
-    transparent 0deg,
-    rgba(16, 163, 127, 0.95) 80deg,
-    rgba(94, 234, 212, 0.9) 140deg,
-    transparent 220deg,
-    transparent 360deg
+    #0d0d0d 0deg,
+    rgba(13, 13, 13, 0.15) 120deg,
+    rgba(13, 13, 13, 0.7) 240deg,
+    #0d0d0d 360deg
   );
 }
-@keyframes ringSpin {
-  to { --rb-angle: 360deg; }
-}
+@keyframes ringSpin { to { --rb-angle: 360deg; } }
 .ring-border::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   padding: 1.5px;
-  background: conic-gradient(from 0deg, transparent 0deg, rgba(16, 163, 127, 0.9) 60deg, rgba(255, 255, 255, 0.85) 120deg, transparent 180deg);
+  background: conic-gradient(from 0deg, rgba(13, 13, 13, 0.5), transparent 120deg);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
-  filter: blur(7px);
-  opacity: 0.7;
+  filter: blur(6px);
+  opacity: 0.5;
   pointer-events: none;
 }
 .ring-border > * {
@@ -2037,7 +2066,7 @@ html.cursor-link .cursor-ring {
   border-radius: calc(var(--radius) - 1px);
 }
 
-/* --------------------------------------------------------- 7 · TypeLine */
+/* ------------------------------------------------------------- 9 · typeline */
 .type-line {
   display: flex;
   align-items: center;
@@ -2046,27 +2075,22 @@ html.cursor-link .cursor-ring {
   min-height: 1.7em;
 }
 .type-line .type-prompt {
-  color: var(--green);
-  font-weight: 500;
+  color: var(--ink);
+  font-weight: 600;
   flex-shrink: 0;
 }
-.type-line .type-text {
-  color: var(--ink);
-  white-space: nowrap;
-  overflow: hidden;
-}
+.type-line .type-text { color: var(--ink); white-space: nowrap; overflow: hidden; }
 .type-line .type-caret {
   display: inline-block;
   width: 7px;
   height: 1.05em;
   margin-left: 1px;
-  background: var(--green);
-  box-shadow: 0 0 8px rgba(16, 163, 127, 0.8);
+  background: currentColor;
   animation: blink 1s steps(1) infinite;
   flex-shrink: 0;
 }
 
-/* --------------------------------------------------------- 8 · Waveform */
+/* ------------------------------------------------------------- 10 · waveform */
 .waveform {
   display: inline-flex;
   align-items: flex-end;
@@ -2077,8 +2101,8 @@ html.cursor-link .cursor-ring {
   width: 2.5px;
   height: 30%;
   border-radius: 2px;
-  background: var(--green);
-  box-shadow: 0 0 6px rgba(16, 163, 127, 0.7);
+  background: var(--ink);
+  opacity: 0.55;
   animation: waveBar 1.1s ease-in-out infinite;
 }
 .waveform i:nth-child(1) { animation-delay: 0s; }
@@ -2093,24 +2117,29 @@ html.cursor-link .cursor-ring {
 .waveform i:nth-child(10) { animation-delay: 0.12s; }
 .waveform i:nth-child(11) { animation-delay: 0s; }
 @keyframes waveBar {
-  0%, 100% { height: 22%; }
-  50% { height: 100%; }
+  0%, 100% { height: 22%; opacity: 0.35; }
+  50% { height: 100%; opacity: 0.85; }
 }
 
-/* Responsive */
+/* --------------------------------------------------------------- responsive */
+@media (max-width: 1240px) {
+  .hero-graphic { --gscale: 0.82; right: -40px; }
+}
 @media (max-width: 1020px) {
   .demo-grid { grid-template-columns: 1fr; }
+  .scope-card { max-width: 420px; }
   .radar-card { max-width: 340px; }
   .hero-sat { display: none; }
+  .hero-graphic { --gscale: 0.7; right: -60px; }
 }
 @media (max-width: 850px) {
   .hero { padding-left: 20px; padding-right: 20px; }
-  .hero-graphic { width: 260px; right: -30px; top: 400px; opacity: 0.7; }
+  .hero-graphic { top: 390px; right: -70px; opacity: 0.5; }
   .hero-copy { max-width: 100%; }
   .sec { padding-left: 20px; padding-right: 20px; }
 }
 @media (max-width: 560px) {
-  .hero-graphic { top: 380px; right: -70px; opacity: 0.55; }
+  .hero-graphic { top: 370px; right: -120px; opacity: 0.42; }
   .hero-cta { flex-direction: column; align-items: flex-start; gap: 12px; }
   .hero-chips { gap: 6px; }
   .container { padding: 0 16px; }
@@ -2121,14 +2150,70 @@ html.cursor-link .cursor-ring {
 
 @media (pointer: coarse) {
   .cursor-ring, .cursor-dot { display: none !important; }
-  .motion-field { opacity: 0.7; }
+  .motion-field { opacity: 0.4; }
 }
+
+/* Reduced motion: nothing orbits, nothing trails, nothing pulses. The
+   constellation, the aurora and the cursor layer are removed outright. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.001s !important;
   }
   .reveal { opacity: 1; transform: none; }
-  .motion-field, .cursor-ring, .cursor-dot,
-  .aurora, .glyph-field, .hero-reticle, .hero-scan { display: none !important; }
+  .motion-field, .cursor-ring, .cursor-dot, .aurora { display: none !important; }
+  .sat { offset-distance: 42%; }
+  .sat-2 { offset-distance: 78%; }
+  .sat-3 { offset-distance: 20%; }
+  .sat.phase-b { display: none; }
+  .orbit-trail { stroke-dasharray: 0 1000; }
+  .packet { display: none; }
+}
+
+/* ============================================================================
+   AGENT BRIDGE — conformance rows (landing check + console Bridge station)
+   ========================================================================== */
+
+.bridge-rows {
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.bridge-row {
+  display: grid;
+  grid-template-columns: 22px minmax(120px, 180px) minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+  padding: 10px 14px;
+  background: var(--paper);
+  font-size: 12.5px;
+}
+.bridge-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+.bridge-row[data-state="pass"] { color: var(--ink); }
+.bridge-row[data-state="pass"] .bridge-mark { background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+.bridge-row[data-state="fail"] { color: var(--ink); }
+.bridge-row[data-state="fail"] .bridge-mark { background: transparent; color: var(--ink); border-style: double; border-width: 3px; }
+.bridge-row[data-state="fail"] { background: rgba(13, 13, 13, 0.045); }
+.bridge-row[data-state="warn"] .bridge-mark { background: transparent; }
+.bridge-row[data-state="warn"] { background: var(--bg-2); color: var(--ink-dim); }
+.bridge-name { font-size: 11.5px; font-weight: 500; color: var(--ink); }
+.bridge-detail { color: var(--ink-dim); font-size: 12px; line-height: 1.55; }
+
+@media (max-width: 700px) {
+  .bridge-row { grid-template-columns: 22px minmax(0, 1fr); }
+  .bridge-detail { grid-column: 2; }
 }

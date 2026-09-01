@@ -212,16 +212,16 @@ export function ToastStack({ toasts }: { toasts: ToastMessage[] }) {
             gap: 10,
             alignItems: "center",
             borderColor:
-              toast.level === "ok" ? "rgba(47,221,112,0.55)"
-              : toast.level === "warn" ? "rgba(255,255,255,0.55)"
-              : "rgba(255,73,73,0.62)",
+              toast.level === "ok" ? "var(--line)"
+              : toast.level === "warn" ? "var(--line-strong)"
+              : "var(--ink)",
           }}
         >
           <span
             className={`dot ${toast.level === "alert" ? "dot-red" : toast.level === "warn" ? "dot-white" : ""}`}
             style={{ animationDuration: toast.level === "ok" ? "2.2s" : "0.9s" }}
           />
-          <span className="mono" style={{ color: "#fff" }}>{toast.text}</span>
+          <span className="mono" style={{ color: "var(--ink)" }}>{toast.text}</span>
         </div>
       ))}
     </div>

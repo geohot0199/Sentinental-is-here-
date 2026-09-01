@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * The WebMCP OMNI-LAB — five in-browser laboratories, twenty registered tools.
+ * The WebMCP OMNI-LAB — five in-browser laboratories, seventeen registered tools.
  *
  * Every button invokes a real tool through `document.modelContext` (polyfilled
  * when the browser does not ship it) and prints the actual result. The escrow
@@ -119,7 +119,7 @@ function ProteinCanvas({ atoms, mutationSite }: { atoms: Atom[]; mutationSite: n
       context.clearRect(0, 0, width, height);
 
       if (atoms.length === 0) {
-        context.fillStyle = "rgba(255,255,255,0.25)";
+        context.fillStyle = "rgba(255, 255, 255, 0.25)";
         context.font = "12px monospace";
         context.fillText("load a structure to render", width / 2 - 92, height / 2);
         return;
@@ -163,7 +163,7 @@ function ProteinCanvas({ atoms, mutationSite }: { atoms: Atom[]; mutationSite: n
         context.arc(point.x, point.y, radius, 0, Math.PI * 2);
         context.fillStyle = isMutation ? "#fff" : `rgba(255,255,255,${alpha})`;
         if (isMutation) {
-          context.shadowColor = "rgba(255,255,255,1)";
+          context.shadowColor = "rgba(255, 255, 255, 1)";
           context.shadowBlur = 22;
         } else {
           context.shadowColor = `rgba(255,255,255,${alpha * 0.6})`;
@@ -211,7 +211,7 @@ function ProteinCanvas({ atoms, mutationSite }: { atoms: Atom[]; mutationSite: n
   return (
     <canvas
       ref={canvasRef}
-      style={{ width: "100%", height: 300, display: "block", touchAction: "none", cursor: "grab", background: "radial-gradient(circle at 50% 45%, rgba(255,255,255,0.04), transparent 70%), #060608", borderRadius: "var(--radius)", border: "1px solid var(--line)" }}
+      style={{ width: "100%", height: 300, display: "block", touchAction: "none", cursor: "grab", background: "radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.04), transparent 70%), #070707", borderRadius: "var(--radius)", border: "1px solid var(--line)" }}
       aria-label="3D protein structure — drag to rotate"
     />
   );
@@ -291,9 +291,9 @@ export default function Labs({ context }: { context: ConsoleContext }) {
               cursor: "pointer",
               textAlign: "left",
               flex: "1 1 200px",
-              borderColor: lab === item.id ? "rgba(255,255,255,0.4)" : "var(--line)",
-              background: lab === item.id ? "rgba(255,255,255,0.06)" : undefined,
-              boxShadow: lab === item.id ? "0 4px 20px -4px rgba(0,0,0,0.5)" : undefined,
+              borderColor: lab === item.id ? "var(--ink)" : "var(--line)",
+              background: lab === item.id ? "rgba(13, 13, 13, 0.05)" : undefined,
+              boxShadow: lab === item.id ? "var(--shadow-2)" : undefined,
               transition: "all 0.25s",
               color: "inherit",
             }}
@@ -351,7 +351,7 @@ export default function Labs({ context }: { context: ConsoleContext }) {
             ) : (
               <>
                 <div className="row" style={{ justifyContent: "space-between", alignItems: "baseline" }}>
-                  <span className="display" style={{ fontSize: 38, fontWeight: 600, color: "#fff" }}>{threat.threatScore}</span>
+                  <span className="display" style={{ fontSize: 38, fontWeight: 600, color: "var(--ink)" }}>{threat.threatScore}</span>
                   <span className="sev sev-critical">{String(threat.verdict)}</span>
                 </div>
                 <div className="meter" style={{ margin: "12px 0" }}>
@@ -565,7 +565,7 @@ export default function Labs({ context }: { context: ConsoleContext }) {
             <h3 className="display" style={{ fontSize: 16.5, fontWeight: 600, margin: "0 0 12px" }}>Arbiter rules</h3>
             <ul className="muted small" style={{ margin: 0, paddingLeft: 18, lineHeight: 1.9 }}>
               <li>Deliverable fingerprints are real SHA-256 digests.</li>
-              <li>A milestone must be <strong style={{ color: "#fff" }}>verified</strong> before escrow release.</li>
+              <li>A milestone must be <strong style={{ color: "var(--ink)" }}>verified</strong> before escrow release.</li>
               <li>Release proofs are HMAC-SHA-256 under the arbiter key.</li>
               <li>No backend, no escrow holder — the mathematics holds the funds.</li>
             </ul>

@@ -1,13 +1,19 @@
 "use client";
 
 /**
- * The SENTINEL console — one shell, five stations:
+ * The SENTINEL console — one shell, six stations:
  *
  *   Deck   capability report (browser vault + server env, merged)
  *   Scan   live dependency triage against real advisory data
  *   Agent  the eight-stage mission runner with the real approval gate
  *   Labs   the WebMCP OMNI-LAB — five laboratories, seventeen tools
+ *   Bridge the agent bridge: connection card, client snippets, live
+ *          conformance run and a raw JSON-RPC playground
  *   Keys   the API key vault — insertion, masking, live connection tests
+ *
+ * The shell also boots the page half of the bridge (see components/WebMcpBoot.tsx
+ * for the root-level boot) and listens for `sentinel:navigate-station`, which the
+ * `navigate_console` tool dispatches.
  */
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import Nav from "@/components/Nav";
@@ -18,6 +24,7 @@ import ScanView from "@/components/console/ScanView";
 import AgentCockpit from "@/components/console/AgentCockpit";
 import Labs from "@/components/console/Labs";
 import KeysPanel from "@/components/console/KeysPanel";
+import Bridge from "@/components/console/Bridge";
 import { loadVault, saveVault, clearVault, type KeyVault } from "@/lib/keys";
 import { bootWebMcp } from "@/lib/webmcp";
 
@@ -32,13 +39,14 @@ export interface ServerStatus {
   notes: string[];
 }
 
-type TabId = "deck" | "scan" | "agent" | "labs" | "keys";
+type TabId = "deck" | "scan" | "agent" | "labs" | "bridge" | "keys";
 
 const TABS: { id: TabId; label: string; hint: string }[] = [
   { id: "deck", label: "Deck", hint: "capability report" },
   { id: "scan", label: "Scan", hint: "live triage" },
   { id: "agent", label: "Agent", hint: "eight-stage mission" },
   { id: "labs", label: "OMNI-LAB", hint: "five laboratories" },
+  { id: "bridge", label: "Bridge", hint: "agent bridge · WebMCP + MCP" },
   { id: "keys", label: "Keys", hint: "API key vault" },
 ];
 
@@ -55,12 +63,31 @@ export default function ConsolePage() {
       .then((response) => response.json())
       .then((data: ServerStatus) => setServer(data))
       .catch(() => setServer(null));
-    try {
-      const registration = bootWebMcp();
-      setWebmcp({ registeredCount: registration.registeredCount, polyfilled: registration.polyfilled });
-    } catch {
-      setWebmcp(null);
-    }
+    let alive = true;
+    void bootWebMcp()
+      .then((registration) => {
+        if (alive) setWebmcp({ registeredCount: registration.registeredCount, polyfilled: registration.polyfilled });
+      })
+      .catch(() => {
+        if (alive) setWebmcp(null);
+      });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  // An agent driving the page can move the human's view to a station. It can
+  // only ever reveal UI; it cannot click the approval gate from here.
+  useEffect(() => {
+    const onStation = (event: Event) => {
+      const detail = (event as CustomEvent<{ station?: string }>).detail;
+      const station = detail?.station;
+      if (station === "deck" || station === "scan" || station === "agent" || station === "labs" || station === "bridge" || station === "keys") {
+        setTab(station);
+      }
+    };
+    window.addEventListener("sentinel:navigate-station", onStation as EventListener);
+    return () => window.removeEventListener("sentinel:navigate-station", onStation as EventListener);
   }, []);
 
   const updateVault = useCallback(
@@ -116,7 +143,9 @@ export default function ConsolePage() {
               <span className="dot" style={{ width: 6, height: 6 }} />
               {server === null ? "server…" : "server online"}
             </span>
-            <span className="chip">{webmcp === null ? "webmcp…" : `${webmcp.registeredCount} webmcp tools`}</span>
+            <button className="chip" style={{ cursor: "pointer" }} onClick={() => setTab("bridge")}>
+              {webmcp === null ? "webmcp…" : `${webmcp.registeredCount} agent tools`}
+            </button>
             <button
               className="chip chip-solid"
               style={{ cursor: "pointer" }}
@@ -147,6 +176,7 @@ export default function ConsolePage() {
           {tab === "scan" && <ScanView context={context} />}
           {tab === "agent" && <AgentCockpit context={context} />}
           {tab === "labs" && <Labs context={context} />}
+          {tab === "bridge" && <Bridge context={context} />}
           {tab === "keys" && <KeysPanel context={context} />}
         </div>
       </main>
