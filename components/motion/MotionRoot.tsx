@@ -11,12 +11,16 @@ import { useEffect, useRef } from "react";
 type Particle = { x: number; y: number; vx: number; vy: number; r: number; c: string };
 type Comet = { x: number; y: number; vx: number; vy: number; life: number; ttl: number; c: string };
 
-/** 78% monochrome snow, 12% green, 10% red — meaning rides along with colour */
+/**
+ * Monochrome by rule: every node is ink, only its weight varies. There is no
+ * green "safe" and no red "hostile" anywhere in this system — state lives in
+ * the copy and in fill, never in hue.
+ */
 function pickColour(): string {
   const roll = Math.random();
-  if (roll < 0.78) return "255, 255, 255";
-  if (roll < 0.9) return "47, 221, 112";
-  return "255, 73, 73";
+  if (roll < 0.7) return "13, 13, 13";
+  if (roll < 0.9) return "90, 90, 99";
+  return "161, 161, 170";
 }
 
 export default function MotionRoot() {
@@ -74,7 +78,7 @@ export default function MotionRoot() {
         vy: Math.abs(Math.sin(angle) * speed) * 0.5,
         life: 0,
         ttl: 130 + Math.random() * 120,
-        c: Math.random() < 0.6 ? "255, 255, 255" : Math.random() < 0.5 ? "47, 221, 112" : "255, 73, 73",
+        c: Math.random() < 0.6 ? "13, 13, 13" : "90, 90, 99",
       });
     };
 
@@ -119,7 +123,7 @@ export default function MotionRoot() {
       }
 
       context.clearRect(0, 0, width, height);
-      const link = 128;
+      const link = 124;
 
       // ---------------- comets
       cometTimer -= 1;
@@ -191,7 +195,7 @@ export default function MotionRoot() {
             context.beginPath();
             context.moveTo(p.x, p.y);
             context.lineTo(q.x, q.y);
-            context.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+            context.strokeStyle = `rgba(13, 13, 13, ${alpha})`;
             context.lineWidth = 0.9;
             context.stroke();
           }

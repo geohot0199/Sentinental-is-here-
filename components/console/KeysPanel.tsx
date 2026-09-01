@@ -207,7 +207,7 @@ export default function KeysPanel({ context }: { context: ConsoleContext }) {
                   {githubTest.status === "running" ? "Testing…" : "Test token"}
                 </Btn>
                 {githubTest.detail !== undefined && (
-                  <span className="small" style={{ color: githubTest.status === "ok" ? "#fff" : "var(--ink-dim)" }}>
+                  <span className="small" style={{ color: githubTest.status === "ok" ? "var(--ink)" : "var(--ink-dim)" }}>
                     {githubTest.detail}
                   </span>
                 )}
@@ -225,7 +225,7 @@ export default function KeysPanel({ context }: { context: ConsoleContext }) {
             </div>
             <p className="muted small" style={{ lineHeight: 1.65, margin: "12px 0 0" }}>
               Without a sandbox key the agent is instructed to report every patch as{" "}
-              <strong style={{ color: "#fff" }}>UNVERIFIED</strong> — it never guesses that a fix works. With one,
+              <strong style={{ color: "var(--ink)" }}>UNVERIFIED</strong> — it never guesses that a fix works. With one,
               the verify stage provisions a real sandbox, installs, and runs the test suite.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 16, marginTop: 18 }}>
@@ -241,7 +241,7 @@ export default function KeysPanel({ context }: { context: ConsoleContext }) {
                   {daytonaTest.status === "running" ? "Testing…" : "Test key"}
                 </Btn>
                 {daytonaTest.detail !== undefined && (
-                  <span className="small" style={{ color: daytonaTest.status === "ok" ? "#fff" : "var(--ink-dim)" }}>
+                  <span className="small" style={{ color: daytonaTest.status === "ok" ? "var(--ink)" : "var(--ink-dim)" }}>
                     {daytonaTest.detail}
                   </span>
                 )}
@@ -284,7 +284,7 @@ export default function KeysPanel({ context }: { context: ConsoleContext }) {
         </Tilt>
 
         {/* ------------------------------------------------ safety */}
-        <div className="panel" style={{ padding: 26, borderColor: draft.SENTINEL_ALLOW_REMOTE_WRITES ? "var(--line)" : "rgba(255,255,255,0.4)" }}>
+        <div className="panel" style={{ padding: 26, borderColor: draft.SENTINEL_ALLOW_REMOTE_WRITES ? "var(--line)" : "var(--ink)" }}>
           <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
             <h3 className="display" style={{ fontSize: 17, fontWeight: 600, margin: 0 }}>SENTINEL_ALLOW_REMOTE_WRITES</h3>
             <button
@@ -296,7 +296,7 @@ export default function KeysPanel({ context }: { context: ConsoleContext }) {
           </div>
           <p className="muted small" style={{ lineHeight: 1.65, margin: "12px 0 0" }}>
             The hard kill switch. Off means destructive tools refuse{" "}
-            <strong style={{ color: "#fff" }}>before any network call</strong>, regardless of what the model or the
+            <strong style={{ color: "var(--ink)" }}>before any network call</strong>, regardless of what the model or the
             approval UI says. {server?.serverKillSwitch === "off" && " The server-side switch is also OFF — it overrides this browser."}
           </p>
         </div>

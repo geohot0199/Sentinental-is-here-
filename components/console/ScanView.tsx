@@ -264,6 +264,17 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
       {/* ------------------------------------------------ left: input */}
       <div>
         <div className="panel brackets" style={{ padding: 24 }}>
+          {/* Declarative WebMCP: a supporting browser derives a callable tool
+              from this form alone, with no registration code involved. */}
+          <form
+            toolname="run_dependency_scan"
+            tooldescription="Triage a JavaScript project for exploitable dependency advisories. Provide either manifest (the verbatim package.json text) or repo (owner/name on GitHub). Read-only: nothing is written and no pull request is opened."
+            toolautosubmit
+            onSubmit={(event) => {
+              event.preventDefault();
+              runScan();
+            }}
+          >
           <div className="row" style={{ justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
             <h3 className="display" style={{ fontSize: 17, fontWeight: 600, margin: 0 }}>Target</h3>
             <div className="tabs" style={{ padding: 3 }}>
@@ -276,6 +287,10 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
             <>
               <textarea
                 className="textarea mono"
+                name="manifest"
+                aria-label="package.json contents"
+                toolname="manifest"
+                tooldescription="Verbatim package.json text, optionally with a lockfile in the next field"
                 placeholder="{ … paste package.json … }"
                 value={manifest}
                 onChange={(event) => setManifest(event.target.value)}
@@ -297,6 +312,10 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
                 <label>Repository</label>
                 <input
                   className="input"
+                  name="repo"
+                  aria-label="GitHub repository"
+                  toolname="repo"
+                  tooldescription="Public GitHub repository as owner/name"
                   placeholder="owner/name"
                   value={repo}
                   onChange={(event) => setRepo(event.target.value)}
@@ -310,7 +329,7 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
           )}
 
           <div className="row" style={{ margin: "20px 0 0", alignItems: "center" }}>
-            <Btn variant="primary" onClick={runScan} disabled={phase === "running"} style={{ padding: "10px 22px" }}>
+            <Btn variant="primary" type="submit" disabled={phase === "running"} style={{ padding: "10px 22px" }}>
               {phase === "running" ? "Scanning…" : "Run scan ⬡"}
             </Btn>
             {server !== null && (
@@ -320,6 +339,7 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
           {error !== null && (
             <div className="term term-error" style={{ marginTop: 16, padding: "12px 16px" }}>{error}</div>
           )}
+          </form>
         </div>
 
         {/* transcript */}
@@ -381,7 +401,7 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
                 <Tilt key={`${match.packageName}-${match.advisory.id}`} strength={5}>
                   <div className="panel brackets" style={{ padding: 20, height: "100%" }}>
                     <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
-                      <strong className="mono" style={{ fontSize: 14.5, color: "#fff" }}>{match.packageName}@{match.installedVersion}</strong>
+                      <strong className="mono" style={{ fontSize: 14.5, color: "var(--ink)" }}>{match.packageName}@{match.installedVersion}</strong>
                       <SevChip severity={match.advisory.severity} />
                     </div>
                     <div className="row" style={{ gap: 8, margin: "10px 0 0" }}>
@@ -428,7 +448,7 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
                   <tbody>
                     {result.plan.map((item) => (
                       <tr key={item.packageName} style={{ borderTop: "1px solid var(--line)" }}>
-                        <td className="mono" style={{ padding: "10px 12px", color: "#fff" }}>{item.packageName}</td>
+                        <td className="mono" style={{ padding: "10px 12px", color: "var(--ink)" }}>{item.packageName}</td>
                         <td className="mono muted" style={{ padding: "10px 12px" }}>{item.installedVersion}</td>
                         <td className="mono" style={{ padding: "10px 12px" }}>{item.targetVersion ?? <span className="faint">no published fix</span>}</td>
                         <td className="mono muted" style={{ padding: "10px 12px" }}>{item.bump}</td>
@@ -459,8 +479,8 @@ export default function ScanView({ context }: { context: ConsoleContext }) {
                         key={index}
                         style={{
                           display: "block",
-                          color: line.kind === "add" ? "#fff" : line.kind === "del" ? "var(--ink-faint)" : "var(--ink-dim)",
-                          background: line.kind === "add" ? "rgba(255,255,255,0.08)" : line.kind === "del" ? "rgba(255,255,255,0.03)" : undefined,
+                          color: line.kind === "add" ? "var(--ink)" : line.kind === "del" ? "var(--ink-faint)" : "var(--ink-dim)",
+                          background: line.kind === "add" ? "rgba(13, 13, 13, 0.055)" : line.kind === "del" ? "rgba(13, 13, 13, 0.02)" : undefined,
                           textDecoration: line.kind === "del" ? "line-through" : undefined,
                         }}
                       >

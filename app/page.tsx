@@ -3,9 +3,10 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Wordmark from "@/components/Wordmark";
 import { Btn, Reveal, Tilt, KineticWords } from "@/components/interactive";
+import BridgeCheck from "@/components/console/BridgeCheck";
 import HeroGraphic from "@/components/motion/HeroGraphic";
 import Marquee from "@/components/motion/Marquee";
-import Radar from "@/components/motion/Radar";
+import SatScope from "@/components/motion/SatScope";
 import TypeLine from "@/components/motion/TypeLine";
 
 export const metadata = {
@@ -83,18 +84,18 @@ export default function LandingPage() {
 
         {/* ================================================== HERO */}
         <section className="hero">
-          <div className="hero-scan" aria-hidden="true" />
+          {/* The hero's only motion: the satellite stage plus these drifting
+              tool tags. No radar, no reticle, no scan beam. */}
           <HeroGraphic />
-          {/* drifting tool satellites */}
           {([
             ["scan_dependencies", "13%", "34%", "1.1s", "0s", false],
             ["lookup_advisories", "35%", "6%", "1.45s", "1.3s", false],
             ["assess_blast_radius", "58%", "28%", "1.8s", "2.2s", false],
             ["open_pull_request · gated", "77%", "10%", "2.15s", "0.7s", true],
-          ] as const).map(([label, top, right, sd, fd, red]) => (
+          ] as const).map(([label, top, right, sd, fd, gated]) => (
             <span
               key={label}
-              className={`hero-sat ${red ? "hero-sat-red" : ""}`}
+              className={`hero-sat${gated ? " hero-sat-gated" : ""}`}
               style={{ top, right, "--sd": sd, "--fd": fd } as CSSProperties}
             >
               <i /> {label}
@@ -197,22 +198,7 @@ export default function LandingPage() {
                 </div>
               </Tilt>
               <Reveal delay={160}>
-                <div className="ring-border ring-border-green">
-                  <div className="panel brackets pad-md radar-card" style={{ borderRadius: "calc(var(--radius) - 1px)" }}>
-                    <div className="h-row">
-                      <span className="kicker">Live scope</span>
-                      <span className="waveform" aria-hidden="true">
-                        {Array.from({ length: 11 }).map((_, i) => <i key={i} />)}
-                      </span>
-                    </div>
-                    <Radar />
-                    <div className="row" style={{ gap: 8, justifyContent: "center" }}>
-                      <span className="chip chip-red">3 matches</span>
-                      <span className="chip">14 swept</span>
-                      <span className="chip">1 PR held</span>
-                    </div>
-                  </div>
-                </div>
+                <SatScope />
               </Reveal>
             </div>
           </Reveal>
@@ -462,6 +448,87 @@ export default function LandingPage() {
 
         {/* second ticker */}
         <Marquee alt items={TOOLS.map((tool) => `${tool.name} · ${tool.annotation}`)} />
+
+        {/* ========================================= AGENT BRIDGE */}
+        <section className="sec">
+          <Reveal>
+            <div className="sec-head">
+              <span className="kicker">The agent bridge</span>
+              <h2 className="display sec-title">Use SENTINEL from ChatGPT, Claude or your own agent.</h2>
+              <p className="sec-lede muted">
+                The same seventeen OMNI-LAB tools and the same triage stages are published twice: on{" "}
+                <code className="mono">document.modelContext</code> for an agent driving a tab — WebMCP, the W3C
+                surface ChatGPT&apos;s built-in browser and ChatGPT Sites speak since August 2026 — and over{" "}
+                <code className="mono">POST /api/mcp</code> for an agent outside it, as stateless Streamable HTTP per
+                MCP 2026-07-28, with the older <code className="mono">initialize</code> handshake still answered for
+                clients that need it.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="grid-2" style={{ marginTop: 30 }}>
+            <Reveal delay={60}>
+              <Tilt>
+                <div className="panel brackets pad-md" style={{ height: "100%" }}>
+                  <span className="kicker">In the browser</span>
+                  <h3 className="display" style={{ fontSize: 19, margin: "14px 0 8px", fontWeight: 600 }}>
+                    Tools registered on the page
+                  </h3>
+                  <p className="muted small" style={{ margin: 0, lineHeight: 1.7 }}>
+                    Open this site in the ChatGPT desktop app&apos;s built-in browser and ask it to triage a
+                    repository — the registered tools are surfaced by the browser, with their{" "}
+                    <code className="mono">readOnlyHint</code> annotations intact. In Chrome the API is behind a
+                    public origin trial; set{" "}
+                    <code className="mono">NEXT_PUBLIC_WEBMCP_ORIGIN_TRIAL</code> to opt this host in. Where no
+                    native surface exists, the console says &ldquo;in-page only&rdquo; rather than pretending.
+                  </p>
+                  <div className="row chip-row" style={{ marginTop: 16, gap: 8, flexWrap: "wrap" }}>
+                    <span className="chip">document.modelContext</span>
+                    <span className="chip">title · inputSchema · annotations</span>
+                    <span className="chip">AbortSignal unregistration</span>
+                    <span className="chip">toolchange events</span>
+                  </div>
+                </div>
+              </Tilt>
+            </Reveal>
+            <Reveal delay={140}>
+              <Tilt>
+                <div className="panel brackets pad-md" style={{ height: "100%" }}>
+                  <span className="kicker">Outside the browser</span>
+                  <h3 className="display" style={{ fontSize: 19, margin: "14px 0 8px", fontWeight: 600 }}>
+                    One remote MCP endpoint
+                  </h3>
+                  <p className="muted small" style={{ margin: 0, lineHeight: 1.7 }}>
+                    Paste <code className="mono">https://your-host/api/mcp</code> into ChatGPT&apos;s developer-mode
+                    connector, <code className="mono">claude mcp add</code>, Cursor&apos;s{" "}
+                    <code className="mono">mcp.json</code>, Gemini CLI or any MCP client. No key needed for the
+                    read-only tools; set <code className="mono">SENTINEL_MCP_TOKEN</code> to require a bearer token
+                    for calls, and{" "}
+                    <code className="mono">SENTINEL_ALLOW_REMOTE_WRITES=true</code> before a write tool exists at all.
+                  </p>
+                  <div className="row chip-row" style={{ marginTop: 16, gap: 8, flexWrap: "wrap" }}>
+                    <span className="chip">server/discover</span>
+                    <span className="chip">Mcp-Method · Mcp-Name headers</span>
+                    <span className="chip">ttlMs · cacheScope</span>
+                    <span className="chip">legacy initialize</span>
+                  </div>
+                </div>
+              </Tilt>
+            </Reveal>
+          </div>
+
+          <Reveal delay={120}>
+            <BridgeCheck />
+          </Reveal>
+          <Reveal delay={160}>
+            <p className="center faint small" style={{ margin: "18px 0 0" }}>
+              That check is not a demo counter: it reads the tools back through the model context, invokes one, and
+              asks the destructive tool to refuse.{" "}
+              <Link href="/app" className="link">The Bridge station</Link> does the same from inside the console,
+              with a playground for raw JSON-RPC.
+            </p>
+          </Reveal>
+        </section>
 
         {/* ================================================== FAQ */}
         <section className="sec">

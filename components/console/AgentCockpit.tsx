@@ -81,7 +81,7 @@ function ApprovalGate({
     <div
       style={{
         position: "fixed", inset: 0, zIndex: 300,
-        background: "rgba(0,0,0,0.8)", backdropFilter: "blur(12px)",
+        background: "rgba(13, 13, 13, 0.42)", backdropFilter: "blur(12px)",
         display: "grid", placeItems: "center", padding: 20,
         animation: "rise 0.3s ease both",
       }}
@@ -89,7 +89,7 @@ function ApprovalGate({
       aria-modal="true"
       aria-label="Approval required"
     >
-      <div className="panel brackets" style={{ maxWidth: 640, width: "100%", padding: 30, boxShadow: "0 0 80px rgba(0,0,0,0.8)" }}>
+      <div className="panel brackets" style={{ maxWidth: 640, width: "100%", padding: 30, boxShadow: "var(--shadow-3)" }}>
         <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
           <span className="kicker">The turn ends here</span>
           <span className="sev sev-critical">destructiveHint</span>
@@ -274,7 +274,7 @@ export default function AgentCockpit({ context }: { context: ConsoleContext }) {
                   </a>
                 )}
                 {summary.error !== undefined && (
-                  <p className="small" style={{ color: "#fff", margin: "12px 0 0" }}>{summary.error}</p>
+                  <p className="small" style={{ color: "var(--ink)", margin: "12px 0 0" }}>{summary.error}</p>
                 )}
               </div>
             </Tilt>
